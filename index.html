@@ -182,8 +182,12 @@
 <div id="infoModal" class="fixed inset-0 z-[60] hidden">
   <div class="absolute inset-0 bg-navydeep/60" onclick="closeModal('infoModal')"></div>
   <div class="sheet absolute bottom-0 inset-x-0 bg-cream rounded-t-3xl max-h-[85vh] overflow-y-auto translate-y-full">
-    <div class="sticky top-0 bg-cream/95 backdrop-blur flex justify-center pt-3 pb-1">
+    <div class="sticky top-0 z-10 bg-cream/95 backdrop-blur flex items-center justify-center pt-3 pb-1 relative">
       <div class="w-10 h-1.5 rounded-full bg-navydeep/15"></div>
+      <button onclick="closeModal('infoModal')" aria-label="סגור"
+        class="absolute left-3 top-1.5 w-8 h-8 rounded-full bg-navydeep/5 text-navydeep/60 flex items-center justify-center active:bg-navydeep/10 transition">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
     </div>
     <div id="infoModalContent" class="px-5 pb-8"></div>
   </div>
@@ -208,17 +212,13 @@ const tripData = [
       {
         id: "d1-a1",
         time: "22:00",
-        title: "נחיתה בנמל התעופה של פראג (PRG)",
+        title: "נחיתה בנמל התעופה של פראג",
         category: "טיסה",
         icon: "fa-plane-arrival",
-        images: [
-          "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1583862580819-e42ac0d0f4dd?w=900&q=80&auto=format&fit=crop"
-        ],
+        images: ["https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=900&q=80&auto=format&fit=crop"],
         locked: false,
         mapQuery: "Václav Havel Airport Prague",
-        description: "ברוכים הבאים לפראג! אחרי טיסת הערב, אוספים את המזוודות ולוקחים מונית או הסעה מוזמנת מראש. הנסיעה למרכז העיר עורכת כ-25 דקות.<br><br>👨‍👩‍👧‍👦 <strong>טיפ משפחתי:</strong> הילדים יהיו עייפים, זה הזמן לשלוף חטיף אחרון שהבאתם מהבית כדי להעביר את הנסיעה למלון בשקט."
+        description: "ברוכים הבאים לפראג! אחרי טיסת הערב, איסוף מזוודות ונסיעה למרכז העיר.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אריאלה, שתשלוף חטיף אחרון מהבית כדי להעביר את הנסיעה למלון בשקט."
       },
       {
         id: "d1-a2",
@@ -226,25 +226,17 @@ const tripData = [
         title: "צ׳ק-אין ב-MOOo Downtown",
         category: "לינה",
         icon: "fa-bed",
-        images: [
-          "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=900&q=80&auto=format&fit=crop"
-        ],
+        images: ["https://images.unsplash.com/photo-1566073771259-6a8506099945?w=900&q=80&auto=format&fit=crop"],
         locked: true,
         mapQuery: "MOOo Downtown Prague",
-        description: "הגעה לדירת האירוח המעוצבת שלכם. קבלת מפתח והתארגנות מהירה לשינה כדי לאגור כוחות למחר.",
+        description: "התארגנות מהירה לשינה בדירה כדי לאגור כוחות למחר.",
         nearby: [
           {
-            title: "הבית הרוקד (Tančící dům)",
+            title: "הבית הרוקד",
             distance: "6 דקות הליכה",
-            images: [
-              "https://images.unsplash.com/photo-1585939652626-4b1c9f2d76a8?w=900&q=80&auto=format&fit=crop",
-              "https://images.unsplash.com/photo-1541849546-216549ae216d?w=900&q=80&auto=format&fit=crop",
-              "https://images.unsplash.com/photo-1560343090-f0409e92791a?w=900&q=80&auto=format&fit=crop"
-            ],
+            images: ["https://images.unsplash.com/photo-1577791465520-2df19d084cba?w=900&q=80&auto=format&fit=crop"],
             mapQuery: "Dancing House Prague",
-            description: "בניין מודרניסטי ייחודי על שפת הנהר. אם נשאר לכם כוח לטיול של 10 דקות אחרי שהילדים נרדמים, המבנה מואר ומרהיב בלילה."
+            description: "בניין מודרניסטי ייחודי על שפת הנהר. מואר ומרהיב בלילה."
           }
         ]
       }
@@ -262,25 +254,17 @@ const tripData = [
         title: "כיכר העיר העתיקה והשעון האסטרונומי",
         category: "סיור",
         icon: "fa-clock",
-        images: [
-          "https://images.unsplash.com/photo-1519677100203-a0e668c92439?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1541343672885-9be56236302a?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1522093007474-d86e9bf7ba6f?w=900&q=80&auto=format&fit=crop"
-        ],
+        images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Prague_Astronomical_Clock_%2848325603892%29.jpg/800px-Prague_Astronomical_Clock_%2848325603892%29.jpg"],
         locked: false,
         mapQuery: "Astronomical Clock Prague",
-        description: "הלב הפועם של פראג. בואו לקראת השעה העגולה כדי לראות את בובות השליחים מציצות מהשעון ואת השלד המפורסם מצלצל בפעמון.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אריאלה תהנה מהארכיטקטורה המטורפת והאווירה הקסומה. דניאל (5) ועידו (3) יהיו מרותקים לבובות של השעון. עדי (8) תאהב את האגדות על בונה השעון שהתעוור.",
+        description: "הלב הפועם של פראג. בואו לקראת השעה העגולה כדי לראות את בובות השליחים.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אריאלה תהנה מהאווירה. עידו ודניאל יהיו מרותקים לבובות השעון. עדי תאהב את האגדות על בונה השעון.",
         nearby: [
           {
-            title: "שוק האוולסקי (Havelský Market)",
+            title: "שוק האוולסקי",
             distance: "3 דקות הליכה",
-            images: [
-              "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=900&q=80&auto=format&fit=crop",
-              "https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=900&q=80&auto=format&fit=crop",
-              "https://images.unsplash.com/photo-1596997000103-e597b3ca50df?w=900&q=80&auto=format&fit=crop"
-            ],
+            images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Havelsk%C3%A1_ulice%2C_trhy.jpg/800px-Havelsk%C3%A1_ulice%2C_trhy.jpg"],
             mapQuery: "Havelske Market Prague",
-            description: "שוק עתיק עם פירות יער טריים בקופסאות, צעצועי עץ ובובות מכשפה צוחקות (זהירות, זה עלול להפחיד קצת את עידו!)."
+            description: "שוק עתיק עם פירות יער טריים, צעצועי עץ ובובות מכשפה."
           }
         ]
       },
@@ -290,29 +274,21 @@ const tripData = [
         title: "שייט משפחתי בנהר הולטבה",
         category: "שייט",
         icon: "fa-ship",
-        images: [
-          "https://images.unsplash.com/photo-1544266503-7ad532c62d24?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1560343090-f0409e92791a?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1541849546-216549ae216d?w=900&q=80&auto=format&fit=crop"
-        ],
+        images: ["https://images.unsplash.com/photo-1509983936694-434f0f6222b4?w=900&q=80&auto=format&fit=crop"],
         locked: true,
         mapQuery: "Vltava River Cruise Prague",
-        description: "שייט רגוע של 45 דקות. דרך מעולה לראות את גשר קארל מלמטה בלי להדחף בהמונים.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> כולם! זו עצירת ההתרעננות הרשמית. לעידו (3) ולדניאל (5) יש הזדמנות לשבת ולהירגע, ועדי (8) תוכל לצלם את הברבורים מהסיפון."
+        description: "שייט רגוע של 45 דקות. דרך מעולה לראות את גשר קארל מלמטה.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> כולם! הזדמנות לעידו ודניאל לשבת ולהירגע, ולעדי לצלם ברבורים מהסיפון."
       },
       {
         id: "d2-a3",
         time: "16:30",
-        title: "גן פרנציסקני (Františkánská zahrada)",
+        title: "גן פרנציסקני",
         category: "פנאי",
         icon: "fa-child-reaching",
-        images: [
-          "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1560785496-3c9d27877182?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1596997000103-e597b3ca50df?w=900&q=80&auto=format&fit=crop"
-        ],
+        images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Franti%C5%A1k%C3%A1nsk%C3%A1_zahrada.jpg/800px-Franti%C5%A1k%C3%A1nsk%C3%A1_zahrada.jpg"],
         locked: false,
         mapQuery: "Franciscan Garden Prague",
-        description: "גינה נסתרת שמוקפת בניינים יפהפיים. יש בה המון ספסלים וורדים (בעונה).<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אריאלה ולך - אפשר לקנות קפה בכיכר ואצלב הקרובה ולשבת בשקט, בזמן שדניאל (5) ועידו (3) מוציאים מרץ במתקני השעשועים המגודרים והבטוחים."
+        description: "גינה נסתרת שמוקפת בניינים יפהפיים. <br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אריאלה ולך - שבו בשקט עם קפה בזמן שעידו ודניאל מוציאים מרץ במתקנים הבטוחים."
       }
     ]
   },
@@ -323,29 +299,33 @@ const tripData = [
     weather: null,
     activities: [
       {
+        id: "d3-a0",
+        time: "09:00",
+        title: "נסיעה בחשמלית אל הגבעה",
+        category: "נסיעה",
+        icon: "fa-train-tram",
+        images: ["https://images.unsplash.com/photo-1544266503-7ad532c62d24?w=900&q=80&auto=format&fit=crop"],
+        locked: false,
+        mapQuery: "Ujezd Prague",
+        description: "נסיעה קצרה בחשמלית אל תחנת Újezd, משם לוקחים את הפוניקולר לראש גבעת פטז׳ין."
+      },
+      {
         id: "d3-a1",
         time: "09:30",
-        title: "גבעת פטז׳ין (Petřín Hill) ומבוך המראות",
+        title: "גבעת פטז׳ין ומבוך המראות",
         category: "סיור",
         icon: "fa-mountain-city",
-        images: [
-          "https://images.unsplash.com/photo-1541849546-216549ae216d?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1519677100203-a0e668c92439?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1522093007474-d86e9bf7ba6f?w=900&q=80&auto=format&fit=crop"
-        ],
+        images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Pet%C5%99%C3%ADnsk%C3%A1_rozhledna_a_bludi%C5%A1t%C4%9B_z_letadla.jpg/800px-Pet%C5%99%C3%ADnsk%C3%A1_rozhledna_a_bludi%C5%A1t%C4%9B_z_letadla.jpg"],
         locked: false,
         mapQuery: "Petrin Tower Prague",
-        description: "עולים לגבעה באמצעות רכבל הקרונית (Funicular). למעלה תמצאו גנים יפים, מגדל תצפית שדומה למגדל אייפל, ואת מבוך המראות הקלאסי.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> נסיעת הרכבל היא היילייט עבור דניאל ועידו. מבוך המראות המעוותות יצחיק את עדי (8) ואת כולכם עד דמעות.",
+        description: "גנים יפים, מגדל תצפית דמוי אייפל, ומבוך מראות היסטורי.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> נסיעת הרכבל תלהיב את דניאל ועידו. מבוך המראות יצחיק את עדי ואת כולכם.",
         nearby: [
           {
-            title: "פסלי התינוקות (Kampa Island)",
+            title: "פסלי התינוקות באי קמפה",
             distance: "בתחתית הגבעה",
-            images: [
-              "https://images.unsplash.com/photo-1562670652-e5947ebd9322?w=900&q=80&auto=format&fit=crop",
-              "https://images.unsplash.com/photo-1544266503-7ad532c62d24?w=900&q=80&auto=format&fit=crop"
-            ],
+            images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Miminka_na_Kamp%C4%9B_3.jpg/800px-Miminka_na_Kamp%C4%9B_3.jpg"],
             mapQuery: "Crawling Babies David Cerny Kampa",
-            description: "פסלי ברונזה ענקיים ומוזרים של תינוקות זוחלים ללא פנים. עדי ודניאל יאהבו לטפס עליהם לתמונות."
+            description: "פסלי ברונזה ענקיים ומוזרים של תינוקות זוחלים ללא פנים."
           }
         ]
       },
@@ -355,14 +335,10 @@ const tripData = [
         title: "Máj - House of Fun ומוזיאון הלגו",
         category: "פנאי",
         icon: "fa-gamepad",
-        images: [
-          "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1534567153574-2b12153a87f0?w=900&q=80&auto=format&fit=crop"
-        ],
+        images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Muzeum_lega_Praha_01.jpg/800px-Muzeum_lega_Praha_01.jpg"],
         locked: false,
-        mapQuery: "Maj House of Fun Prague",
-        description: "מתחם בילוי מטורף עם משחקי ארקייד, ומיד אחריו במרחק 2 דקות הליכה - מוזיאון הלגו הכולל עמדות יצירה חופשית ומבנים ענקיים.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> גן עדן לדניאל (5) ולעדי (8). עידו (3) יתלהב מעמדות בניית הלגו החופשיות."
+        mapQuery: "Museum of Bricks Prague",
+        description: "מתחם בילוי מטורף ומוזיאון הלגו הכולל עמדות יצירה חופשית.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> גן עדן לדניאל ולעדי. עידו יתלהב מעמדות היצירה."
       },
       {
         id: "d3-a3",
@@ -370,14 +346,10 @@ const tripData = [
         title: "מוזיאון האשליות וקניות בפרימרק",
         category: "פנאי",
         icon: "fa-wand-magic-sparkles",
-        images: [
-          "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1562670652-e5947ebd9322?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=900&q=80&auto=format&fit=crop"
-        ],
+        images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/V%C3%A1clavsk%C3%A9_n%C3%A1m%C4%9Bst%C3%AD_p%C5%99ed_ve%C4%8Derem.jpg/800px-V%C3%A1clavsk%C3%A9_n%C3%A1m%C4%9Bst%C3%AD_p%C5%99ed_ve%C4%8Derem.jpg"],
         locked: false,
         mapQuery: "Museum of Fantastic Illusions Prague",
-        description: "הזדמנות לתמונות שבהן הילדים 'אוכלים' אתכם או הופכים לענקים, ולאחר מכן סיבוב שופינג בפרימרק המרכזי בכיכר ואצלב.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> התמונות לאינסטגרם של עדי (8) במוזיאון האשליות, והזדמנות מושלמת לאריאלה לקניות בפרימרק בזמן שאתה מעסיק את הקטנים."
+        description: "הזדמנות לתמונות משוגעות ולאחר מכן סיבוב שופינג בכיכר ואצלב.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> התמונות לאינסטגרם של עדי, והזדמנות לאריאלה לקניות בפרימרק בזמן שאתה מעסיק את הקטנים."
       }
     ]
   },
@@ -388,29 +360,33 @@ const tripData = [
     weather: null,
     activities: [
       {
-        id: "d4-a1",
-        time: "10:00",
-        title: "גן החיות של פראג (Prague Zoo)",
-        category: "פנאי",
-        icon: "fa-hippo",
-        images: [
-          "https://images.unsplash.com/photo-1534567153574-2b12153a87f0?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=900&q=80&auto=format&fit=crop"
-        ],
+        id: "d4-a0",
+        time: "09:00",
+        title: "נסיעה צפונה אל גן החיות",
+        category: "נסיעה",
+        icon: "fa-bus",
+        images: ["https://images.unsplash.com/photo-1541849546-216549ae216d?w=900&q=80&auto=format&fit=crop"],
         locked: false,
         mapQuery: "Prague Zoo",
-        description: "נחשב לאחד מגני החיות הטובים והגדולים באירופה. המתחם ענק, משולב בטבע, וכולל רכבל המחבר בין חלקי הפארק, יער אינדונזי ופינות ליטוף.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> עידו (3) ודניאל (5) יבלו שעות בפינת הליטוף וגני השעשועים. עדי (8) תהנה מחוויית הנסיעה ברכבל הפתוח, ואריאלה תאהב את המסלולים המוצלים והפתוחים.",
+        description: "ממליץ להזמין Uber/Bolt או לקחת מטרו C לתחנת Nádraží Holešovice ומשם קו אוטובוס 112 ישירות לכניסה."
+      },
+      {
+        id: "d4-a1",
+        time: "10:00",
+        title: "גן החיות של פראג",
+        category: "פנאי",
+        icon: "fa-hippo",
+        images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Prague_czech_republic_zoo_30.jpg/800px-Prague_czech_republic_zoo_30.jpg"],
+        locked: false,
+        mapQuery: "Prague Zoo",
+        description: "אחד מגני החיות הטובים באירופה. מתחם ענק עם יער אינדונזי ופינות ליטוף.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> עידו ודניאל בפינות הליטוף, עדי ברכבל הפתוח, ואריאלה תאהב את המסלולים המוצלים והפתוחים.",
         nearby: [
           {
-            title: "ארמון טרויה (Troja Chateau)",
+            title: "ארמון טרויה",
             distance: "מול כניסת גן החיות",
-            images: [
-              "https://images.unsplash.com/photo-1541849546-216549ae216d?w=900&q=80&auto=format&fit=crop",
-              "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=900&q=80&auto=format&fit=crop"
-            ],
+            images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Troja_Castle_Prague.jpg/800px-Troja_Castle_Prague.jpg"],
             mapQuery: "Troja Chateau Prague",
-            description: "אם נשאר לכם זמן אחרי גן החיות, הכניסה לגנים של הארמון היא חינמית ויש בה שבילים יפים בין מזרקות בסגנון בארוק."
+            description: "הכניסה לגנים של הארמון היא חינמית ויש בה שבילים יפים בין מזרקות בארוק."
           }
         ]
       }
@@ -425,32 +401,24 @@ const tripData = [
       {
         id: "d5-a1",
         time: "09:30",
-        title: "מצודת פראג (Prague Castle) וסמטת הזהב",
+        title: "מצודת פראג וסמטת הזהב",
         category: "סיור",
         icon: "fa-chess-rook",
-        images: [
-          "https://images.unsplash.com/photo-1519677100203-a0e668c92439?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1541343672885-9be56236302a?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=900&q=80&auto=format&fit=crop"
-        ],
+        images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/New_Royal_Palace_%28Prague_Castle%29.JPG/800px-New_Royal_Palace_%28Prague_Castle%29.JPG"],
         locked: false,
         mapQuery: "Prague Castle",
-        description: "קומפלקס הטירה הגדול בעולם. נטייל בין הארמונות ונרד במורד סמטת הזהב הציורית עם הבתים הקטנטנים מהמאה ה-16.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אריאלה תהנה מהנופים עוצרי הנשימה של העיר מלמעלה. דניאל (5) ועדי (8) ירתקו לשריונות האבירים וכלי הנשק העתיקים בסמטת הזהב."
+        description: "קומפלקס הטירה הגדול בעולם. נטייל בין הארמונות ונרד במורד סמטת הזהב.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אריאלה תהנה מנופי העיר מלמעלה. דניאל ועדי ירתקו לשריונות האבירים."
       },
       {
         id: "d5-a2",
         time: "12:30",
-        title: "גני ולדשטיין (Waldstein Garden)",
+        title: "גני ולדשטיין",
         category: "סיור",
         icon: "fa-tree",
-        images: [
-          "https://images.unsplash.com/photo-1585939652626-4b1c9f2d76a8?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1560785496-3c9d27877182?w=900&q=80&auto=format&fit=crop"
-        ],
+        images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Wallenstein_Palace_Garden_Prague_1.jpg/800px-Wallenstein_Palace_Garden_Prague_1.jpg"],
         locked: false,
         mapQuery: "Waldstein Garden Prague",
-        description: "יורדים מהטירה ישר אל תוך גנים קסומים ברובע מאלה סטרנה, עם בריכת קוי ענקית וקיר נטיפים אפור שנקרא 'Dripstone Wall'.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> עידו (3) ודניאל (5) יתלהבו למצוא את הטווסים הלבנים שמסתובבים חופשי. עדי (8) תנסה למצוא צורות של פרצופים וגולגולות שמסתתרות בתוך קיר הנטיפים."
+        description: "גנים קסומים עם בריכת קוי ענקית וקיר נטיפים אפור.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> עידו ודניאל יתלהבו למצוא טווסים לבנים. עדי תנסה למצוא צורות בתוך קיר הנטיפים."
       },
       {
         id: "d5-a3",
@@ -458,24 +426,17 @@ const tripData = [
         title: "מוזיאון קארל זמאן וגשר קארל",
         category: "סיור",
         icon: "fa-film",
-        images: [
-          "https://images.unsplash.com/photo-1541849546-216549ae216d?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1560343090-f0409e92791a?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1522093007474-d86e9bf7ba6f?w=900&q=80&auto=format&fit=crop"
-        ],
+        images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Charles_Bridge_in_Prague.jpg/800px-Charles_Bridge_in_Prague.jpg"],
         locked: false,
         mapQuery: "Karel Zeman Museum Prague",
-        description: "מוזיאון אפקטים קולנועיים וינטג׳ שבו אפשר לצלם את הילדים ״עפים״ במכונת טיס. לאחר מכן נחצה את נהר הולטבה דרך גשר קארל המפורסם.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אטרקציית חובה לעדי (8) שאוהבת לצלם ולהצטלם עם האפקטים. לאריאלה מומלץ לקנות קיורטוש (Trdelník) חם באזור הגשר.",
+        description: "מוזיאון אפקטים קולנועיים אינטראקטיבי וחציית גשר קארל המפורסם.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> חובה לעדי שאוהבת לצלם ולהצטלם עם אפקטים. לאריאלה מומלץ לקנות קיורטוש חם.",
         nearby: [
           {
-            title: "הרחוב הצר ביותר (Vinárna Čertovka)",
+            title: "הרחוב הצר ביותר",
             distance: "2 דקות הליכה",
-            images: [
-              "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=900&q=80&auto=format&fit=crop",
-              "https://images.unsplash.com/photo-1519677100203-a0e668c92439?w=900&q=80&auto=format&fit=crop"
-            ],
+            images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Prague_narrow_street.jpg/800px-Prague_narrow_street.jpg"],
             mapQuery: "Vinarna Certovka Prague",
-            description: "סמטה ברוחב 70 ס״מ בלבד! הילדים מאוד אוהבים ללחוץ על הרמזור המיוחד שנועד להולכי רגל כדי שלא יתקעו זה בזה באמצע המעבר."
+            description: "סמטה ברוחב 70 ס״מ בלבד עם רמזור הולכי רגל שהילדים אוהבים ללחוץ עליו."
           }
         ]
       }
@@ -488,29 +449,33 @@ const tripData = [
     weather: null,
     activities: [
       {
-        id: "d6-a1",
-        time: "10:00",
-        title: "אקווה-פאלאס (Aquapalace Prague)",
-        category: "פנאי",
-        icon: "fa-water",
-        images: [
-          "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1534567153574-2b12153a87f0?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=900&q=80&auto=format&fit=crop"
-        ],
+        id: "d6-a0",
+        time: "09:15",
+        title: "נסיעה לאקווה-פאלאס",
+        category: "נסיעה",
+        icon: "fa-car",
+        images: ["https://images.unsplash.com/photo-1544266503-7ad532c62d24?w=900&q=80&auto=format&fit=crop"],
         locked: false,
         mapQuery: "Aquapalace Praha",
-        description: "פארק המים המקורה הגדול במרכז אירופה! מחולק ל'ארמונות' שונים עם מגלשות אקסטרים, בריכת גלים, ספינת פיראטים וזרמי נהר.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> יום שכולם מרוויחים בו. עידו (3) ודניאל (5) יהיו באזור ספינת הפיראטים ובריכת הגלים. עדי (8) תעוף על מגלשות הנהר הפראי (Wild River). ואריאלה? יש מתחם ספא וסאונות פסיכי (למבוגרים בלבד) שאפשר להתחלף ולברוח אליו.",
+        description: "ממוקם מעט מחוץ לעיר. מומלץ לקחת Uber/Bolt ישירות למקום, נסיעה של כ-25 דקות ממרכז העיר."
+      },
+      {
+        id: "d6-a1",
+        time: "10:00",
+        title: "אקווה-פאלאס",
+        category: "פנאי",
+        icon: "fa-water",
+        images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Aquapalace_Praha_-_vchod.jpg/800px-Aquapalace_Praha_-_vchod.jpg"],
+        locked: false,
+        mapQuery: "Aquapalace Praha",
+        description: "פארק המים המקורה הגדול במרכז אירופה! מגלשות אקסטרים, בריכת גלים וספינת פיראטים.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> כולם. עידו ודניאל בספינת הפיראטים, עדי במגלשות הנהר הפראי, ולאריאלה יש מתחם ספא מטורף לברוח אליו.",
         nearby: [
           {
             title: "Hop Arena",
             distance: "באותו מתחם מסחרי",
-            images: [
-              "https://images.unsplash.com/photo-1562670652-e5947ebd9322?w=900&q=80&auto=format&fit=crop",
-              "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=900&q=80&auto=format&fit=crop"
-            ],
+            images: ["https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=900&q=80&auto=format&fit=crop"],
             mapQuery: "Hop Arena Cestlice",
-            description: "אם במקרה נשארה לילדים אנרגיה אחרי המים (מה שקשה להאמין), פארק הטרמפולינות הזה נמצא ממש באותו אזור מסחרי."
+            description: "פארק טרמפולינות צמוד, למקרה נדיר שנשארה להם אנרגיה אחרי המים."
           }
         ]
       }
@@ -525,47 +490,35 @@ const tripData = [
       {
         id: "d7-a1",
         time: "10:00",
-        title: "המוזיאון הלאומי (National Museum)",
+        title: "המוזיאון הלאומי",
         category: "סיור",
         icon: "fa-building-columns",
-        images: [
-          "https://images.unsplash.com/photo-1565008447742-97f6f38c985c?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1541343672885-9be56236302a?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=900&q=80&auto=format&fit=crop"
-        ],
+        images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/N%C3%A1rodn%C3%AD_muzeum_z_V%C3%A1clavsk%C3%A9ho_n%C3%A1m%C4%9Bst%C3%AD.jpg/800px-N%C3%A1rodn%C3%A1_muzeum_z_V%C3%A1clavsk%C3%A9ho_n%C3%A1m%C4%9Bst%C3%AD.jpg"],
         locked: false,
         mapQuery: "National Museum Prague",
-        description: "הבניין המפואר בראש כיכר ואצלב. התצוגות של היכל הטבע שופצו לאחרונה ומציגות מודלים מדהימים.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> דניאל (5) ועידו (3) יעמדו פעורי פה מול שלד הלווייתן התלוי והדינוזאורים. אריאלה תעריך את אולם הכניסה המפואר שנראה כמו ארמון."
+        description: "הבניין המפואר בראש כיכר ואצלב עם תצוגות של היכל הטבע.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> דניאל ועידו יעמדו פעורי פה מול הדינוזאורים. אריאלה תעריך את אולם הכניסה המפואר."
       },
       {
         id: "d7-a2",
         time: "13:00",
-        title: "ממלכת הרכבות (Království Železnic)",
+        title: "ממלכת הרכבות (נסיעת מטרו)",
         category: "פנאי",
         icon: "fa-train",
-        images: [
-          "https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1534567153574-2b12153a87f0?w=900&q=80&auto=format&fit=crop"
-        ],
+        images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Kr%C3%A1lovstv%C3%AD_%C5%BEeleznic_%2812%29.jpg/800px-Kr%C3%A1lovstv%C3%AD_%C5%BEeleznic_%2812%29.jpg"],
         locked: false,
         mapQuery: "Kralovstvi Zeleznic Prague",
-        description: "עולם מיניאטורי ענק בסמיחוב (Smíchov). אלפי רכבות זעירות נוסעות בין ערי צ'כיה, והרצפה שקופה בחלקה כדי לראות מסילות תת-קרקעיות.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אטרקציית חובה לעידו (3) ולדניאל (5). יש שם המון כפתורים שהילדים יכולים ללחוץ עליהם כדי להפעיל סירנות, אורות ורכבות במסלול."
+        description: "נסיעה קצרה במטרו לסמיחוב לראות עולם מיניאטורי ענק של רכבות.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אטרקציית חובה לעידו ולדניאל. הילדים יכולים ללחוץ על כפתורים ולהפעיל את הרכבות."
       },
       {
         id: "d7-a3",
         time: "16:00",
-        title: "Majaland Praha ופרימרק #2",
+        title: "Majaland וקניות בפרימרק זליצ'ין",
         category: "פנאי",
         icon: "fa-ferris-wheel",
-        images: [
-          "https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=900&q=80&auto=format&fit=crop"
-        ],
+        images: ["https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?w=900&q=80&auto=format&fit=crop"],
         locked: false,
         mapQuery: "Majaland Praha",
-        description: "פארק השעשועים המקורה הגדול בצ'כיה (על קו המטרו B), ממוקם ממש בתוך מרכז הקניות Metropole Zličín.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> השילוב המושלם. הילדים (במיוחד עידו ודניאל) יכולים להשתולל על המתקנים עם אחד מכם, בזמן שאריאלה עושה קניות בנחת בסניף פרימרק הגדול והפחות עמוס שיש בקניון הזה."
+        description: "נסיעה לסוף קו המטרו B. פארק שעשועים מקורה ענק בתוך מרכז הקניות Metropole Zličín.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> השילוב המושלם. הילדים משתוללים במתקנים, בזמן שאריאלה עושה קניות בנחת בפרימרק הגדול והשקט בקניון."
       }
     ]
   },
@@ -578,44 +531,33 @@ const tripData = [
       {
         id: "d8-a1",
         time: "10:00",
-        title: "מצודת וישהראד (Vyšehrad)",
+        title: "מצודת וישהראד",
         category: "סיור",
         icon: "fa-chess-rook",
-        images: [
-          "https://images.unsplash.com/photo-1541849546-216549ae216d?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1519677100203-a0e668c92439?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=900&q=80&auto=format&fit=crop"
-        ],
+        images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Vysehrad_Prague_view.jpg/800px-Vysehrad_Prague_view.jpg"],
         locked: false,
         mapQuery: "Vysehrad Prague",
-        description: "מצודה עתיקה ויפהפייה שיושבת על צוק מעל הנהר, הרבה פחות עמוסה מתיירים לעומת מצודת פראג הרגילה.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> בתוך המצודה יש גן שעשועים מעולה מבוסס על אגדות צ'כיות עתיקות (כולו מעץ). נהדר לעדי (8) ולדניאל (5) להתרוצץ, ולאריאלה ליהנות מתצפית מושלמת לקפה של בוקר.",
+        description: "מצודה עתיקה ושקטה על צוק מעל הנהר.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> יש במצודה גן שעשועים מעולה עשוי עץ. נהדר לעדי ולדניאל להתרוצץ, ולאריאלה ליהנות מתצפית מושלמת.",
         nearby: [
           {
-            title: "פארק פולימנקה (Folimanka Park)",
+            title: "פארק פולימנקה",
             distance: "מתחת לחומות המצודה",
-            images: [
-              "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=900&q=80&auto=format&fit=crop",
-              "https://images.unsplash.com/photo-1560785496-3c9d27877182?w=900&q=80&auto=format&fit=crop"
-            ],
+            images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Park_Folimanka.jpg/800px-Park_Folimanka.jpg"],
             mapQuery: "Folimanka Park Prague",
-            description: "גן שעשועים מהגדולים והשווים בעיר, עם המון מרחבי דשא ומסלולי בימבות/אופניים אם תצטרכו לשרוף עוד זמן."
+            description: "גן שעשועים ענק עם מסלולי בימבות תחת חומות המצודה."
           }
         ]
       },
       {
         id: "d8-a2",
         time: "15:00",
-        title: "טיילת הנהר (Náplavka) והאכלת ברבורים",
+        title: "טיילת הנהר והאכלת ברבורים",
         category: "פנאי",
         icon: "fa-crow",
-        images: [
-          "https://images.unsplash.com/photo-1544266503-7ad532c62d24?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1560343090-f0409e92791a?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1585939652626-4b1c9f2d76a8?w=900&q=80&auto=format&fit=crop"
-        ],
+        images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Labut%C4%9B_na_Vltav%C4%9B.jpg/800px-Labut%C4%9B_na_Vltav%C4%9B.jpg"],
         locked: false,
         mapQuery: "Naplavka Prague",
-        description: "יורדים מהמצודה ישירות לטיילת לאורך הנהר (ממש קרוב לדירה שלכם). אווירה מעולה של אחר הצהריים לקראת סיום הטיול.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> עידו (3) ודניאל (5) ישמחו להאכיל את הברבורים שמתקבצים כאן המון. עדי ואריאלה יאהבו את אווירת שוק האיכרים שמתפתחת שם עם דוכני אוכל רחוב ומוזיקה חיה לעתים קרובות."
+        description: "יורדים לטיילת לאורך הנהר, קרוב לדירה. אווירה מעולה לסיום הטיול.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> עידו ודניאל ישמחו להאכיל את הברבורים שמתקבצים כאן. עדי ואריאלה יאהבו את אווירת הטיילת ודוכני הרחוב."
       }
     ]
   },
@@ -631,14 +573,10 @@ const tripData = [
         title: "יציאה לשדה התעופה וטיסה חזרה",
         category: "טיסה",
         icon: "fa-plane-departure",
-        images: [
-          "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=900&q=80&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1583862580819-e42ac0d0f4dd?w=900&q=80&auto=format&fit=crop"
-        ],
+        images: ["https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=900&q=80&auto=format&fit=crop"],
         locked: true,
         mapQuery: "Václav Havel Airport Prague",
-        description: "סוגרים מזוודות ועוזבים את MOOo Downtown. יציאה לשדה התעופה לקראת טיסת 11:00 חזרה הביתה. נתראה בטיול הבא! 👋"
+        description: "סוגרים מזוודות ועוזבים את הדירה. יציאה לשדה התעופה לקראת טיסת הבוקר חזרה הביתה. נתראה בטיול הבא! 👋"
       }
     ]
   }
@@ -683,7 +621,8 @@ const vaultData = [
 const toolkitInfo = [
   { icon: "fa-triangle-exclamation", color: "terracotta", title: "מספרי חירום", text: "משטרה/מד״א/כיבוי — 112 · אמבולנס — 155" },
   { icon: "fa-coins", color: "gold", title: "מטבע", text: "קורונה צ׳כית (CZK) — לא ניתן לשלם באירו ברוב המקומות" },
-  { icon: "fa-wifi", color: "teal", title: "סים / אינטרנט", text: "מומלץ eSIM מקומי או חבילת נדידה לפני הנחיתה" }
+  { icon: "fa-wifi", color: "teal", title: "סים / אינטרנט", text: "מומלץ eSIM מקומי או חבילת נדידה לפני הנחיתה" },
+  { icon: "fa-train-subway", color: "navy", title: "תחבורה ציבורית ומפות", text: "הורידו את אפליקציית <strong>PID Lítačka</strong> לקניית כרטיסים. <br><a href='https://pid.cz/en/downloads/' target='_blank' class='text-teal underline font-semibold mt-1 inline-block'>מפת המטרו והחשמליות (PDF)</a>" }
 ];
 
 const packingItems = [
@@ -813,38 +752,24 @@ async function fetchWeather() {
 // Because the real trip is April 2027, we can't query that date on a
 // live forecast API — instead we pull the current upcoming 7-day
 // forecast and map it sequentially onto each day of the UI.
-// dateDisplay always keeps showing the real April 2027 dates — only
-// the weather numbers come from the live forecast, mapped strictly
-// index-for-index.
 function applyWeatherData(data, isFallback) {
   const current = data.current_weather;
   if (current) {
     const currentCode = current.weathercode !== undefined ? current.weathercode : current.weather_code;
     renderHeaderWeather(current.temperature, currentCode, isFallback);
   }
-
   const daily = data.daily;
-  if (!daily) {
-    renderDaySelector();
-    return;
-  }
-
+  if (!daily) { renderDaySelector(); return; }
   const codes = daily.weather_code || daily.weathercode || [];
   const maxes = daily.temperature_2m_max || [];
   const mins = daily.temperature_2m_min || [];
-
   tripData.forEach((day, i) => {
     if (codes[i] !== undefined && maxes[i] !== undefined && mins[i] !== undefined) {
-      day.weather = {
-        code: codes[i],
-        max: Math.round(maxes[i]),
-        min: Math.round(mins[i])
-      };
+      day.weather = { code: codes[i], max: Math.round(maxes[i]), min: Math.round(mins[i]) };
     } else {
       day.weather = { code: null, max: "--", min: "--" };
     }
   });
-
   renderDaySelector();
 }
 
@@ -891,7 +816,7 @@ function renderDaySelector() {
 /*  RENDER: Activity feed + nearby                                   */
 /* ---------------------------------------------------------------- */
 const CATEGORY_COLOR = {
-  "טיסה": "navy", "לינה": "terracotta", "סיור": "gold", "שייט": "teal", "פנאי": "terracotta"
+  "טיסה": "navy", "לינה": "terracotta", "סיור": "gold", "שייט": "teal", "פנאי": "terracotta", "נסיעה": "teal"
 };
 
 function renderDay(dayId) {
@@ -1110,10 +1035,17 @@ function openItemInfo(id) {
   // "Locked" only means the activity is pre-booked for a fixed time —
   // it still opens the standard info sheet, just shows a small badge.
   document.getElementById("infoModalContent").innerHTML = `
-    <div class="carousel flex overflow-x-auto snap-x snap-mandatory gap-3 mb-4">
-      ${item.images.map(src => `
-        <img src="${src}" alt="${item.title}" class="snap-start shrink-0 w-full h-52 object-cover rounded-2xl">
-      `).join("")}
+    <div class="relative mb-4">
+      <div class="carousel flex overflow-x-auto snap-x snap-mandatory gap-3" onscroll="updateCarouselDots(this)">
+        ${item.images.map(src => `
+          <img src="${src}" alt="${item.title}" class="snap-start shrink-0 w-4/5 aspect-[4/3] object-cover rounded-2xl">
+        `).join("")}
+      </div>
+      ${item.images.length > 1 ? `
+        <div class="carousel-dots flex justify-center gap-1.5 mt-2">
+          ${item.images.map((_, i) => `<span class="dot w-1.5 h-1.5 rounded-full transition ${i === 0 ? 'bg-navy' : 'bg-navydeep/20'}"></span>`).join("")}
+        </div>
+      ` : ''}
     </div>
     <div class="flex items-center gap-2 mb-2">
       <span class="w-8 h-8 rounded-full bg-${color}/10 text-${color} flex items-center justify-center">
@@ -1134,6 +1066,30 @@ function openItemInfo(id) {
   openModal("infoModal");
 }
 
+// Highlights the active carousel dot as the user swipes through images.
+// Accounts for RTL scroll mechanics: some browsers report scrollLeft as
+// zero-or-positive from the right edge, others as negative — Math.abs()
+// normalizes both so the slide index calculation works either way.
+function updateCarouselDots(carouselEl) {
+  const dotsWrap = carouselEl.parentElement.querySelector(".carousel-dots");
+  if (!dotsWrap) return;
+  const dots = dotsWrap.querySelectorAll(".dot");
+  if (!dots.length) return;
+
+  const firstSlide = carouselEl.firstElementChild;
+  if (!firstSlide) return;
+  const slideWidth = firstSlide.getBoundingClientRect().width + 12; // + gap-3 (0.75rem)
+
+  const scrolled = Math.abs(carouselEl.scrollLeft);
+  let activeIndex = Math.round(scrolled / slideWidth);
+  activeIndex = Math.max(0, Math.min(activeIndex, dots.length - 1));
+
+  dots.forEach((dot, i) => {
+    dot.classList.toggle("bg-navy", i === activeIndex);
+    dot.classList.toggle("bg-navydeep/20", i !== activeIndex);
+  });
+}
+
 function openModal(id) {
   const modal = document.getElementById(id);
   modal.classList.remove("hidden");
@@ -1146,6 +1102,47 @@ function closeModal(id) {
   const modal = document.getElementById(id);
   modal.querySelector(".sheet").classList.add("translate-y-full");
   setTimeout(() => modal.classList.add("hidden"), 300);
+}
+
+// iOS-style "swipe down to close": only starts dragging the sheet if the
+// user is already scrolled to the very top of it, so a normal scroll
+// gesture inside the sheet is never hijacked.
+function setupSwipeToClose(sheetSelector, modalId) {
+  const sheet = document.querySelector(sheetSelector);
+  if (!sheet) return;
+
+  let startY = 0;
+  let deltaY = 0;
+  let dragging = false;
+
+  sheet.addEventListener("touchstart", (e) => {
+    dragging = sheet.scrollTop === 0;
+    startY = e.touches[0].clientY;
+    deltaY = 0;
+    if (dragging) sheet.style.transition = "none";
+  }, { passive: true });
+
+  sheet.addEventListener("touchmove", (e) => {
+    if (!dragging) return;
+    deltaY = e.touches[0].clientY - startY;
+    if (deltaY > 0) {
+      sheet.style.transform = `translateY(${deltaY}px)`;
+    }
+  }, { passive: true });
+
+  const endDrag = () => {
+    if (!dragging) return;
+    dragging = false;
+    sheet.style.transition = "";
+    sheet.style.transform = "";
+    if (deltaY > 120) {
+      closeModal(modalId);
+    }
+    deltaY = 0;
+  };
+
+  sheet.addEventListener("touchend", endDrag);
+  sheet.addEventListener("touchcancel", endDrag);
 }
 
 function switchTab(tab) {
@@ -1173,6 +1170,7 @@ function init() {
   renderVault();
   renderToolkit();
   fetchWeather();
+  setupSwipeToClose("#infoModal .sheet", "infoModal");
 }
 
 document.addEventListener("DOMContentLoaded", init);
