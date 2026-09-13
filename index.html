@@ -99,10 +99,10 @@
     <div id="vaultFeed" class="flex flex-col gap-4"></div>
   </section>
 
-  <!-- ---------- TAB 3: מידע ורשימות (Toolkit) ---------- -->
-  <section id="tab-toolkit" class="tab-panel hidden">
-    <h2 class="font-display text-xl font-bold mb-1 mt-1">מידע ורשימות</h2>
-    <p class="text-sm text-navydeep/60 mb-4">כל מה שצריך לדעת, במקום אחד</p>
+  <!-- ---------- TAB 3: מידע (Info) ---------- -->
+  <section id="tab-info" class="tab-panel hidden">
+    <h2 class="font-display text-xl font-bold mb-1 mt-1">מידע</h2>
+    <p class="text-sm text-navydeep/60 mb-4">כל מה שצריך לדעת לפני שיוצאים</p>
 
     <div id="toolkitInfo" class="flex flex-col gap-3 mb-6"></div>
 
@@ -133,8 +133,14 @@
           </div>
         </div>
       </div>
-      <p class="text-[11px] text-navydeep/40 mt-3 text-center">שער משוער: <span id="rateNoteValue"></span> (לעדכן שער מדויק לפני הטיסה)</p>
+      <p class="text-[11px] text-navydeep/40 mt-3 text-center">שער עדכני: <span id="rateNoteValue"></span></p>
     </div>
+  </section>
+
+  <!-- ---------- TAB 4: רשימות (Lists) ---------- -->
+  <section id="tab-lists" class="tab-panel hidden">
+    <h2 class="font-display text-xl font-bold mb-1 mt-1">רשימות</h2>
+    <p class="text-sm text-navydeep/60 mb-4">מה צריך להכין ומה נשאר לסדר</p>
 
     <!-- Pre-flight admin checklist (distinct terracotta-bordered style) -->
     <div class="bg-white rounded-2xl shadow-card p-4 mb-6 border-2 border-terracotta/30">
@@ -158,7 +164,7 @@
 <!--  BLOCK: BOTTOM NAVIGATION                                        -->
 <!-- ================================================================ -->
 <nav id="bottomNav" class="fixed bottom-0 inset-x-0 z-50 bg-white shadow-nav">
-  <div class="max-w-md mx-auto grid grid-cols-3">
+  <div class="max-w-md mx-auto grid grid-cols-4">
     <button data-tab="timeline" class="nav-btn flex flex-col items-center gap-1 py-3 text-navy">
       <i class="fa-solid fa-map-location-dot text-lg"></i>
       <span class="text-[11px] font-semibold">הלו״ז שלנו</span>
@@ -167,9 +173,13 @@
       <i class="fa-solid fa-gem text-lg"></i>
       <span class="text-[11px] font-semibold">המלצות</span>
     </button>
-    <button data-tab="toolkit" class="nav-btn flex flex-col items-center gap-1 py-3 text-navydeep/40">
+    <button data-tab="info" class="nav-btn flex flex-col items-center gap-1 py-3 text-navydeep/40">
+      <i class="fa-solid fa-circle-info text-lg"></i>
+      <span class="text-[11px] font-semibold">מידע</span>
+    </button>
+    <button data-tab="lists" class="nav-btn flex flex-col items-center gap-1 py-3 text-navydeep/40">
       <i class="fa-solid fa-list-check text-lg"></i>
-      <span class="text-[11px] font-semibold">מידע ורשימות</span>
+      <span class="text-[11px] font-semibold">רשימות</span>
     </button>
   </div>
 </nav>
@@ -634,11 +644,10 @@ const packingItems = [
 ];
 
 const adminChecklistItems = [
-  "לשנות תאריכי API של מזג האוויר לאפריל",
-  "לעדכן שער חליפין מדויק במחשבון"
+  "לשנות תאריכי API של מזג האוויר לאפריל"
 ];
 
-const CZK_TO_ILS = 0.146; // Hardcoded for 2026/2027 estimation
+let CZK_TO_ILS = 0.146; // Fallback default — overwritten by fetchExchangeRate() on load
 
 /* ---------------------------------------------------------------- */
 /*  ITEM REGISTRY                                                    */
@@ -721,7 +730,7 @@ function getWeatherVisual(code) {
 }
 
 async function fetchWeather() {
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${PRAGUE_LAT}&longitude=${PRAGUE_LON}&daily=weather_code,temperature_2m_max,temperature_2m_min&current_weather=true&timezone=Europe%2FBerlin&forecast_days=9`;
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${PRAGUE_LAT}&longitude=${PRAGUE_LON}&daily=weathercode,temperature_2m_max,temperature_2m_min&current_weather=true&timezone=Europe%2FBerlin&forecast_days=9`;
   try {
     const res = await fetch(url);
     if (!res.ok) throw new Error("Weather request failed");
@@ -753,21 +762,20 @@ async function fetchWeather() {
 // live forecast API — instead we pull the current upcoming 7-day
 // forecast and map it sequentially onto each day of the UI.
 function applyWeatherData(data, isFallback) {
-  const current = data.current_weather;
-  if (current) {
-    const currentCode = current.weathercode !== undefined ? current.weathercode : current.weather_code;
-    renderHeaderWeather(current.temperature, currentCode, isFallback);
+  if (data && data.current_weather) {
+    const cCode = data.current_weather.weathercode ?? data.current_weather.weather_code ?? 0;
+    renderHeaderWeather(data.current_weather.temperature, cCode, isFallback);
   }
-  const daily = data.daily;
-  if (!daily) { renderDaySelector(); return; }
-  const codes = daily.weather_code || daily.weathercode || [];
-  const maxes = daily.temperature_2m_max || [];
-  const mins = daily.temperature_2m_min || [];
+  const daily = data?.daily;
   tripData.forEach((day, i) => {
-    if (codes[i] !== undefined && maxes[i] !== undefined && mins[i] !== undefined) {
-      day.weather = { code: codes[i], max: Math.round(maxes[i]), min: Math.round(mins[i]) };
+    if (daily && daily.weathercode && daily.temperature_2m_max && daily.temperature_2m_min) {
+       day.weather = {
+         code: daily.weathercode[i] ?? 0,
+         max: Math.round(daily.temperature_2m_max[i] ?? 0),
+         min: Math.round(daily.temperature_2m_min[i] ?? 0)
+       };
     } else {
-      day.weather = { code: null, max: "--", min: "--" };
+       day.weather = { code: null, max: "--", min: "--" };
     }
   });
   renderDaySelector();
@@ -935,7 +943,7 @@ function renderToolkit() {
     </div>
   `).join("");
 
-  document.getElementById("rateNoteValue").textContent = `1 CZK ≈ ${CZK_TO_ILS} ש״ח`;
+  document.getElementById("rateNoteValue").textContent = `1 CZK ≈ ${CZK_TO_ILS.toFixed(3)} ש״ח`;
 
   const savedChecks = JSON.parse(localStorage.getItem("prague_packing_checks") || "{}");
   const listEl = document.getElementById("packingList");
@@ -977,6 +985,25 @@ function convertCurrency(source) {
   } else {
     const ils = parseFloat(ilsInput.value);
     czkInput.value = isNaN(ils) ? "" : (ils / CZK_TO_ILS).toFixed(2);
+  }
+}
+
+// Pulls a live CZK → ILS exchange rate so the converter doesn't rely on a
+// stale hardcoded number. Falls back to the last rate saved in
+// localStorage if the request fails (offline, API down, etc.).
+async function fetchExchangeRate() {
+  try {
+    const res = await fetch('https://api.frankfurter.app/latest?from=CZK&to=ILS');
+    const data = await res.json();
+    CZK_TO_ILS = data.rates.ILS;
+    localStorage.setItem('prague_czk_rate', CZK_TO_ILS);
+    document.getElementById("rateNoteValue").textContent = `1 CZK ≈ ${CZK_TO_ILS.toFixed(3)} ש״ח (Live)`;
+  } catch(e) {
+    const saved = localStorage.getItem('prague_czk_rate');
+    if (saved) {
+      CZK_TO_ILS = parseFloat(saved);
+      document.getElementById("rateNoteValue").textContent = `1 CZK ≈ ${CZK_TO_ILS.toFixed(3)} ש״ח (Saved)`;
+    }
   }
 }
 
@@ -1038,7 +1065,7 @@ function openItemInfo(id) {
     <div class="relative mb-4">
       <div class="carousel flex overflow-x-auto snap-x snap-mandatory gap-3" onscroll="updateCarouselDots(this)">
         ${item.images.map(src => `
-          <img src="${src}" alt="${item.title}" class="snap-start shrink-0 w-4/5 aspect-[4/3] object-cover rounded-2xl">
+          <img src="${src}" alt="${item.title}" class="snap-start shrink-0 w-full h-56 object-cover rounded-2xl">
         `).join("")}
       </div>
       ${item.images.length > 1 ? `
@@ -1059,9 +1086,10 @@ function openItemInfo(id) {
     </div>
     <h2 class="font-display text-2xl font-bold mb-3">${item.title}</h2>
     ${item.description ? `<p class="text-sm text-navydeep/70 leading-relaxed mb-6">${item.description}</p>` : ''}
-    <button onclick="navigateTo('${item.mapQuery}')" class="w-full flex items-center justify-center gap-2 bg-navy text-cream rounded-2xl py-3 font-semibold">
-      <i class="fa-solid fa-diamond-turn-right"></i> נווט לשם
-    </button>
+    <div class="grid ${item.menuUrl ? 'grid-cols-2' : 'grid-cols-1'} gap-2">
+      ${item.menuUrl ? `<button onclick="window.open('${item.menuUrl}', '_blank')" class="flex items-center justify-center gap-2 bg-paper text-navydeep rounded-xl py-2.5 text-sm font-semibold active:scale-95 transition"><i class="fa-solid fa-utensils"></i> תפריט</button>` : ''}
+      <button onclick="navigateTo('${item.mapQuery}')" class="flex items-center justify-center gap-2 bg-navy text-cream rounded-xl py-2.5 text-sm font-semibold active:scale-95 transition"><i class="fa-solid fa-diamond-turn-right"></i> נווט לשם</button>
+    </div>
   `;
   openModal("infoModal");
 }
@@ -1092,15 +1120,21 @@ function updateCarouselDots(carouselEl) {
 
 function openModal(id) {
   const modal = document.getElementById(id);
+  const sheet = modal.querySelector(".sheet");
+  // Clear any inline transform left over from a prior swipe-to-close so
+  // the sheet always starts its open animation from off-screen.
+  sheet.style.transform = "";
   modal.classList.remove("hidden");
+  document.body.classList.add("overflow-hidden");
   requestAnimationFrame(() => {
-    modal.querySelector(".sheet").classList.remove("translate-y-full");
+    sheet.classList.remove("translate-y-full");
   });
 }
 
 function closeModal(id) {
   const modal = document.getElementById(id);
   modal.querySelector(".sheet").classList.add("translate-y-full");
+  document.body.classList.remove("overflow-hidden");
   setTimeout(() => modal.classList.add("hidden"), 300);
 }
 
@@ -1134,9 +1168,14 @@ function setupSwipeToClose(sheetSelector, modalId) {
     if (!dragging) return;
     dragging = false;
     sheet.style.transition = "";
-    sheet.style.transform = "";
     if (deltaY > 120) {
+      // Close without resetting transform — snapping the sheet back to 0
+      // right before closeModal adds the "translate-y-full" class causes
+      // a jarring flicker. Leave the drag transform in place; the next
+      // openModal call will reset it via requestAnimationFrame.
       closeModal(modalId);
+    } else {
+      sheet.style.transform = "";
     }
     deltaY = 0;
   };
@@ -1170,6 +1209,7 @@ function init() {
   renderVault();
   renderToolkit();
   fetchWeather();
+  fetchExchangeRate();
   setupSwipeToClose("#infoModal .sheet", "infoModal");
 }
 
