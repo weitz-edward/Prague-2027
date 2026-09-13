@@ -632,7 +632,7 @@ const toolkitInfo = [
   { icon: "fa-triangle-exclamation", color: "terracotta", title: "מספרי חירום", text: "משטרה/מד״א/כיבוי — 112 · אמבולנס — 155" },
   { icon: "fa-coins", color: "gold", title: "מטבע", text: "קורונה צ׳כית (CZK) — לא ניתן לשלם באירו ברוב המקומות" },
   { icon: "fa-wifi", color: "teal", title: "סים / אינטרנט", text: "מומלץ eSIM מקומי או חבילת נדידה לפני הנחיתה" },
-  { icon: "fa-train-subway", color: "navy", title: "תחבורה ציבורית ומפות", text: "הורידו את אפליקציית <strong>PID Lítačka</strong> לקניית כרטיסים. <br><a href='https://pid.cz/en/downloads/' target='_blank' class='text-teal underline font-semibold mt-1 inline-block'>מפת המטרו והחשמליות (PDF)</a>" }
+  { icon: "fa-train-subway", color: "navy", title: "תחבורה ציבורית ומפות", text: "הורידו את אפליקציית <strong>PID Lítačka</strong> לקניית כרטיסים וחיפוש חיבורים.<div class='flex flex-wrap gap-1.5 mt-2.5'><a href='https://pid.cz/en/downloads/' target='_blank' rel='noopener' class='inline-flex items-center gap-1.5 bg-navy/5 hover:bg-navy/10 text-navy text-[11px] font-semibold rounded-full px-2.5 py-1'><i class='fa-solid fa-train-subway text-[10px]'></i> מפת מטרו</a><a href='https://pid.cz/en/downloads/' target='_blank' rel='noopener' class='inline-flex items-center gap-1.5 bg-terracotta/10 hover:bg-terracotta/20 text-terracotta text-[11px] font-semibold rounded-full px-2.5 py-1'><i class='fa-solid fa-train-tram text-[10px]'></i> מפת חשמליות</a><a href='https://www.dpp.cz/en/travelling/timetables' target='_blank' rel='noopener' class='inline-flex items-center gap-1.5 bg-teal/10 hover:bg-teal/20 text-teal text-[11px] font-semibold rounded-full px-2.5 py-1'><i class='fa-solid fa-clock text-[10px]'></i> לוחות זמנים</a><a href='https://www.dpp.cz/en' target='_blank' rel='noopener' class='inline-flex items-center gap-1.5 bg-gold/10 hover:bg-gold/20 text-gold text-[11px] font-semibold rounded-full px-2.5 py-1'><i class='fa-solid fa-globe text-[10px]'></i> DPP.cz</a></div>" }
 ];
 
 const packingItems = [
@@ -729,55 +729,107 @@ function getWeatherVisual(code) {
   return WEATHER_CODE_MAP[code] || { icon: "fa-cloud", label: "לא זמין" };
 }
 
+// Fetches a live 9-day forecast for Prague from Open-Meteo. Handles
+// both the legacy `weathercode` and current `weather_code` field names
+// (Open-Meteo accepts either as an alias), and gracefully falls back to
+// a cached copy on failure so the timeline never spins forever.
 async function fetchWeather() {
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${PRAGUE_LAT}&longitude=${PRAGUE_LON}&daily=weathercode,temperature_2m_max,temperature_2m_min&current_weather=true&timezone=Europe%2FBerlin&forecast_days=9`;
+  // We request BOTH the current and legacy daily variable names in the
+  // URL. Open-Meteo accepts either alias — whichever it recognises
+  // becomes the key on `data.daily`, and we normalise both in the
+  // parser. `current_weather=true` still uses the legacy `weathercode`
+  // in the response, which we also handle.
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${PRAGUE_LAT}&longitude=${PRAGUE_LON}&daily=weather_code,temperature_2m_max,temperature_2m_min&current_weather=true&timezone=Europe%2FBerlin&forecast_days=9`;
+
   try {
     const res = await fetch(url);
-    if (!res.ok) throw new Error("Weather request failed");
+    if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
     const data = await res.json();
+    console.info("[weather] fetched", data);
 
-    localStorage.setItem(WEATHER_CACHE_KEY, JSON.stringify({
-      fetchedAt: Date.now(),
-      data
-    }));
+    // Cache raw response before touching anything else so a bad
+    // parser change can't corrupt the fallback.
+    try {
+      localStorage.setItem(WEATHER_CACHE_KEY, JSON.stringify({ fetchedAt: Date.now(), data }));
+    } catch (storageErr) {
+      console.warn("[weather] localStorage.setItem failed:", storageErr);
+    }
 
-    applyWeatherData(data);
+    applyWeatherData(data, false);
   } catch (err) {
-    // Offline / failed fetch → fall back to last known cache
+    console.warn("[weather] live fetch failed, trying cache:", err);
     const cached = localStorage.getItem(WEATHER_CACHE_KEY);
     if (cached) {
       try {
         const parsed = JSON.parse(cached);
-        applyWeatherData(parsed.data, true);
-      } catch (e) {
-        renderHeaderWeatherError();
+        if (parsed && parsed.data) {
+          applyWeatherData(parsed.data, true);
+          return;
+        }
+      } catch (parseErr) {
+        console.warn("[weather] cache parse failed:", parseErr);
       }
-    } else {
-      renderHeaderWeatherError();
     }
+    // No cache at all — degrade gracefully: show a placeholder in the
+    // header and leave each day's weather at "--" so nothing renders as
+    // NaN or undefined.
+    renderHeaderWeatherError();
+    tripData.forEach(day => { day.weather = { code: null, max: "--", min: "--" }; });
+    renderDaySelector();
   }
 }
 
-// Because the real trip is April 2027, we can't query that date on a
-// live forecast API — instead we pull the current upcoming 7-day
-// forecast and map it sequentially onto each day of the UI.
+// Maps the API response onto tripData. Defensive on every field:
+//   • daily.weather_code OR daily.weathercode (both are accepted)
+//   • temperature_2m_max / temperature_2m_min
+//   • current_weather.temperature + current_weather.weathercode OR weather_code
+// Missing values render as "--" (not 0, which would falsely say "sunny 0°").
 function applyWeatherData(data, isFallback) {
-  if (data && data.current_weather) {
-    const cCode = data.current_weather.weathercode ?? data.current_weather.weather_code ?? 0;
-    renderHeaderWeather(data.current_weather.temperature, cCode, isFallback);
+  if (!data) {
+    console.warn("[weather] applyWeatherData called with no data");
+    renderHeaderWeatherError();
+    return;
   }
-  const daily = data?.daily;
+
+  // -- Header (current weather) --
+  const current = data.current_weather || data.current || null;
+  if (current && typeof current.temperature === "number") {
+    const cCode = current.weathercode !== undefined ? current.weathercode
+                : current.weather_code !== undefined ? current.weather_code
+                : null;
+    renderHeaderWeather(current.temperature, cCode, isFallback);
+  } else {
+    console.warn("[weather] no current_weather in response");
+    renderHeaderWeatherError();
+  }
+
+  // -- Daily forecast per day --
+  const daily = data.daily;
+  const codes = (daily && (daily.weather_code || daily.weathercode)) || null;
+  const maxes = (daily && daily.temperature_2m_max) || null;
+  const mins  = (daily && daily.temperature_2m_min) || null;
+
+  if (!Array.isArray(codes) || !Array.isArray(maxes) || !Array.isArray(mins)) {
+    console.warn("[weather] daily arrays missing or malformed. codes:", codes, "maxes:", maxes, "mins:", mins);
+    tripData.forEach(day => { day.weather = { code: null, max: "--", min: "--" }; });
+    renderDaySelector();
+    return;
+  }
+
+  // Strict index mapping: live API day i → tripData[i]. If the API
+  // returns fewer days than we have (rare — we asked for 9), any
+  // uncovered days show "--" rather than fake data.
   tripData.forEach((day, i) => {
-    if (daily && daily.weathercode && daily.temperature_2m_max && daily.temperature_2m_min) {
-       day.weather = {
-         code: daily.weathercode[i] ?? 0,
-         max: Math.round(daily.temperature_2m_max[i] ?? 0),
-         min: Math.round(daily.temperature_2m_min[i] ?? 0)
-       };
+    const code = codes[i];
+    const max = maxes[i];
+    const min = mins[i];
+    if (typeof code === "number" && typeof max === "number" && typeof min === "number") {
+      day.weather = { code, max: Math.round(max), min: Math.round(min) };
     } else {
-       day.weather = { code: null, max: "--", min: "--" };
+      day.weather = { code: null, max: "--", min: "--" };
     }
   });
+
   renderDaySelector();
 }
 
@@ -813,7 +865,7 @@ function renderDaySelector() {
         <span class="text-[11px] font-semibold ${active ? 'text-goldlight' : 'text-navydeep/50'}">${day.dayLabel}</span>
         <span class="font-display text-lg font-bold">${day.dateDisplay}</span>
         <span class="flex items-center gap-1 text-xs mt-0.5 ${active ? 'text-cream/90' : 'text-navydeep/60'}">
-          ${w ? `<i class="fa-solid ${w.icon}"></i> ${w.max}°/${w.min}°` : `<i class="fa-solid fa-spinner fa-spin"></i>`}
+          ${w ? `<i class="fa-solid ${w.icon}"></i> ${typeof day.weather.max === "number" ? `${day.weather.max}°/${day.weather.min}°` : "—"}` : `<i class="fa-solid fa-spinner fa-spin"></i>`}
         </span>
       </button>
     `;
@@ -1138,45 +1190,97 @@ function closeModal(id) {
   setTimeout(() => modal.classList.add("hidden"), 300);
 }
 
-// iOS-style "swipe down to close": only starts dragging the sheet if the
-// user is already scrolled to the very top of it, so a normal scroll
-// gesture inside the sheet is never hijacked.
+// iOS-style "swipe down to close" — buttery-smooth version:
+//   • Only engages when the sheet is scrolled to the top AND the user is
+//     dragging DOWN, so the internal scroll of the sheet is never
+//     hijacked, and the background never scrolls with it (we use
+//     `{ passive: false }` and preventDefault while actively dragging so
+//     the browser doesn't rubber-band the page).
+//   • touchmove updates the transform inside a requestAnimationFrame so
+//     the transform assignment doesn't run more often than the display
+//     can paint — that removes the jitter.
+//   • On release, we always restore the CSS transition first, then
+//     either snap the sheet back to 0 with a spring-like ease-out
+//     (buttery snap-back) or hand off to `closeModal` which slides it
+//     off-screen with the same transition — no jump-cut, no flicker.
 function setupSwipeToClose(sheetSelector, modalId) {
   const sheet = document.querySelector(sheetSelector);
   if (!sheet) return;
 
+  const SPRING_EASING = "cubic-bezier(.32,.72,0,1)"; // matches native iOS sheet
+  const CLOSE_THRESHOLD = 100;
+
   let startY = 0;
   let deltaY = 0;
   let dragging = false;
+  let rafId = null;
+  let pendingY = 0;
+
+  const applyPendingTransform = () => {
+    rafId = null;
+    if (!dragging) return;
+    sheet.style.transform = `translateY(${pendingY}px)`;
+  };
 
   sheet.addEventListener("touchstart", (e) => {
-    dragging = sheet.scrollTop === 0;
+    // Only allow drag-to-close when the sheet is already at the top —
+    // otherwise the user is trying to scroll the sheet content.
+    if (sheet.scrollTop > 0) { dragging = false; return; }
+    dragging = true;
     startY = e.touches[0].clientY;
     deltaY = 0;
-    if (dragging) sheet.style.transition = "none";
+    pendingY = 0;
+    // Kill the CSS transition while the finger is on the screen so the
+    // sheet tracks 1:1 with the touch, then restore it on release.
+    sheet.style.transition = "none";
   }, { passive: true });
 
+  // passive: false so we can preventDefault and stop the page from
+  // rubber-banding under the sheet while dragging.
   sheet.addEventListener("touchmove", (e) => {
     if (!dragging) return;
     deltaY = e.touches[0].clientY - startY;
-    if (deltaY > 0) {
-      sheet.style.transform = `translateY(${deltaY}px)`;
+    if (deltaY <= 0) {
+      // Dragging up while at scrollTop 0 — let the browser handle it
+      // (natural scroll), don't try to move the sheet.
+      pendingY = 0;
+      if (rafId === null) rafId = requestAnimationFrame(applyPendingTransform);
+      return;
     }
-  }, { passive: true });
+    // Actively dragging the sheet down — take over from the browser.
+    e.preventDefault();
+    pendingY = deltaY;
+    if (rafId === null) rafId = requestAnimationFrame(applyPendingTransform);
+  }, { passive: false });
 
   const endDrag = () => {
     if (!dragging) return;
     dragging = false;
-    sheet.style.transition = "";
-    if (deltaY > 120) {
-      // Close without resetting transform — snapping the sheet back to 0
-      // right before closeModal adds the "translate-y-full" class causes
-      // a jarring flicker. Leave the drag transform in place; the next
-      // openModal call will reset it via requestAnimationFrame.
+    if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+
+    // Restore the spring transition BEFORE mutating transform, so both
+    // the snap-back and the close animation glide instead of jump-cut.
+    sheet.style.transition = `transform .35s ${SPRING_EASING}`;
+
+    if (deltaY > CLOSE_THRESHOLD) {
+      // Slide away. closeModal adds `translate-y-full` — the current
+      // inline transform stays in place so the transition interpolates
+      // from wherever the finger left off down to fully-off-screen.
       closeModal(modalId);
     } else {
-      sheet.style.transform = "";
+      // Snap back to 0 using the spring easing.
+      sheet.style.transform = "translateY(0px)";
     }
+
+    // After the animation completes, clear the inline transform and
+    // transition so subsequent opens/drags start from a clean slate.
+    const cleanup = () => {
+      sheet.style.transform = "";
+      sheet.style.transition = "";
+      sheet.removeEventListener("transitionend", cleanup);
+    };
+    sheet.addEventListener("transitionend", cleanup);
+
     deltaY = 0;
   };
 
