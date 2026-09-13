@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<title>פראג 2027</title>
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          display: ['"Frank Ruhl Libre"', 'serif'],
+          body: ['Heebo', 'sans-serif']
+        },
+        colors: {
+          navy:       '#1E2A45',
+          navydeep:   '#141D33',
+          gold:       '#C9A227',
+          goldlight:  '#E8C766',
+          terracotta: '#BF5B3E',
+          teal:       '#3E7C7C',
+          cream:      '#FAF6EF',
+          paper:      '#F2ECE0'
+        },
+        boxShadow: {
+          'card': '0 10px 30px -12px rgba(30,42,69,0.25)',
+          'nav': '0 -8px 24px -8px rgba(30,42,69,0.18)'
+        }
+      }
+    }
+  }
+</script>
+
+<!-- FontAwesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<!-- Fonts: Frank Ruhl Libre (display, Hebrew serif with old-world character) + Heebo (body) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;600;700;900&family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  html, body { font-family: 'Heebo', sans-serif; }
+  body { background: linear-gradient(180deg, #EEF1F3 0%, #F3EFE6 45%, #FAF6EF 100%); background-attachment: fixed; }
+  .carousel::-webkit-scrollbar { display:none; }
+  .font-display { font-family: 'Frank Ruhl Libre', serif; }
+  ::-webkit-scrollbar { display:none; }
+  * { scrollbar-width: none; -ms-overflow-style:none; }
+  .snap-x-mandatory { scroll-snap-type: x mandatory; }
+  .snap-start { scroll-snap-align: start; }
+  #bottomNav { padding-bottom: env(safe-area-inset-bottom); }
+  #topHeader { padding-top: env(safe-area-inset-top); }
+  .tab-panel { animation: fadeIn .25s ease; }
+  @keyframes fadeIn { from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+  #infoModal .sheet { transition: transform .3s cubic-bezier(.32,.72,0,1); }
+  .checklist-item.checked .check-label { text-decoration: line-through; opacity:.45; }
+</style>
+</head>
+
+<body class="text-navydeep min-h-screen pb-32">
+
+<!-- ================================================================ -->
+<!--  BLOCK: TOP HEADER                                                -->
+<!-- ================================================================ -->
+<header id="topHeader" class="sticky top-0 z-40 bg-navy text-cream shadow-lg">
+  <div class="max-w-md mx-auto px-5 pt-4 pb-4 flex items-center justify-between">
+    <div>
+      <p class="text-[11px] tracking-wide text-goldlight/80 font-medium">הטיול המשפחתי</p>
+      <h1 class="font-display text-2xl font-bold leading-tight">פראג <span class="text-goldlight">2027</span></h1>
+    </div>
+    <div id="headerWeather" class="flex items-center gap-2 bg-white/10 rounded-2xl px-3 py-2 min-w-[84px] justify-center">
+      <i class="fa-solid fa-spinner fa-spin text-goldlight"></i>
+    </div>
+  </div>
+</header>
+
+<!-- ================================================================ -->
+<!--  BLOCK: MAIN TAB PANELS                                          -->
+<!-- ================================================================ -->
+<main class="max-w-md mx-auto px-4 pt-4">
+
+  <!-- ---------- TAB 1: הלו"ז שלנו (Timeline) ---------- -->
+  <section id="tab-timeline" class="tab-panel">
+
+    <!-- Day selector -->
+    <div id="daySelector" class="flex gap-3 overflow-x-auto snap-x-mandatory pb-2 -mx-1 px-1"></div>
+
+    <!-- Activity feed (each card renders its own "nearby" sub-section if present) -->
+    <div id="activityFeed" class="mt-4 flex flex-col gap-4"></div>
+
+  </section>
+
+  <!-- ---------- TAB 2: המלצות (Vault) ---------- -->
+  <section id="tab-vault" class="tab-panel hidden">
+    <h2 class="font-display text-xl font-bold mb-1 mt-1">המלצות שלנו</h2>
+    <p class="text-sm text-navydeep/60 mb-4">מקומות שכדאי לבדוק אם יש זמן פנוי</p>
+    <div id="vaultFeed" class="flex flex-col gap-4"></div>
+  </section>
+
+  <!-- ---------- TAB 3: מידע ורשימות (Toolkit) ---------- -->
+  <section id="tab-toolkit" class="tab-panel hidden">
+    <h2 class="font-display text-xl font-bold mb-1 mt-1">מידע ורשימות</h2>
+    <p class="text-sm text-navydeep/60 mb-4">כל מה שצריך לדעת, במקום אחד</p>
+
+    <div id="toolkitInfo" class="flex flex-col gap-3 mb-6"></div>
+
+    <!-- Currency Converter -->
+    <div class="bg-white rounded-2xl shadow-card p-4 mb-6">
+      <h3 class="font-display text-base font-bold mb-1 flex items-center gap-2">
+        <i class="fa-solid fa-money-bill-transfer text-gold"></i> מחשבון המרה
+      </h3>
+      <p class="text-xs text-navydeep/50 mb-4">קורונה צ׳כית (CZK) ↔ שקל (ש״ח)</p>
+      <div class="flex items-end gap-2">
+        <div class="flex-1">
+          <label for="czkInput" class="text-[11px] font-semibold text-navydeep/50 mb-1 block">CZK</label>
+          <div class="relative">
+            <input id="czkInput" type="number" inputmode="decimal" placeholder="0" oninput="convertCurrency('czk')"
+              class="w-full bg-paper rounded-xl pr-3 pl-12 py-3 text-lg font-semibold text-navydeep focus:outline-none focus:ring-2 focus:ring-gold/50 transition">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[11px] text-navydeep/40 font-semibold">CZK</span>
+          </div>
+        </div>
+        <div class="w-9 h-9 rounded-full bg-navy text-cream flex items-center justify-center shrink-0 mb-1.5">
+          <i class="fa-solid fa-arrow-right-arrow-left text-xs"></i>
+        </div>
+        <div class="flex-1">
+          <label for="ilsInput" class="text-[11px] font-semibold text-navydeep/50 mb-1 block">ש״ח</label>
+          <div class="relative">
+            <input id="ilsInput" type="number" inputmode="decimal" placeholder="0" oninput="convertCurrency('ils')"
+              class="w-full bg-paper rounded-xl pr-3 pl-12 py-3 text-lg font-semibold text-navydeep focus:outline-none focus:ring-2 focus:ring-gold/50 transition">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-[11px] text-navydeep/40 font-semibold">ש״ח</span>
+          </div>
+        </div>
+      </div>
+      <p class="text-[11px] text-navydeep/40 mt-3 text-center">שער משוער: <span id="rateNoteValue"></span> (לעדכן שער מדויק לפני הטיסה)</p>
+    </div>
+
+    <!-- Pre-flight admin checklist (distinct terracotta-bordered style) -->
+    <div class="bg-white rounded-2xl shadow-card p-4 mb-6 border-2 border-terracotta/30">
+      <h3 class="font-display text-base font-bold mb-3 flex items-center gap-2 text-terracotta">
+        <span>🔧</span> עדכונים בקוד לפני הטיסה
+      </h3>
+      <div id="adminChecklist" class="flex flex-col gap-2"></div>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-card p-4">
+      <h3 class="font-display text-base font-bold mb-3 flex items-center gap-2">
+        <i class="fa-solid fa-suitcase-rolling text-terracotta"></i> רשימת אריזה
+      </h3>
+      <div id="packingList" class="flex flex-col gap-2"></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================================================================ -->
+<!--  BLOCK: BOTTOM NAVIGATION                                        -->
+<!-- ================================================================ -->
+<nav id="bottomNav" class="fixed bottom-0 inset-x-0 z-50 bg-white shadow-nav">
+  <div class="max-w-md mx-auto grid grid-cols-3">
+    <button data-tab="timeline" class="nav-btn flex flex-col items-center gap-1 py-3 text-navy">
+      <i class="fa-solid fa-map-location-dot text-lg"></i>
+      <span class="text-[11px] font-semibold">הלו״ז שלנו</span>
+    </button>
+    <button data-tab="vault" class="nav-btn flex flex-col items-center gap-1 py-3 text-navydeep/40">
+      <i class="fa-solid fa-gem text-lg"></i>
+      <span class="text-[11px] font-semibold">המלצות</span>
+    </button>
+    <button data-tab="toolkit" class="nav-btn flex flex-col items-center gap-1 py-3 text-navydeep/40">
+      <i class="fa-solid fa-list-check text-lg"></i>
+      <span class="text-[11px] font-semibold">מידע ורשימות</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ================================================================ -->
+<!--  BLOCK: MODALS                                                   -->
+<!-- ================================================================ -->
+
+<!-- Info Modal -->
+<div id="infoModal" class="fixed inset-0 z-[60] hidden">
+  <div class="absolute inset-0 bg-navydeep/60" onclick="closeModal('infoModal')"></div>
+  <div class="sheet absolute bottom-0 inset-x-0 bg-cream rounded-t-3xl max-h-[85vh] overflow-y-auto translate-y-full">
+    <div class="sticky top-0 bg-cream/95 backdrop-blur flex justify-center pt-3 pb-1">
+      <div class="w-10 h-1.5 rounded-full bg-navydeep/15"></div>
+    </div>
+    <div id="infoModalContent" class="px-5 pb-8"></div>
+  </div>
+</div>
+
+
+<!-- ================================================================ -->
+<!--  SCRIPT: DATA + LOGIC                                            -->
+<!-- ================================================================ -->
+<script>
+
+/* ---------------------------------------------------------------- */
+/*  DATA-DRIVEN TRIP MODEL                                          */
+/* ---------------------------------------------------------------- */
+const tripData = [
+  {
+    id: "day1",
+    dayLabel: "יום ה׳",
+    dateDisplay: "22.4",
+    weather: null, // filled from live API, mapped to forecast index 0
+    activities: [
+      {
+        id: "d1-a1",
+        time: "22:00",
+        title: "נחיתה בנמל התעופה ואצלב האוול",
+        category: "טיסה",
+        icon: "fa-plane-arrival",
+        images: [
+          "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=900&q=80&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=900&q=80&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1583862580819-e42ac0d0f4dd?w=900&q=80&auto=format&fit=crop"
+        ],
+        locked: false,
+        mapQuery: "Václav Havel Airport Prague",
+        description: "נחיתה בנמל התעופה הבינלאומי של פראג (PRG). אחרי איסוף המזוודות יוצאים לכיוון העיר — נסיעה של כ-25 דקות ברכב עד למלון."
+      },
+      {
+        id: "d1-a2",
+        time: "23:00",
+        title: "צ׳ק-אין ב-MOOo Downtown",
+        category: "לינה",
+        icon: "fa-bed",
+        images: [
+          "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=900&q=80&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=900&q=80&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=900&q=80&auto=format&fit=crop"
+        ],
+        locked: true,
+        mapQuery: "MOOo Downtown Prague",
+        description: "הגעה למלון והתארגנות ללילה. פרטי ההזמנה וקוד הכניסה נעולים כרגע ויופיעו כאן קרוב יותר לטיול.",
+        nearby: [
+          {
+            title: "בית הריקוד (Tančící dům)",
+            distance: "6 דקות הליכה מהמלון",
+            icon: "fa-building",
+            images: [
+              "https://images.unsplash.com/photo-1585939652626-4b1c9f2d76a8?w=900&q=80&auto=format&fit=crop",
+              "https://images.unsplash.com/photo-1541849546-216549ae216d?w=900&q=80&auto=format&fit=crop"
+            ],
+            mapQuery: "Dancing House Prague",
+            description: "בניין מודרניסטי ייחודי מאת פרנק גהרי, המכונה גם ׳פרד וג׳ינג׳ר׳. אפשר לצלם מבחוץ או לעלות למסעדה בקומה העליונה לנוף פתוח על העיר."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: "day2",
+    dayLabel: "יום ו׳",
+    dateDisplay: "23.4",
+    weather: null, // filled from live API, mapped to forecast index 1
+    activities: [
+      {
+        id: "d2-a1",
+        time: "09:30",
+        title: "כיכר העיר העתיקה ושעון האסטרונומי",
+        category: "סיור",
+        icon: "fa-clock",
+        images: [
+          "https://images.unsplash.com/photo-1519677100203-a0e668c92439?w=900&q=80&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1541343672885-9be56236302a?w=900&q=80&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1522093007474-d86e9bf7ba6f?w=900&q=80&auto=format&fit=crop"
+        ],
+        locked: false,
+        mapQuery: "Astronomical Clock Prague",
+        description: "טיול רגלי רגוע בכיכר העיר העתיקה, עם עצירה לצפייה במופע השעון האסטרונומי המפורסם בשעה עגולה.",
+        nearby: [
+          {
+            title: "שוק האוולסקי",
+            distance: "מרחק הליכה קצר",
+            icon: "fa-store",
+            images: [
+              "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=900&q=80&auto=format&fit=crop",
+              "https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=900&q=80&auto=format&fit=crop"
+            ],
+            mapQuery: "Havelske Market Prague",
+            description: "שוק רחוב תוסס עם דוכני פירות, ירקות, מזכרות ואוכל רחוב — נהדר לטעימה מהירה בין סיורים בעיר העתיקה."
+          },
+          {
+            title: "מגדל אבק השריפה",
+            distance: "מרחק הליכה קצר",
+            icon: "fa-tower-observation",
+            images: [
+              "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=900&q=80&auto=format&fit=crop",
+              "https://images.unsplash.com/photo-1541849546-216549ae216d?w=900&q=80&auto=format&fit=crop"
+            ],
+            mapQuery: "Powder Tower Prague",
+            description: "אחד משערי הכניסה ההיסטוריים לעיר העתיקה — מגדל גותי מרשים מהמאה ה-15, עם אפשרות לעלות ולצפות בנוף על הגגות."
+          }
+        ]
+      },
+      {
+        id: "d2-a2",
+        time: "13:30",
+        title: "שייט משפחתי על נהר הולטבה",
+        category: "שייט",
+        icon: "fa-ship",
+        images: [
+          "https://images.unsplash.com/photo-1544266503-7ad532c62d24?w=900&q=80&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1541849546-216549ae216d?w=900&q=80&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1560343090-f0409e92791a?w=900&q=80&auto=format&fit=crop"
+        ],
+        locked: true,
+        mapQuery: "Vltava River Cruise Prague",
+        description: "שייט משפחתי רגוע של כ-45 דקות על נהר הולטבה, עם נוף לגשר קארל ולטירת פראג. פרטי ההזמנה נעולים כרגע."
+      },
+      {
+        id: "d2-a3",
+        time: "16:30",
+        title: "גן פרנציסקני — מתחם משחקים סגור",
+        category: "פנאי",
+        icon: "fa-child-reaching",
+        images: [
+          "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=900&q=80&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1560785496-3c9d27877182?w=900&q=80&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1596997000103-e597b3ca50df?w=900&q=80&auto=format&fit=crop"
+        ],
+        locked: false,
+        mapQuery: "Franciscan Garden Prague",
+        description: "זמן חופשי לילדים במתחם משחקים סגור ושליו בלב העיר, מקום מצוין לנוח קצת אחרי יום הליכות."
+      }
+    ]
+  }
+];
+
+const vaultData = [
+  {
+    title: "Lokál Dlouhááá",
+    subtitle: "מטבח צ׳כי מסורתי, אווירה מקומית אמיתית",
+    icon: "fa-utensils",
+    images: [
+      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=900&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1544148103-0773bf10d330?w=900&q=80&auto=format&fit=crop"
+    ],
+    mapQuery: "Lokal Dlouhaaa Prague",
+    description: "מסעדה צ׳כית קלאסית עם תפריט של מנות בית ובירה מהחבית ישירה מהמפעל — מקום אהוב על המקומיים, לא רק על תיירים."
+  },
+  {
+    title: "Café Savoy",
+    subtitle: "בית קפה וינאי קלאסי, מעולה לארוחת בוקר",
+    icon: "fa-mug-saucer",
+    images: [
+      "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=900&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=900&q=80&auto=format&fit=crop"
+    ],
+    mapQuery: "Cafe Savoy Prague",
+    description: "בית קפה וינאי מרשים עם תקרת קיר מצוירת, מעולה לארוחת בוקר משפחתית רגועה לפני יום מלא בסיורים."
+  },
+  {
+    title: "Manifesto Market",
+    subtitle: "שוק אוכל פתוח עם מגוון דוכנים לכל המשפחה",
+    icon: "fa-store",
+    images: [
+      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=900&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=900&q=80&auto=format&fit=crop"
+    ],
+    mapQuery: "Manifesto Market Prague",
+    description: "שוק אוכל פתוח עם מגוון דוכנים בינלאומיים וישיבה משותפת — אופציה נוחה כשלכל אחד מתחשק משהו אחר."
+  }
+];
+
+const toolkitInfo = [
+  { icon: "fa-triangle-exclamation", color: "terracotta", title: "מספרי חירום", text: "משטרה/מד״א/כיבוי — 112 · אמבולנס — 155" },
+  { icon: "fa-coins", color: "gold", title: "מטבע", text: "קורונה צ׳כית (CZK) — לא ניתן לשלם באירו ברוב המקומות" },
+  { icon: "fa-wifi", color: "teal", title: "סים / אינטרנט", text: "מומלץ eSIM מקומי או חבילת נדידה לפני הנחיתה" }
+];
+
+const packingItems = [
+  "דרכונים + הדפסי הזמנות",
+  "מטען נייד וכבלים",
+  "מעיל קליל לערבים קרירים",
+  "נעליים נוחות להליכה",
+  "תרופות אישיות"
+];
+
+const adminChecklistItems = [
+  "לשנות תאריכי API של מזג האוויר לאפריל",
+  "לעדכן שער חליפין מדויק במחשבון"
+];
+
+const CZK_TO_ILS = 0.146; // Hardcoded for 2026/2027 estimation
+
+/* ---------------------------------------------------------------- */
+/*  ITEM REGISTRY                                                    */
+/*  Flattens activities, their nested "nearby" items, and vault      */
+/*  items into one lookup table so a single generalized modal        */
+/*  function can open info for any of them.                          */
+/* ---------------------------------------------------------------- */
+const ITEM_REGISTRY = {};
+
+function buildRegistry() {
+  tripData.forEach(day => {
+    day.activities.forEach(a => {
+      ITEM_REGISTRY[a.id] = { ...a, kind: "activity" };
+      if (a.nearby) {
+        a.nearby.forEach((n, i) => {
+          const nid = `${a.id}-nearby-${i}`;
+          ITEM_REGISTRY[nid] = { ...n, id: nid, kind: "nearby" };
+        });
+      }
+    });
+  });
+  vaultData.forEach((v, i) => {
+    const vid = `vault-${i}`;
+    ITEM_REGISTRY[vid] = { ...v, id: vid, kind: "vault" };
+  });
+}
+
+function itemColor(item) {
+  if (item.kind === "activity") return CATEGORY_COLOR[item.category] || "navy";
+  if (item.kind === "nearby") return "gold";
+  return "teal"; // vault
+}
+
+function itemIcon(item) {
+  return item.icon || (item.kind === "nearby" ? "fa-location-dot" : item.kind === "vault" ? "fa-gem" : "fa-circle-info");
+}
+
+function itemMeta(item) {
+  if (item.kind === "activity") return `${item.category} · ${item.time}`;
+  if (item.kind === "nearby") return item.distance || "📌 דברים קרובים";
+  return item.subtitle || "המלצה";
+}
+
+/* ---------------------------------------------------------------- */
+/*  STATE                                                            */
+/* ---------------------------------------------------------------- */
+let currentDayId = tripData[0].id;
+
+/* ---------------------------------------------------------------- */
+/*  WEATHER: live fetch + offline fallback                           */
+/* ---------------------------------------------------------------- */
+const WEATHER_CACHE_KEY = "prague_weather_cache_v1";
+const PRAGUE_LAT = 50.0755;
+const PRAGUE_LON = 14.4378;
+
+const WEATHER_CODE_MAP = {
+  0:  { icon: "fa-sun",                 label: "בהיר" },
+  1:  { icon: "fa-cloud-sun",           label: "בהיר בעיקר" },
+  2:  { icon: "fa-cloud-sun",           label: "מעונן חלקית" },
+  3:  { icon: "fa-cloud",               label: "מעונן" },
+  45: { icon: "fa-smog",                label: "ערפילי" },
+  48: { icon: "fa-smog",                label: "ערפילי" },
+  51: { icon: "fa-cloud-rain",          label: "טפטוף קל" },
+  53: { icon: "fa-cloud-rain",          label: "טפטוף" },
+  55: { icon: "fa-cloud-rain",          label: "טפטוף חזק" },
+  61: { icon: "fa-cloud-showers-heavy", label: "גשם קל" },
+  63: { icon: "fa-cloud-showers-heavy", label: "גשם" },
+  65: { icon: "fa-cloud-showers-heavy", label: "גשם חזק" },
+  71: { icon: "fa-snowflake",           label: "שלג קל" },
+  73: { icon: "fa-snowflake",           label: "שלג" },
+  75: { icon: "fa-snowflake",           label: "שלג כבד" },
+  80: { icon: "fa-cloud-showers-heavy", label: "ממטרים" },
+  81: { icon: "fa-cloud-showers-heavy", label: "ממטרים" },
+  82: { icon: "fa-cloud-showers-heavy", label: "ממטרים חזקים" },
+  95: { icon: "fa-bolt",                label: "סופת רעמים" }
+};
+
+function getWeatherVisual(code) {
+  return WEATHER_CODE_MAP[code] || { icon: "fa-cloud", label: "לא זמין" };
+}
+
+async function fetchWeather() {
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${PRAGUE_LAT}&longitude=${PRAGUE_LON}&daily=weather_code,temperature_2m_max,temperature_2m_min&current_weather=true&timezone=Europe%2FBerlin`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("Weather request failed");
+    const data = await res.json();
+
+    localStorage.setItem(WEATHER_CACHE_KEY, JSON.stringify({
+      fetchedAt: Date.now(),
+      data
+    }));
+
+    applyWeatherData(data);
+  } catch (err) {
+    // Offline / failed fetch → fall back to last known cache
+    const cached = localStorage.getItem(WEATHER_CACHE_KEY);
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        applyWeatherData(parsed.data, true);
+      } catch (e) {
+        renderHeaderWeatherError();
+      }
+    } else {
+      renderHeaderWeatherError();
+    }
+  }
+}
+
+// Because the real trip is April 2027, we can't query that date on a
+// live forecast API — instead we pull the current upcoming 7-day
+// forecast and map it sequentially onto Day 1 / Day 2 of the UI.
+// Open-Meteo has renamed "weathercode" to "weather_code" across API
+// versions, so we defensively read either key. dateDisplay always
+// keeps showing the real April 2027 dates — only the weather numbers
+// come from the live forecast, mapped strictly index-for-index.
+function applyWeatherData(data, isFallback) {
+  const current = data.current_weather;
+  if (current) {
+    const currentCode = current.weathercode !== undefined ? current.weathercode : current.weather_code;
+    renderHeaderWeather(current.temperature, currentCode, isFallback);
+  }
+
+  const daily = data.daily;
+  const codes = daily ? (daily.weather_code || daily.weathercode) : null;
+  const maxes = daily ? daily.temperature_2m_max : null;
+  const mins = daily ? daily.temperature_2m_min : null;
+
+  const hasDay = (i) => Array.isArray(codes) && codes[i] !== undefined
+    && Array.isArray(maxes) && maxes[i] !== undefined
+    && Array.isArray(mins) && mins[i] !== undefined;
+
+  const dayWeather = (i) => hasDay(i)
+    ? {
+        code: codes[i],
+        max: Math.round(maxes[i]),
+        min: Math.round(mins[i])
+      }
+    : { code: null, max: "--", min: "--" };
+
+  // Strict index mapping: live API day 0 → tripData[0], day 1 → tripData[1], etc.
+  tripData.forEach((day, i) => {
+    day.weather = dayWeather(i);
+  });
+
+  renderDaySelector();
+}
+
+function renderHeaderWeather(temp, code, isFallback) {
+  const v = getWeatherVisual(code);
+  const header = document.getElementById("headerWeather");
+  header.innerHTML = `
+    <i class="fa-solid ${v.icon} text-goldlight"></i>
+    <span class="font-semibold text-sm">${Math.round(temp)}°</span>
+    ${isFallback ? '<i class="fa-solid fa-cloud-arrow-down text-[10px] text-cream/50" title="נתונים שמורים"></i>' : ''}
+  `;
+}
+
+function renderHeaderWeatherError() {
+  document.getElementById("headerWeather").innerHTML = `
+    <i class="fa-solid fa-cloud-question text-goldlight"></i>
+    <span class="text-xs">—</span>
+  `;
+}
+
+/* ---------------------------------------------------------------- */
+/*  RENDER: Day selector                                             */
+/* ---------------------------------------------------------------- */
+function renderDaySelector() {
+  const el = document.getElementById("daySelector");
+  el.innerHTML = tripData.map(day => {
+    const active = day.id === currentDayId;
+    const w = day.weather ? getWeatherVisual(day.weather.code) : null;
+    return `
+      <button onclick="selectDay('${day.id}')"
+        class="snap-start shrink-0 flex flex-col items-center justify-center gap-1 rounded-2xl px-5 py-3 min-w-[110px] transition
+        ${active ? 'bg-navy text-cream shadow-card' : 'bg-white text-navydeep/70 shadow-card'}">
+        <span class="text-[11px] font-semibold ${active ? 'text-goldlight' : 'text-navydeep/50'}">${day.dayLabel}</span>
+        <span class="font-display text-lg font-bold">${day.dateDisplay}</span>
+        <span class="flex items-center gap-1 text-xs mt-0.5 ${active ? 'text-cream/90' : 'text-navydeep/60'}">
+          ${w ? `<i class="fa-solid ${w.icon}"></i> ${w.max}°/${w.min}°` : `<i class="fa-solid fa-spinner fa-spin"></i>`}
+        </span>
+      </button>
+    `;
+  }).join("");
+}
+
+/* ---------------------------------------------------------------- */
+/*  RENDER: Activity feed + nearby                                   */
+/* ---------------------------------------------------------------- */
+const CATEGORY_COLOR = {
+  "טיסה": "navy", "לינה": "terracotta", "סיור": "gold", "שייט": "teal", "פנאי": "terracotta"
+};
+
+function renderDay(dayId) {
+  const day = tripData.find(d => d.id === dayId);
+  if (!day) return;
+
+  const feed = document.getElementById("activityFeed");
+  feed.innerHTML = day.activities.map(a => activityCardHTML(a)).join("");
+}
+
+function activityCardHTML(a) {
+  const color = CATEGORY_COLOR[a.category] || "navy";
+  return `
+    <article class="bg-white rounded-2xl shadow-card overflow-hidden">
+      <div class="relative">
+        <button onclick="openItemInfo('${a.id}')" class="block w-full">
+          <img src="${a.images[0]}" alt="${a.title}" class="w-full h-40 object-cover rounded-t-2xl">
+        </button>
+        <span class="absolute top-3 right-3 bg-white/90 backdrop-blur text-navydeep text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1 pointer-events-none">
+          <i class="fa-solid fa-clock text-[10px]"></i> ${a.time}
+        </span>
+        ${a.locked ? `
+          <span class="absolute top-3 left-3 bg-terracotta text-white text-xs font-semibold w-7 h-7 rounded-full flex items-center justify-center shadow pointer-events-none">
+            <i class="fa-solid fa-lock text-[11px]"></i>
+          </span>` : ''}
+      </div>
+      <div class="p-4">
+        <div class="flex items-center gap-2 mb-1.5">
+          <span class="w-7 h-7 rounded-full bg-${color}/10 text-${color} flex items-center justify-center">
+            <i class="fa-solid ${a.icon} text-[13px]"></i>
+          </span>
+          <span class="text-[11px] font-semibold text-navydeep/50">${a.category}</span>
+        </div>
+        <h3 class="font-display text-lg font-bold leading-snug mb-3">${a.title}</h3>
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="navigateTo('${a.mapQuery}')"
+            class="flex items-center justify-center gap-2 bg-navy text-cream rounded-xl py-2.5 text-sm font-semibold active:scale-95 transition">
+            <i class="fa-solid fa-diamond-turn-right"></i> נווט
+          </button>
+          <button onclick="openItemInfo('${a.id}')"
+            class="flex items-center justify-center gap-2 bg-paper text-navydeep rounded-xl py-2.5 text-sm font-semibold active:scale-95 transition">
+            <i class="fa-solid fa-circle-info"></i> מידע
+          </button>
+        </div>
+
+        ${a.nearby && a.nearby.length ? nearbySubsectionHTML(a) : ''}
+      </div>
+    </article>
+  `;
+}
+
+function nearbySubsectionHTML(a) {
+  return `
+    <div class="mt-4 pt-4 border-t border-navydeep/10">
+      <p class="text-xs font-semibold text-navydeep/50 mb-2 flex items-center gap-1">
+        <span>📌</span> דברים קרובים
+      </p>
+      <div class="flex gap-2 overflow-x-auto snap-x-mandatory -mx-1 px-1 pb-1">
+        ${a.nearby.map((n, i) => {
+          const nid = `${a.id}-nearby-${i}`;
+          return `
+            <div onclick="openItemInfo('${nid}')"
+              class="snap-start shrink-0 w-32 bg-paper rounded-xl overflow-hidden cursor-pointer active:scale-95 transition">
+              <img src="${n.images[0]}" alt="${n.title}" class="w-full h-20 object-cover">
+              <div class="p-2">
+                <p class="text-xs font-semibold leading-snug">${n.title}</p>
+                <p class="text-[10px] text-navydeep/50 mt-0.5 flex items-center gap-1">
+                  <i class="fa-solid fa-person-walking"></i> ${n.distance}
+                </p>
+                <button onclick="event.stopPropagation(); navigateTo('${n.mapQuery}')"
+                  class="mt-1.5 pt-1.5 border-t border-navydeep/10 w-full flex items-center gap-1 text-[10px] font-semibold text-teal active:opacity-60 transition">
+                  <i class="fa-solid fa-diamond-turn-right"></i> נווט
+                </button>
+              </div>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    </div>
+  `;
+}
+
+/* ---------------------------------------------------------------- */
+/*  RENDER: Vault tab                                                 */
+/* ---------------------------------------------------------------- */
+function renderVault() {
+  const el = document.getElementById("vaultFeed");
+  el.innerHTML = vaultData.map((v, i) => `
+    <button onclick="openItemInfo('vault-${i}')" class="text-right bg-white rounded-2xl shadow-card overflow-hidden flex items-stretch">
+      <img src="${v.images[0]}" alt="${v.title}" class="w-28 h-28 object-cover shrink-0">
+      <div class="p-4 flex flex-col justify-center">
+        <h3 class="font-display font-bold text-base mb-1">${v.title}</h3>
+        <p class="text-xs text-navydeep/60 leading-relaxed">${v.subtitle}</p>
+        <span class="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-teal">
+          <i class="fa-solid fa-circle-info"></i> לפרטים
+        </span>
+      </div>
+    </button>
+  `).join("");
+}
+
+/* ---------------------------------------------------------------- */
+/*  RENDER: Toolkit tab                                               */
+/* ---------------------------------------------------------------- */
+function renderToolkit() {
+  const infoEl = document.getElementById("toolkitInfo");
+  infoEl.innerHTML = toolkitInfo.map(item => `
+    <div class="bg-white rounded-2xl shadow-card p-4 flex items-start gap-3">
+      <span class="w-9 h-9 rounded-xl bg-${item.color}/10 text-${item.color} flex items-center justify-center shrink-0">
+        <i class="fa-solid ${item.icon}"></i>
+      </span>
+      <div>
+        <p class="font-semibold text-sm mb-0.5">${item.title}</p>
+        <p class="text-xs text-navydeep/60 leading-relaxed">${item.text}</p>
+      </div>
+    </div>
+  `).join("");
+
+  document.getElementById("rateNoteValue").textContent = `1 CZK ≈ ${CZK_TO_ILS} ש״ח`;
+
+  const savedChecks = JSON.parse(localStorage.getItem("prague_packing_checks") || "{}");
+  const listEl = document.getElementById("packingList");
+  listEl.innerHTML = packingItems.map((item, i) => {
+    const checked = !!savedChecks[i];
+    return `
+      <label class="checklist-item ${checked ? 'checked' : ''} flex items-center gap-3 py-1.5 cursor-pointer" data-index="${i}">
+        <span class="check-box w-5 h-5 rounded-md border-2 ${checked ? 'bg-teal border-teal' : 'border-navydeep/20'} flex items-center justify-center shrink-0">
+          <i class="fa-solid fa-check text-white text-[10px] ${checked ? '' : 'hidden'}"></i>
+        </span>
+        <span class="check-label text-sm">${item}</span>
+        <input type="checkbox" class="hidden" ${checked ? 'checked' : ''} onchange="togglePackingItem(${i}, this)">
+      </label>
+    `;
+  }).join("");
+
+  const savedAdminChecks = JSON.parse(localStorage.getItem("prague_admin_checks") || "{}");
+  const adminListEl = document.getElementById("adminChecklist");
+  adminListEl.innerHTML = adminChecklistItems.map((item, i) => {
+    const checked = !!savedAdminChecks[i];
+    return `
+      <label class="checklist-item ${checked ? 'checked' : ''} flex items-center gap-3 py-1.5 cursor-pointer" data-index="${i}">
+        <span class="check-box w-5 h-5 rounded-md border-2 ${checked ? 'bg-terracotta border-terracotta' : 'border-navydeep/20'} flex items-center justify-center shrink-0">
+          <i class="fa-solid fa-check text-white text-[10px] ${checked ? '' : 'hidden'}"></i>
+        </span>
+        <span class="check-label text-sm">${item}</span>
+        <input type="checkbox" class="hidden" ${checked ? 'checked' : ''} onchange="toggleAdminItem(${i}, this)">
+      </label>
+    `;
+  }).join("");
+}
+
+function convertCurrency(source) {
+  const czkInput = document.getElementById("czkInput");
+  const ilsInput = document.getElementById("ilsInput");
+  if (source === "czk") {
+    const czk = parseFloat(czkInput.value);
+    ilsInput.value = isNaN(czk) ? "" : (czk * CZK_TO_ILS).toFixed(2);
+  } else {
+    const ils = parseFloat(ilsInput.value);
+    czkInput.value = isNaN(ils) ? "" : (ils / CZK_TO_ILS).toFixed(2);
+  }
+}
+
+function togglePackingItem(index, input) {
+  const saved = JSON.parse(localStorage.getItem("prague_packing_checks") || "{}");
+  saved[index] = input.checked;
+  localStorage.setItem("prague_packing_checks", JSON.stringify(saved));
+
+  const label = input.closest(".checklist-item");
+  label.classList.toggle("checked", input.checked);
+  const box = label.querySelector(".check-box");
+  const check = label.querySelector(".check-box i");
+  box.classList.toggle("bg-teal", input.checked);
+  box.classList.toggle("border-teal", input.checked);
+  box.classList.toggle("border-navydeep/20", !input.checked);
+  check.classList.toggle("hidden", !input.checked);
+}
+
+function toggleAdminItem(index, input) {
+  const saved = JSON.parse(localStorage.getItem("prague_admin_checks") || "{}");
+  saved[index] = input.checked;
+  localStorage.setItem("prague_admin_checks", JSON.stringify(saved));
+
+  const label = input.closest(".checklist-item");
+  label.classList.toggle("checked", input.checked);
+  const box = label.querySelector(".check-box");
+  const check = label.querySelector(".check-box i");
+  box.classList.toggle("bg-terracotta", input.checked);
+  box.classList.toggle("border-terracotta", input.checked);
+  box.classList.toggle("border-navydeep/20", !input.checked);
+  check.classList.toggle("hidden", !input.checked);
+}
+
+/* ---------------------------------------------------------------- */
+/*  ACTIONS: navigation, modals, tabs                                 */
+/* ---------------------------------------------------------------- */
+function selectDay(dayId) {
+  currentDayId = dayId;
+  renderDaySelector();
+  renderDay(dayId);
+}
+
+function navigateTo(query) {
+  const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+  window.open(url, "_blank");
+}
+
+function openItemInfo(id) {
+  const item = ITEM_REGISTRY[id];
+  if (!item) return;
+
+  const color = itemColor(item);
+  const icon = itemIcon(item);
+  const meta = itemMeta(item);
+
+  // "Locked" only means the activity is pre-booked for a fixed time —
+  // it still opens the standard info sheet, just shows a small badge.
+  document.getElementById("infoModalContent").innerHTML = `
+    <div class="carousel flex overflow-x-auto snap-x snap-mandatory gap-3 mb-4">
+      ${item.images.map(src => `
+        <img src="${src}" alt="${item.title}" class="snap-start shrink-0 w-full h-52 object-cover rounded-2xl">
+      `).join("")}
+    </div>
+    <div class="flex items-center gap-2 mb-2">
+      <span class="w-8 h-8 rounded-full bg-${color}/10 text-${color} flex items-center justify-center">
+        <i class="fa-solid ${icon}"></i>
+      </span>
+      <span class="text-xs font-semibold text-navydeep/50">${meta}</span>
+      ${item.kind === "activity" && item.locked ? `
+        <span class="text-xs font-semibold text-terracotta flex items-center gap-1 mr-auto">
+          <i class="fa-solid fa-lock"></i> מוזמן מראש
+        </span>` : ''}
+    </div>
+    <h2 class="font-display text-2xl font-bold mb-3">${item.title}</h2>
+    ${item.description ? `<p class="text-sm text-navydeep/70 leading-relaxed mb-6">${item.description}</p>` : ''}
+    <button onclick="navigateTo('${item.mapQuery}')" class="w-full flex items-center justify-center gap-2 bg-navy text-cream rounded-2xl py-3 font-semibold">
+      <i class="fa-solid fa-diamond-turn-right"></i> נווט לשם
+    </button>
+  `;
+  openModal("infoModal");
+}
+
+function openModal(id) {
+  const modal = document.getElementById(id);
+  modal.classList.remove("hidden");
+  requestAnimationFrame(() => {
+    modal.querySelector(".sheet").classList.remove("translate-y-full");
+  });
+}
+
+function closeModal(id) {
+  const modal = document.getElementById(id);
+  modal.querySelector(".sheet").classList.add("translate-y-full");
+  setTimeout(() => modal.classList.add("hidden"), 300);
+}
+
+function switchTab(tab) {
+  document.querySelectorAll(".tab-panel").forEach(p => p.classList.add("hidden"));
+  document.getElementById(`tab-${tab}`).classList.remove("hidden");
+
+  document.querySelectorAll(".nav-btn").forEach(btn => {
+    const active = btn.dataset.tab === tab;
+    btn.classList.toggle("text-navy", active);
+    btn.classList.toggle("text-navydeep/40", !active);
+  });
+}
+
+document.querySelectorAll(".nav-btn").forEach(btn => {
+  btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+});
+
+/* ---------------------------------------------------------------- */
+/*  INIT                                                              */
+/* ---------------------------------------------------------------- */
+function init() {
+  buildRegistry();
+  renderDaySelector();
+  renderDay(currentDayId);
+  renderVault();
+  renderToolkit();
+  fetchWeather();
+}
+
+document.addEventListener("DOMContentLoaded", init);
+</script>
+</body>
+</html>
