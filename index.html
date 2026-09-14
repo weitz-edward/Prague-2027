@@ -225,7 +225,7 @@ const tripData = [
         title: "Václav Havel Airport (PRG)",
         category: "טיסה",
         icon: "fa-plane-arrival",
-        // ⚠ PLACEHOLDER — no verified free-license photos of the terminal; replace with your own arrival photo
+        // Generic aviation image (transit, user prefers generic)
         images: [
           "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=900&q=80&auto=format&fit=crop"
         ],
@@ -239,25 +239,26 @@ const tripData = [
         title: "MOOo Downtown",
         category: "לינה",
         icon: "fa-bed",
-        // ⚠ PLACEHOLDER — private aparthotel, no free-license photos; replace with the hotel's own booking-page photos
         images: [
-          "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=900&q=80&auto=format&fit=crop"
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/MOOoDowntown1.jfif",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/MOOoDowntown2.jfif",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/MOOoDowntown3.jpg"
         ],
         locked: true,
         mapQuery: "MOOo Downtown Prague",
-        description: "התארגנות מהירה לשינה בדירה כדי לאגור כוחות למחר.",
+        description: "התארגנות מהירה לשינה בדירה כדי לאגור כוחות למחר.<br><br>🚇 <strong>הגעה במטרו:</strong> Karlovo náměstí (קו B) — כ-300 מטרים.",
         nearby: [
           {
             title: "Dancing House",
             distance: "6 דקות הליכה",
-            // Verified Wikimedia Commons files from the Dancing House category
+            // No user upload; Wikimedia
             images: [
               "https://commons.wikimedia.org/wiki/Special:FilePath/Tancici_dum_z_druhe_strany.jpg?width=900",
               "https://commons.wikimedia.org/wiki/Special:FilePath/Prague_07-2016_View_from_Vysehrad_img4.jpg?width=900",
               "https://commons.wikimedia.org/wiki/Special:FilePath/Dancing_house_%28Prague%29.jpg?width=900"
             ],
             mapQuery: "Dancing House Prague",
-            description: "בניין מודרניסטי ייחודי על שפת הנהר. מואר ומרהיב בלילה."
+            description: "בניין מודרניסטי ייחודי על שפת הנהר. מואר ומרהיב בלילה.<br><br>🚇 <strong>הגעה במטרו:</strong> Karlovo náměstí (קו B) — כ-500 מטרים."
           }
         ]
       }
@@ -275,7 +276,7 @@ const tripData = [
         title: "Old Town Square & Astronomical Clock",
         category: "סיור",
         icon: "fa-clock",
-        // Verified from Wikimedia Commons Category:Prague_Astronomical_Clock and Category:Staromestske_namesti
+        // No user upload; Wikimedia
         images: [
           "https://commons.wikimedia.org/wiki/Special:FilePath/Czech-2013-Prague-Astronomical_clock_face.jpg?width=900",
           "https://commons.wikimedia.org/wiki/Special:FilePath/Astronomical_Clock_and_Tyn_Church_Prague_%2851630232994%29.jpg?width=900",
@@ -283,16 +284,17 @@ const tripData = [
         ],
         locked: false,
         mapQuery: "Astronomical Clock Prague",
-        description: "הלב הפועם של פראג. בואו לקראת השעה העגולה כדי לראות את בובות השליחים.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אריאלה תהנה מהאווירה. עידו ודניאל יהיו מרותקים לבובות השעון. עדי תאהב את האגדות על בונה השעון.",
+        description: "הלב הפועם של פראג. בואו לקראת השעה העגולה כדי לראות את בובות השליחים.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אריאלה תהנה מהאווירה. עידו ודניאל יהיו מרותקים לבובות השעון. עדי תאהב את האגדות על בונה השעון.<br><br>🚇 <strong>הגעה במטרו:</strong> Staroměstská (קו A) — כ-400 מטרים.",
         nearby: [
           {
             title: "Havelský Market",
             distance: "3 דקות הליכה",
             images: [
-              "https://commons.wikimedia.org/wiki/Special:FilePath/Havelsk%C3%A1_ulice%2C_trhy.jpg?width=900"
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/HavelskyMarket1.jfif",
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/HavelskyMarket2.webp"
             ],
             mapQuery: "Havelske Market Prague",
-            description: "שוק עתיק עם פירות יער טריים, צעצועי עץ ובובות מכשפה."
+            description: "שוק עתיק עם פירות יער טריים, צעצועי עץ ובובות מכשפה.<br><br>🚇 <strong>הגעה במטרו:</strong> Můstek (קווים A+B) — כ-200 מטרים."
           }
         ]
       },
@@ -302,14 +304,12 @@ const tripData = [
         title: "Vltava River Cruise",
         category: "שייט",
         icon: "fa-ship",
-        // Generic Vltava-river-from-boat photos on Wikimedia
         images: [
-          "https://commons.wikimedia.org/wiki/Special:FilePath/Charles_Bridge_in_Prague.jpg?width=900",
-          "https://commons.wikimedia.org/wiki/Special:FilePath/Vltava_River_in_Prague_from_the_Charles_Bridge.jpg?width=900"
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/VltavaRiverCruise1.jfif"
         ],
         locked: true,
         mapQuery: "Vltava River Cruise Prague",
-        description: "שייט רגוע של 45 דקות. דרך מעולה לראות את גשר קארל מלמטה.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> כולם! הזדמנות לעידו ודניאל לשבת ולהירגע, ולעדי לצלם ברבורים מהסיפון."
+        description: "שייט רגוע של 45 דקות. דרך מעולה לראות את גשר קארל מלמטה.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> כולם! הזדמנות לעידו ודניאל לשבת ולהירגע, ולעדי לצלם ברבורים מהסיפון.<br><br>🚇 <strong>הגעה במטרו:</strong> Staroměstská (קו A) — כ-300 מטרים (תלוי במזח היציאה)."
       },
       {
         id: "d2-a3",
@@ -318,11 +318,13 @@ const tripData = [
         category: "פנאי",
         icon: "fa-child-reaching",
         images: [
-          "https://commons.wikimedia.org/wiki/Special:FilePath/Franti%C5%A1k%C3%A1nsk%C3%A1_zahrada.jpg?width=900"
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/FranciscanGarden1.jfif",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/FranciscanGarden2.jfif",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/FranciscanGarden3.jfif"
         ],
         locked: false,
         mapQuery: "Franciscan Garden Prague",
-        description: "גינה נסתרת שמוקפת בניינים יפהפיים. <br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אריאלה ולך - שבו בשקט עם קפה בזמן שעידו ודניאל מוציאים מרץ במתקנים הבטוחים."
+        description: "גינה נסתרת שמוקפת בניינים יפהפיים. <br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אריאלה ולך - שבו בשקט עם קפה בזמן שעידו ודניאל מוציאים מרץ במתקנים הבטוחים.<br><br>🚇 <strong>הגעה במטרו:</strong> Můstek (קווים A+B) — כ-150 מטרים."
       }
     ]
   },
@@ -338,7 +340,7 @@ const tripData = [
         title: "Tram to Újezd",
         category: "נסיעה",
         icon: "fa-train-tram",
-        // Generic Prague tram photos on Wikimedia (Category:Trams_in_Prague has hundreds)
+        // Generic tram image (transit)
         images: [
           "https://commons.wikimedia.org/wiki/Special:FilePath/Prague_tram_9106_line_22.jpg?width=900",
           "https://commons.wikimedia.org/wiki/Special:FilePath/Tram_%C5%A0koda_15T_ForCity_Alfa_-_%C3%9Ajezd.jpg?width=900"
@@ -353,6 +355,7 @@ const tripData = [
         title: "Petřín Hill & Mirror Maze",
         category: "סיור",
         icon: "fa-mountain-city",
+        // No user upload; Wikimedia
         images: [
           "https://commons.wikimedia.org/wiki/Special:FilePath/Pet%C5%99%C3%ADnsk%C3%A1_rozhledna_a_bludi%C5%A1t%C4%9B_z_letadla.jpg?width=900",
           "https://commons.wikimedia.org/wiki/Special:FilePath/Pet%C5%99%C3%ADn_Lookout_Tower.jpg?width=900",
@@ -360,17 +363,18 @@ const tripData = [
         ],
         locked: false,
         mapQuery: "Petrin Tower Prague",
-        description: "גנים יפים, מגדל תצפית דמוי אייפל, ומבוך מראות היסטורי.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> נסיעת הרכבל תלהיב את דניאל ועידו. מבוך המראות יצחיק את עדי ואת כולכם.",
+        description: "גנים יפים, מגדל תצפית דמוי אייפל, ומבוך מראות היסטורי.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> נסיעת הרכבל תלהיב את דניאל ועידו. מבוך המראות יצחיק את עדי ואת כולכם.<br><br>🚇 <strong>הגעה במטרו:</strong> Malostranská (קו A) — כ-800 מטרים; עדיף להגיע בחשמלית עד Újezd ומשם ברכבל.",
         nearby: [
           {
             title: "Crawling Babies (Kampa)",
             distance: "בתחתית הגבעה",
+            // No user upload; Wikimedia
             images: [
               "https://commons.wikimedia.org/wiki/Special:FilePath/Miminka_na_Kamp%C4%9B_3.jpg?width=900",
               "https://commons.wikimedia.org/wiki/Special:FilePath/David_%C4%8Cern%C3%BD%2C_Miminka_%28Kampa%29.jpg?width=900"
             ],
             mapQuery: "Crawling Babies David Cerny Kampa",
-            description: "פסלי ברונזה ענקיים ומוזרים של תינוקות זוחלים ללא פנים."
+            description: "פסלי ברונזה ענקיים ומוזרים של תינוקות זוחלים ללא פנים.<br><br>🚇 <strong>הגעה במטרו:</strong> Malostranská (קו A) — כ-700 מטרים."
           }
         ]
       },
@@ -380,14 +384,15 @@ const tripData = [
         title: "Máj House of Fun & Museum of Bricks",
         category: "פנאי",
         icon: "fa-gamepad",
-        // Museum of Bricks is verified. Máj is post-2024 refurbishment; limited free photos
+        // Mix of both venues (title covers both)
         images: [
-          "https://commons.wikimedia.org/wiki/Special:FilePath/Muzeum_lega_Praha_01.jpg?width=900",
-          "https://commons.wikimedia.org/wiki/Special:FilePath/M%C3%A1j_Praha_2024.jpg?width=900"
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/MuseumofBricks1.jpg",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/Maj1.jfif",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/MuseumofBricks2.jpg"
         ],
         locked: false,
         mapQuery: "Museum of Bricks Prague",
-        description: "מתחם בילוי מטורף ומוזיאון הלגו הכולל עמדות יצירה חופשית.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> גן עדן לדניאל ולעדי. עידו יתלהב מעמדות היצירה."
+        description: "מתחם בילוי מטורף ומוזיאון הלגו הכולל עמדות יצירה חופשית.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> גן עדן לדניאל ולעדי. עידו יתלהב מעמדות היצירה.<br><br>🚇 <strong>הגעה במטרו:</strong> Národní třída (קו B) — כ-200 מטרים."
       },
       {
         id: "d3-a3",
@@ -395,13 +400,14 @@ const tripData = [
         title: "Museum of Fantastic Illusions",
         category: "פנאי",
         icon: "fa-wand-magic-sparkles",
-        // Museum is on Vodičkova near Wenceslas Square; free photos of the museum interior are scarce so using the surrounding street
         images: [
-          "https://commons.wikimedia.org/wiki/Special:FilePath/V%C3%A1clavsk%C3%A9_n%C3%A1m%C4%9Bst%C3%AD_p%C5%99ed_ve%C4%8Derem.jpg?width=900"
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/MuseumofFantasticIllusions1.jpg",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/MuseumofFantasticIllusions2.jpg",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/MuseumofFantasticIllusions3.jpg"
         ],
         locked: false,
         mapQuery: "Museum of Fantastic Illusions Prague",
-        description: "הזדמנות לתמונות משוגעות ולאחר מכן סיבוב שופינג בכיכר ואצלב.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> התמונות לאינסטגרם של עדי, והזדמנות לאריאלה לקניות בזמן שאתה מעסיק את הקטנים."
+        description: "הזדמנות לתמונות משוגעות ולאחר מכן סיבוב שופינג בכיכר ואצלב.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> התמונות לאינסטגרם של עדי, והזדמנות לאריאלה לקניות בזמן שאתה מעסיק את הקטנים.<br><br>🚇 <strong>הגעה במטרו:</strong> Můstek (קווים A+B) — כ-250 מטרים."
       }
     ]
   },
@@ -417,7 +423,7 @@ const tripData = [
         title: "Bus to Prague Zoo",
         category: "נסיעה",
         icon: "fa-bus",
-        // Generic Prague DPP bus photos on Wikimedia
+        // Generic Prague bus (transit)
         images: [
           "https://commons.wikimedia.org/wiki/Special:FilePath/Prague_bus_line_112.jpg?width=900"
         ],
@@ -431,6 +437,7 @@ const tripData = [
         title: "Prague Zoo",
         category: "פנאי",
         icon: "fa-hippo",
+        // No user upload; Wikimedia
         images: [
           "https://commons.wikimedia.org/wiki/Special:FilePath/Prague_czech_republic_zoo_30.jpg?width=900",
           "https://commons.wikimedia.org/wiki/Special:FilePath/Prague_Zoo_2016_-_Elephants.jpg?width=900",
@@ -438,17 +445,18 @@ const tripData = [
         ],
         locked: false,
         mapQuery: "Prague Zoo",
-        description: "אחד מגני החיות הטובים באירופה. מתחם ענק עם יער אינדונזי ופינות ליטוף.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> עידו ודניאל בפינות הליטוף, עדי ברכבל הפתוח, ואריאלה תאהב את המסלולים המוצלים והפתוחים.",
+        description: "אחד מגני החיות הטובים באירופה. מתחם ענק עם יער אינדונזי ופינות ליטוף.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> עידו ודניאל בפינות הליטוף, עדי ברכבל הפתוח, ואריאלה תאהב את המסלולים המוצלים והפתוחים.<br><br>🚇 <strong>הגעה במטרו:</strong> אין מטרו במרחק הליכה — Nádraží Holešovice (קו C) + אוטובוס 112 ישירות לכניסה.",
         nearby: [
           {
             title: "Troja Chateau",
             distance: "מול כניסת גן החיות",
             images: [
-              "https://commons.wikimedia.org/wiki/Special:FilePath/Troja_Castle_Prague.jpg?width=900",
-              "https://commons.wikimedia.org/wiki/Special:FilePath/Prague_Trojsky_zamek.jpg?width=900"
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/TrojaChateau1.jpg",
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/TrojaChateau2.jpeg",
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/TrojaChateau3.jfif"
             ],
             mapQuery: "Troja Chateau Prague",
-            description: "הכניסה לגנים של הארמון היא חינמית ויש בה שבילים יפים בין מזרקות בארוק."
+            description: "הכניסה לגנים של הארמון היא חינמית ויש בה שבילים יפים בין מזרקות בארוק.<br><br>🚇 <strong>הגעה במטרו:</strong> אין מטרו במרחק הליכה — Nádraží Holešovice (קו C) + אוטובוס 112."
           }
         ]
       }
@@ -466,6 +474,7 @@ const tripData = [
         title: "Prague Castle & Golden Lane",
         category: "סיור",
         icon: "fa-chess-rook",
+        // No user upload; Wikimedia
         images: [
           "https://commons.wikimedia.org/wiki/Special:FilePath/PragueCathedral03.jpg?width=900",
           "https://commons.wikimedia.org/wiki/Special:FilePath/New_Royal_Palace_%28Prague_Castle%29.JPG?width=900",
@@ -473,7 +482,7 @@ const tripData = [
         ],
         locked: false,
         mapQuery: "Prague Castle",
-        description: "קומפלקס הטירה הגדול בעולם. נטייל בין הארמונות ונרד במורד סמטת הזהב.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אריאלה תהנה מנופי העיר מלמעלה. דניאל ועדי ירתקו לשריונות האבירים."
+        description: "קומפלקס הטירה הגדול בעולם. נטייל בין הארמונות ונרד במורד סמטת הזהב.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אריאלה תהנה מנופי העיר מלמעלה. דניאל ועדי ירתקו לשריונות האבירים.<br><br>🚇 <strong>הגעה במטרו:</strong> Malostranská (קו A) — כ-700 מטרים בעלייה, או חשמלית 22 עד Pražský hrad."
       },
       {
         id: "d5-a2",
@@ -482,12 +491,13 @@ const tripData = [
         category: "סיור",
         icon: "fa-tree",
         images: [
-          "https://commons.wikimedia.org/wiki/Special:FilePath/Wallenstein_Palace_Garden_Prague_1.jpg?width=900",
-          "https://commons.wikimedia.org/wiki/Special:FilePath/Valdstejnska_zahrada_-_dripstone_wall.jpg?width=900"
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/WaldsteinGarden1.jpeg",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/WaldsteinGarden2.jfif",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/WaldsteinGarden3.jpeg"
         ],
         locked: false,
         mapQuery: "Waldstein Garden Prague",
-        description: "גנים קסומים עם בריכת קוי ענקית וקיר נטיפים אפור.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> עידו ודניאל יתלהבו למצוא טווסים לבנים. עדי תנסה למצוא צורות בתוך קיר הנטיפים."
+        description: "גנים קסומים עם בריכת קוי ענקית וקיר נטיפים אפור.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> עידו ודניאל יתלהבו למצוא טווסים לבנים. עדי תנסה למצוא צורות בתוך קיר הנטיפים.<br><br>🚇 <strong>הגעה במטרו:</strong> Malostranská (קו A) — כ-200 מטרים."
       },
       {
         id: "d5-a3",
@@ -495,6 +505,7 @@ const tripData = [
         title: "Charles Bridge & Karel Zeman Museum",
         category: "סיור",
         icon: "fa-film",
+        // No user upload; Wikimedia
         images: [
           "https://commons.wikimedia.org/wiki/Special:FilePath/CharlesBridgeMalaStranaPragueCzechRepublic.jpg?width=900",
           "https://commons.wikimedia.org/wiki/Special:FilePath/Charles_Bridge_in_Prague.jpg?width=900",
@@ -502,16 +513,17 @@ const tripData = [
         ],
         locked: false,
         mapQuery: "Karel Zeman Museum Prague",
-        description: "מוזיאון אפקטים קולנועיים אינטראקטיבי וחציית גשר קארל המפורסם.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> חובה לעדי שאוהבת לצלם ולהצטלם עם אפקטים. לאריאלה מומלץ לקנות קיורטוש חם.",
+        description: "מוזיאון אפקטים קולנועיים אינטראקטיבי וחציית גשר קארל המפורסם.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> חובה לעדי שאוהבת לצלם ולהצטלם עם אפקטים. לאריאלה מומלץ לקנות קיורטוש חם.<br><br>🚇 <strong>הגעה במטרו:</strong> Malostranská (קו A) — כ-400 מטרים.",
         nearby: [
           {
             title: "Vinárna Čertovka (Narrowest Street)",
             distance: "2 דקות הליכה",
             images: [
-              "https://commons.wikimedia.org/wiki/Special:FilePath/Prague_narrow_street.jpg?width=900"
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/Vinarnacertovka1.jfif",
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/Vinarnacertovka2.jpg"
             ],
             mapQuery: "Vinarna Certovka Prague",
-            description: "סמטה ברוחב 70 ס״מ בלבד עם רמזור הולכי רגל שהילדים אוהבים ללחוץ עליו."
+            description: "סמטה ברוחב 70 ס״מ בלבד עם רמזור הולכי רגל שהילדים אוהבים ללחוץ עליו.<br><br>🚇 <strong>הגעה במטרו:</strong> Malostranská (קו A) — כ-350 מטרים."
           }
         ]
       }
@@ -529,7 +541,7 @@ const tripData = [
         title: "Drive to Aquapalace",
         category: "נסיעה",
         icon: "fa-car",
-        // ⚠ PLACEHOLDER — generic road/car photo, will look off-topic
+        // Generic driving photo (transit)
         images: [
           "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=900&q=80&auto=format&fit=crop"
         ],
@@ -544,21 +556,24 @@ const tripData = [
         category: "פנאי",
         icon: "fa-water",
         images: [
-          "https://commons.wikimedia.org/wiki/Special:FilePath/Aquapalace_Praha_-_vchod.jpg?width=900"
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/AquapalacePraha1.jpg",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/AquapalacePraha2.jpg",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/AquapalacePraha4.jpg"
         ],
         locked: false,
         mapQuery: "Aquapalace Praha",
-        description: "פארק המים המקורה הגדול במרכז אירופה! מגלשות אקסטרים, בריכת גלים וספינת פיראטים.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> כולם. עידו ודניאל בספינת הפיראטים, עדי במגלשות הנהר הפראי, ולאריאלה יש מתחם ספא מטורף לברוח אליו.",
+        description: "פארק המים המקורה הגדול במרכז אירופה! מגלשות אקסטרים, בריכת גלים וספינת פיראטים.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> כולם. עידו ודניאל בספינת הפיראטים, עדי במגלשות הנהר הפראי, ולאריאלה יש מתחם ספא מטורף לברוח אליו.<br><br>🚇 <strong>הגעה במטרו:</strong> אין מטרו במרחק הליכה — Opatov (קו C) הכי קרוב אבל עדיין כ-4 ק״מ; ממליץ מונית/Uber.",
         nearby: [
           {
             title: "Hop Arena",
             distance: "באותו מתחם מסחרי",
-            // ⚠ PLACEHOLDER — private trampoline park, no free-license photos
             images: [
-              "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=900&q=80&auto=format&fit=crop"
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/HopArena1.jpg",
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/HopArena2.png",
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/HopArena3.jfif"
             ],
             mapQuery: "Hop Arena Cestlice",
-            description: "פארק טרמפולינות צמוד, למקרה נדיר שנשארה להם אנרגיה אחרי המים."
+            description: "פארק טרמפולינות צמוד, למקרה נדיר שנשארה להם אנרגיה אחרי המים.<br><br>🚇 <strong>הגעה במטרו:</strong> אין מטרו במרחק הליכה — באותו מתחם של Aquapalace."
           }
         ]
       }
@@ -577,12 +592,13 @@ const tripData = [
         category: "סיור",
         icon: "fa-building-columns",
         images: [
-          "https://commons.wikimedia.org/wiki/Special:FilePath/N%C3%A1rodn%C3%AD_muzeum_z_V%C3%A1clavsk%C3%A9ho_n%C3%A1m%C4%9Bst%C3%AD.jpg?width=900",
-          "https://commons.wikimedia.org/wiki/Special:FilePath/Prague_National_Museum_2019.jpg?width=900"
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/NationalMuseum1.jfif",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/NationalMuseum2.webp",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/NationalMuseum3.jpg"
         ],
         locked: false,
         mapQuery: "National Museum Prague",
-        description: "הבניין המפואר בראש כיכר ואצלב עם תצוגות של היכל הטבע.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> דניאל ועידו יעמדו פעורי פה מול הדינוזאורים. אריאלה תעריך את אולם הכניסה המפואר."
+        description: "הבניין המפואר בראש כיכר ואצלב עם תצוגות של היכל הטבע.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> דניאל ועידו יעמדו פעורי פה מול הדינוזאורים. אריאלה תעריך את אולם הכניסה המפואר.<br><br>🚇 <strong>הגעה במטרו:</strong> Muzeum (קווים A+C) — התחנה נמצאת ממש מתחת למוזיאון."
       },
       {
         id: "d7-a2",
@@ -591,11 +607,13 @@ const tripData = [
         category: "פנאי",
         icon: "fa-train",
         images: [
-          "https://commons.wikimedia.org/wiki/Special:FilePath/Kr%C3%A1lovstv%C3%AD_%C5%BEeleznic_%2812%29.jpg?width=900"
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/Kralovstvizeleznic1.jfif",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/Kralovstvizeleznic2.jfif",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/Kralovstvizeleznic4.jpg"
         ],
         locked: false,
         mapQuery: "Kralovstvi Zeleznic Prague",
-        description: "נסיעה קצרה במטרו לסמיחוב לראות עולם מיניאטורי ענק של רכבות.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אטרקציית חובה לעידו ולדניאל. הילדים יכולים ללחוץ על כפתורים ולהפעיל את הרכבות."
+        description: "נסיעה קצרה במטרו לסמיחוב לראות עולם מיניאטורי ענק של רכבות.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אטרקציית חובה לעידו ולדניאל. הילדים יכולים ללחוץ על כפתורים ולהפעיל את הרכבות.<br><br>🚇 <strong>הגעה במטרו:</strong> Anděl (קו B) — כ-250 מטרים."
       },
       {
         id: "d7-a3",
@@ -603,13 +621,14 @@ const tripData = [
         title: "Majaland Praha & Primark",
         category: "פנאי",
         icon: "fa-ferris-wheel",
-        // ⚠ PLACEHOLDER — private indoor amusement park, no free-license photos
         images: [
-          "https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?w=900&q=80&auto=format&fit=crop"
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/MajalandPraha2.jpg",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/MajalandPraha3.jpg",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/MajalandPraha4.jpg"
         ],
         locked: false,
         mapQuery: "Majaland Praha",
-        description: "נסיעה לסוף קו המטרו B. פארק שעשועים מקורה ענק בתוך מרכז הקניות Metropole Zličín.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> השילוב המושלם. הילדים משתוללים במתקנים, בזמן שאריאלה עושה קניות בנחת בפרימרק הגדול והשקט בקניון."
+        description: "נסיעה לסוף קו המטרו B. פארק שעשועים מקורה ענק בתוך מרכז הקניות Metropole Zličín.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> השילוב המושלם. הילדים משתוללים במתקנים, בזמן שאריאלה עושה קניות בנחת בפרימרק הגדול והשקט בקניון.<br><br>🚇 <strong>הגעה במטרו:</strong> Zličín (קו B, סוף הקו) — כ-150 מטרים, באותו קניון."
       }
     ]
   },
@@ -625,6 +644,7 @@ const tripData = [
         title: "Vyšehrad",
         category: "סיור",
         icon: "fa-chess-rook",
+        // No user upload; Wikimedia
         images: [
           "https://commons.wikimedia.org/wiki/Special:FilePath/Vysehrad_Prague_view.jpg?width=900",
           "https://commons.wikimedia.org/wiki/Special:FilePath/Basilica_of_St_Peter_and_Paul_Vysehrad.jpg?width=900",
@@ -632,16 +652,18 @@ const tripData = [
         ],
         locked: false,
         mapQuery: "Vysehrad Prague",
-        description: "מצודה עתיקה ושקטה על צוק מעל הנהר.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> יש במצודה גן שעשועים מעולה עשוי עץ. נהדר לעדי ולדניאל להתרוצץ, ולאריאלה ליהנות מתצפית מושלמת.",
+        description: "מצודה עתיקה ושקטה על צוק מעל הנהר.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> יש במצודה גן שעשועים מעולה עשוי עץ. נהדר לעדי ולדניאל להתרוצץ, ולאריאלה ליהנות מתצפית מושלמת.<br><br>🚇 <strong>הגעה במטרו:</strong> Vyšehrad (קו C) — כ-600 מטרים.",
         nearby: [
           {
             title: "Folimanka Park",
             distance: "מתחת לחומות המצודה",
             images: [
-              "https://commons.wikimedia.org/wiki/Special:FilePath/Park_Folimanka.jpg?width=900"
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/FolimankaPark1.webp",
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/FolimankaPark2.jpg",
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/FolimankaPark3.jpg"
             ],
             mapQuery: "Folimanka Park Prague",
-            description: "גן שעשועים ענק עם מסלולי בימבות תחת חומות המצודה."
+            description: "גן שעשועים ענק עם מסלולי בימבות תחת חומות המצודה.<br><br>🚇 <strong>הגעה במטרו:</strong> Vyšehrad (קו C) — כ-500 מטרים."
           }
         ]
       },
@@ -652,12 +674,13 @@ const tripData = [
         category: "פנאי",
         icon: "fa-crow",
         images: [
-          "https://commons.wikimedia.org/wiki/Special:FilePath/Labut%C4%9B_na_Vltav%C4%9B.jpg?width=900",
-          "https://commons.wikimedia.org/wiki/Special:FilePath/N%C3%A1plavka_Praha_2018.jpg?width=900"
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/NaplavkaRiverbank1.jpeg",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/NaplavkaRiverbank2.webp",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/NaplavkaRiverbank3.jpg"
         ],
         locked: false,
         mapQuery: "Naplavka Prague",
-        description: "יורדים לטיילת לאורך הנהר, קרוב לדירה. אווירה מעולה לסיום הטיול.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> עידו ודניאל ישמחו להאכיל את הברבורים שמתקבצים כאן. עדי ואריאלה יאהבו את אווירת הטיילת ודוכני הרחוב."
+        description: "יורדים לטיילת לאורך הנהר, קרוב לדירה. אווירה מעולה לסיום הטיול.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> עידו ודניאל ישמחו להאכיל את הברבורים שמתקבצים כאן. עדי ואריאלה יאהבו את אווירת הטיילת ודוכני הרחוב.<br><br>🚇 <strong>הגעה במטרו:</strong> Karlovo náměstí (קו B) — כ-500 מטרים."
       }
     ]
   },
@@ -673,7 +696,7 @@ const tripData = [
         title: "Flight Back Home",
         category: "טיסה",
         icon: "fa-plane-departure",
-        // ⚠ PLACEHOLDER — same generic aviation photo as arrival
+        // Generic aviation image (transit)
         images: [
           "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=900&q=80&auto=format&fit=crop"
         ],
@@ -690,34 +713,36 @@ const vaultData = [
     title: "Lokál Dlouhááá",
     subtitle: "מטבח צ׳כי מסורתי, אווירה מקומית אמיתית",
     icon: "fa-utensils",
-    // ⚠ PLACEHOLDER — Ambiente group restaurant, no free-license photos; grab an image from lokal-dlouha.ambi.cz
     images: [
-      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=900&q=80&auto=format&fit=crop"
+      "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/LokalDlouhaaa1.webp",
+      "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/LokalDlouhaaa2.webp"
     ],
     mapQuery: "Lokal Dlouhaaa Prague",
-    description: "מסעדה צ׳כית קלאסית עם תפריט של מנות בית ובירה מהחבית ישירה מהמפעל — מקום אהוב על המקומיים, לא רק על תיירים."
+    description: "מסעדה צ׳כית קלאסית עם תפריט של מנות בית ובירה מהחבית ישירה מהמפעל — מקום אהוב על המקומיים, לא רק על תיירים.<br><br>🚇 <strong>הגעה במטרו:</strong> Náměstí Republiky (קו B) — כ-300 מטרים."
   },
   {
     title: "Café Savoy",
     subtitle: "בית קפה וינאי קלאסי, מעולה לארוחת בוקר",
     icon: "fa-mug-saucer",
-    // ⚠ PLACEHOLDER — Ambiente group café, no free-license photos; grab an image from cafesavoy.ambi.cz
     images: [
-      "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=900&q=80&auto=format&fit=crop"
+      "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/CafeSavoy1.jfif",
+      "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/CafeSavoy2.jpg",
+      "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/CafeSavoy3.jfif"
     ],
     mapQuery: "Cafe Savoy Prague",
-    description: "בית קפה וינאי מרשים עם תקרת קיר מצוירת, מעולה לארוחת בוקר משפחתית רגועה לפני יום מלא בסיורים."
+    description: "בית קפה וינאי מרשים עם תקרת קיר מצוירת, מעולה לארוחת בוקר משפחתית רגועה לפני יום מלא בסיורים.<br><br>🚇 <strong>הגעה במטרו:</strong> Národní třída (קו B) + חשמלית מעבר לגשר, או חשמלית 9/12/20 עד Újezd במרחק כ-100 מטרים."
   },
   {
     title: "Manifesto Market",
     subtitle: "שוק אוכל פתוח עם מגוון דוכנים לכל המשפחה",
     icon: "fa-store",
-    // ⚠ PLACEHOLDER — private food market, no free-license photos; grab an image from manifestomarket.com
     images: [
-      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=900&q=80&auto=format&fit=crop"
+      "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/ManifestoMarket1.jpg",
+      "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/ManifestoMarket2.jfif",
+      "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/ManifestoMarket3.jfif"
     ],
     mapQuery: "Manifesto Market Prague",
-    description: "שוק אוכל פתוח עם מגוון דוכנים בינלאומיים וישיבה משותפת — אופציה נוחה כשלכל אחד מתחשק משהו אחר."
+    description: "שוק אוכל פתוח עם מגוון דוכנים בינלאומיים וישיבה משותפת — אופציה נוחה כשלכל אחד מתחשק משהו אחר.<br><br>🚇 <strong>הגעה במטרו:</strong> Anděl (קו B) — כ-300 מטרים."
   }
 ];
 
