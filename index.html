@@ -1343,6 +1343,8 @@ function setupSwipeBetweenDays() {
     const feedWidth = feed.offsetWidth;
     const idx = tripData.findIndex(d => d.id === currentDayId);
     const past = Math.abs(dx) > SWIPE_THRESHOLD;
+    // RTL: swipe right (dx > 0) = go to previous day (earlier date, day1 side).
+    // tripData is chronological, so previous = idx - 1, hence dir = -1 for dx > 0.
     const dir = dx > 0 ? -1 : 1;
     const newIdx = idx + dir;
     const canTurn = past && newIdx >= 0 && newIdx < tripData.length;
@@ -1415,7 +1417,7 @@ function openItemInfo(id) {
     <div class="relative mb-4">
       <div class="carousel flex overflow-x-auto snap-x snap-mandatory gap-3" onscroll="updateCarouselDots(this)">
         ${item.images.map(src => `
-          <img src="${src}" alt="${item.title}" onerror="tryAltExt(this)" class="snap-start shrink-0 w-full h-56 object-cover rounded-2xl">
+          <img src="${src}" alt="${item.title}" onerror="tryAltExt(this)" class="snap-start snap-always shrink-0 w-full h-56 object-cover rounded-2xl">
         `).join("")}
       </div>
       ${item.images.length > 1 ? `
