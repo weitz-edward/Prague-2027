@@ -1326,9 +1326,11 @@ function setupSwipeBetweenDays() {
 
     // Rubber-band at first/last day — the page still follows the finger, but
     // with resistance so it's obvious you're at the edge.
+    // Swipe right on the LAST day = trying to advance past day 9 → rubber-band.
+    // Swipe left on the FIRST day = trying to go before day 1 → rubber-band.
     const idx = tripData.findIndex(d => d.id === currentDayId);
     let visualDx = dx;
-    if ((dx > 0 && idx === 0) || (dx < 0 && idx === tripData.length - 1)) {
+    if ((dx > 0 && idx === tripData.length - 1) || (dx < 0 && idx === 0)) {
       visualDx = dx / 3;
     }
     feed.style.transform = `translateX(${visualDx}px)`;
@@ -1343,9 +1345,10 @@ function setupSwipeBetweenDays() {
     const feedWidth = feed.offsetWidth;
     const idx = tripData.findIndex(d => d.id === currentDayId);
     const past = Math.abs(dx) > SWIPE_THRESHOLD;
-    // RTL: swipe right (dx > 0) = go to previous day (earlier date, day1 side).
-    // tripData is chronological, so previous = idx - 1, hence dir = -1 for dx > 0.
-    const dir = dx > 0 ? -1 : 1;
+    // User's mental model: swipe right (dx > 0) = push current day rightward
+    // toward where earlier days live in the RTL tab strip → NEXT day arrives
+    // from the left. So dir = +1 (advance to later date) for swipe right.
+    const dir = dx > 0 ? 1 : -1;
     const newIdx = idx + dir;
     const canTurn = past && newIdx >= 0 && newIdx < tripData.length;
 
