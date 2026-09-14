@@ -1243,6 +1243,62 @@ function selectDay(dayId) {
   currentDayId = dayId;
   renderDaySelector();
   renderDay(dayId);
+  // Scroll the newly-active day into view in the horizontal tab strip,
+  // so if the user is on a day that's currently off-screen after a swipe,
+  // the day-selector auto-centers on it.
+  const idx = tripData.findIndex(d => d.id === dayId);
+  const buttons = document.querySelectorAll("#daySelector button");
+  if (buttons[idx]) {
+    buttons[idx].scrollIntoView({ inline: "center", behavior: "smooth", block: "nearest" });
+  }
+}
+
+// Horizontal swipe on the timeline body switches days — like an iOS pager.
+// In RTL: swipe RIGHT (finger moves left→right) = previous (earlier) day.
+//         swipe LEFT  (finger moves right→left) = next (later) day.
+// Ignores swipes that start inside a horizontally-scrolling child
+// (day selector at top, nearby-items strip inside cards) so those still
+// scroll naturally. Also ignores mostly-vertical swipes so the activity
+// feed continues to scroll up/down as usual.
+function setupSwipeBetweenDays() {
+  const timeline = document.getElementById("tab-timeline");
+  if (!timeline) return;
+
+  const MIN_DX = 50;      // px — must move at least this much horizontally
+  const MAX_DY = 80;      // px — reject swipes with too much vertical drift
+  const H_TO_V_RATIO = 1.5;
+
+  let startX = 0, startY = 0, tracking = false;
+
+  timeline.addEventListener("touchstart", (e) => {
+    // Don't hijack swipes that start inside a horizontally-scrollable
+    // element — those need their native scroll behavior.
+    if (e.target.closest(".overflow-x-auto")) {
+      tracking = false;
+      return;
+    }
+    tracking = true;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, { passive: true });
+
+  timeline.addEventListener("touchend", (e) => {
+    if (!tracking) return;
+    tracking = false;
+    const dx = e.changedTouches[0].clientX - startX;
+    const dy = e.changedTouches[0].clientY - startY;
+    if (Math.abs(dx) < MIN_DX) return;                     // Not enough movement
+    if (Math.abs(dy) > MAX_DY) return;                     // Too vertical
+    if (Math.abs(dx) < Math.abs(dy) * H_TO_V_RATIO) return; // Not mostly horizontal
+
+    // RTL semantics: swipe right (dx > 0) → previous day
+    const dir = dx > 0 ? -1 : 1;
+    const idx = tripData.findIndex(d => d.id === currentDayId);
+    const newIdx = idx + dir;
+    if (newIdx < 0 || newIdx >= tripData.length) return;   // At the edge — no wrap
+
+    selectDay(tripData[newIdx].id);
+  }, { passive: true });
 }
 
 function navigateTo(query) {
@@ -1462,6 +1518,7 @@ function init() {
   fetchWeather();
   fetchExchangeRate();
   setupSwipeToClose("#infoModal .sheet", "infoModal");
+  setupSwipeBetweenDays();
 }
 
 document.addEventListener("DOMContentLoaded", init);
