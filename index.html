@@ -82,7 +82,7 @@
 <main class="max-w-md mx-auto px-4 pt-4">
 
   <!-- ---------- TAB 1: הלו"ז שלנו (Timeline) ---------- -->
-  <section id="tab-timeline" class="tab-panel">
+  <section id="tab-timeline" class="tab-panel overflow-x-hidden">
 
     <!-- Day selector -->
     <div id="daySelector" class="flex gap-3 overflow-x-auto snap-x-mandatory pb-2 -mx-1 px-1"></div>
@@ -1262,43 +1262,121 @@ function selectDay(dayId) {
 // feed continues to scroll up/down as usual.
 function setupSwipeBetweenDays() {
   const timeline = document.getElementById("tab-timeline");
-  if (!timeline) return;
+  const feed = document.getElementById("activityFeed");
+  if (!timeline || !feed) return;
 
-  const MIN_DX = 50;      // px — must move at least this much horizontally
-  const MAX_DY = 80;      // px — reject swipes with too much vertical drift
-  const H_TO_V_RATIO = 1.5;
+  const SWIPE_THRESHOLD = 60;   // px — how far to drag before committing
+  const DIRECTION_LOCK = 10;    // px — decide horizontal vs vertical after this much movement
+  const SPRING = "cubic-bezier(.32,.72,0,1)"; // native iOS spring feel
+  const DUR = 240;              // ms — one leg of the two-leg page-turn animation
 
-  let startX = 0, startY = 0, tracking = false;
+  let startX = 0, startY = 0;
+  let tracking = false, axis = null;
+  let currentDx = 0;
+  let animating = false;        // Guards against overlapping swipes mid-animation
 
   timeline.addEventListener("touchstart", (e) => {
-    // Don't hijack swipes that start inside a horizontally-scrollable
-    // element — those need their native scroll behavior.
-    if (e.target.closest(".overflow-x-auto")) {
-      tracking = false;
-      return;
-    }
+    if (animating) { tracking = false; return; }
+    // Don't hijack swipes that start inside a horizontally-scrollable element
+    // (day tabs, nearby-items strip) — those still get native scroll.
+    if (e.target.closest(".overflow-x-auto")) { tracking = false; return; }
     tracking = true;
+    axis = null;
+    currentDx = 0;
     startX = e.touches[0].clientX;
     startY = e.touches[0].clientY;
+    feed.style.transition = "none";
   }, { passive: true });
 
-  timeline.addEventListener("touchend", (e) => {
+  timeline.addEventListener("touchmove", (e) => {
+    if (!tracking) return;
+    const dx = e.touches[0].clientX - startX;
+    const dy = e.touches[0].clientY - startY;
+
+    // Direction lock — first significant movement decides whether this is a
+    // horizontal page turn or a vertical scroll of the feed. Once locked
+    // vertical, we let the browser scroll and stop tracking.
+    if (axis === null) {
+      if (Math.abs(dx) < DIRECTION_LOCK && Math.abs(dy) < DIRECTION_LOCK) return;
+      axis = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+    }
+    if (axis !== "x") return;
+
+    // We're actively page-turning — block the browser's vertical scroll for
+    // this gesture so the page follows the finger without also scrolling.
+    e.preventDefault();
+    currentDx = dx;
+
+    // Rubber-band at first/last day — the page still follows the finger, but
+    // with resistance so it's obvious you're at the edge.
+    const idx = tripData.findIndex(d => d.id === currentDayId);
+    let visualDx = dx;
+    if ((dx > 0 && idx === 0) || (dx < 0 && idx === tripData.length - 1)) {
+      visualDx = dx / 3;
+    }
+    feed.style.transform = `translateX(${visualDx}px)`;
+  }, { passive: false });
+
+  const endDrag = () => {
     if (!tracking) return;
     tracking = false;
-    const dx = e.changedTouches[0].clientX - startX;
-    const dy = e.changedTouches[0].clientY - startY;
-    if (Math.abs(dx) < MIN_DX) return;                     // Not enough movement
-    if (Math.abs(dy) > MAX_DY) return;                     // Too vertical
-    if (Math.abs(dx) < Math.abs(dy) * H_TO_V_RATIO) return; // Not mostly horizontal
+    if (axis !== "x") return;
 
-    // RTL semantics: swipe right (dx > 0) → previous day
-    const dir = dx > 0 ? -1 : 1;
+    const dx = currentDx;
+    const feedWidth = feed.offsetWidth;
     const idx = tripData.findIndex(d => d.id === currentDayId);
+    const past = Math.abs(dx) > SWIPE_THRESHOLD;
+    const dir = dx > 0 ? -1 : 1;
     const newIdx = idx + dir;
-    if (newIdx < 0 || newIdx >= tripData.length) return;   // At the edge — no wrap
+    const canTurn = past && newIdx >= 0 && newIdx < tripData.length;
 
-    selectDay(tripData[newIdx].id);
-  }, { passive: true });
+    if (!canTurn) {
+      // Snap back to 0 with spring easing
+      feed.style.transition = `transform ${DUR}ms ${SPRING}`;
+      feed.style.transform = "translateX(0)";
+      setTimeout(() => {
+        feed.style.transition = "";
+        feed.style.transform = "";
+      }, DUR);
+      return;
+    }
+
+    // Page-turn: two-leg animation.
+    // Leg 1: current day's feed slides fully off screen in the swipe direction
+    // Leg 2: new day's feed slides in from the opposite side
+    animating = true;
+    const offX = dx > 0 ? feedWidth : -feedWidth;
+    feed.style.transition = `transform ${DUR}ms ${SPRING}`;
+    feed.style.transform = `translateX(${offX}px)`;
+
+    setTimeout(() => {
+      // Swap the day (this re-renders both the day tabs and the activity feed)
+      currentDayId = tripData[newIdx].id;
+      renderDaySelector();
+      renderDay(currentDayId);
+      // Auto-center the newly-active tab in the top day strip
+      const buttons = document.querySelectorAll("#daySelector button");
+      if (buttons[newIdx]) {
+        buttons[newIdx].scrollIntoView({ inline: "center", behavior: "smooth", block: "nearest" });
+      }
+      // Position the new content off-screen on the OPPOSITE side (no animation)
+      feed.style.transition = "none";
+      feed.style.transform = `translateX(${-offX}px)`;
+      // Force reflow so the browser commits that position before we animate
+      void feed.offsetWidth;
+      // Leg 2: slide in to 0
+      feed.style.transition = `transform ${DUR}ms ${SPRING}`;
+      feed.style.transform = "translateX(0)";
+      setTimeout(() => {
+        feed.style.transition = "";
+        feed.style.transform = "";
+        animating = false;
+      }, DUR);
+    }, DUR);
+  };
+
+  timeline.addEventListener("touchend", endDrag, { passive: true });
+  timeline.addEventListener("touchcancel", endDrag, { passive: true });
 }
 
 function navigateTo(query) {
@@ -1461,28 +1539,37 @@ function setupSwipeToClose(sheetSelector, modalId) {
     dragging = false;
     if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
 
-    // Restore the spring transition BEFORE mutating transform, so both
-    // the snap-back and the close animation glide instead of jump-cut.
-    sheet.style.transition = `transform .35s ${SPRING_EASING}`;
+    const DUR = 260;
+    sheet.style.transition = `transform ${DUR}ms ${SPRING_EASING}`;
 
     if (deltaY > CLOSE_THRESHOLD) {
-      // Slide away. closeModal adds `translate-y-full` — the current
-      // inline transform stays in place so the transition interpolates
-      // from wherever the finger left off down to fully-off-screen.
-      closeModal(modalId);
+      // The current inline transform (translateY(deltaY)) has higher specificity
+      // than any class-based transform, so calling closeModal alone would leave
+      // the sheet stuck mid-drag. Animate the inline transform all the way off
+      // screen ourselves, THEN hide the modal — that's why closing felt sticky
+      // before, it never actually finished sliding down.
+      const sheetHeight = sheet.offsetHeight;
+      sheet.style.transform = `translateY(${sheetHeight}px)`;
+      setTimeout(() => {
+        const modal = document.getElementById(modalId);
+        modal.classList.add("hidden");
+        document.body.classList.remove("overflow-hidden");
+        // Reset for the next open — clear the inline drag state and put the
+        // class-based off-screen position back so the next openModal animates
+        // from off-screen up.
+        sheet.style.transition = "";
+        sheet.style.transform = "";
+        sheet.classList.add("translate-y-full");
+      }, DUR);
     } else {
-      // Snap back to 0 using the spring easing.
-      sheet.style.transform = "translateY(0px)";
+      // Snap back to 0 with spring easing
+      sheet.style.transform = "translateY(0)";
+      setTimeout(() => {
+        // Clear inline styles so the next drag starts from a clean state
+        sheet.style.transition = "";
+        sheet.style.transform = "";
+      }, DUR);
     }
-
-    // After the animation completes, clear the inline transform and
-    // transition so subsequent opens/drags start from a clean slate.
-    const cleanup = () => {
-      sheet.style.transform = "";
-      sheet.style.transition = "";
-      sheet.removeEventListener("transitionend", cleanup);
-    };
-    sheet.addEventListener("transitionend", cleanup);
 
     deltaY = 0;
   };
