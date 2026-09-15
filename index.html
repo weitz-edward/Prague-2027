@@ -104,7 +104,8 @@
     <h2 class="font-display text-xl font-bold mb-1 mt-1">מידע</h2>
     <p class="text-sm text-navydeep/60 mb-4">כל מה שצריך לדעת לפני שיוצאים</p>
 
-    <div id="toolkitInfo" class="flex flex-col gap-3 mb-6"></div>
+    <!-- Public Transport card (rendered by renderToolkit as the first toolkitInfo item) -->
+    <div id="toolkitInfoTop" class="flex flex-col gap-3 mb-6"></div>
 
     <!-- Currency Converter -->
     <div class="bg-white rounded-2xl shadow-card p-4 mb-6">
@@ -135,6 +136,9 @@
       </div>
       <p class="text-[11px] text-navydeep/40 mt-3 text-center">שער עדכני: <span id="rateNoteValue"></span></p>
     </div>
+
+    <!-- Remaining info cards (rendered by renderToolkit as the rest of toolkitInfo) -->
+    <div id="toolkitInfoRest" class="flex flex-col gap-3 mb-6"></div>
   </section>
 
   <!-- ---------- TAB 4: רשימות (Lists) ---------- -->
@@ -459,6 +463,7 @@ const tripData = [
         ],
         locked: false,
         mapQuery: "Prague Zoo",
+        mapUrl: "https://www.zoopraha.cz/images/mapy/Orientacni-plan_Zoo-Praha_2026-06_EN_web.jpg",
         description: "אחד מגני החיות הטובים באירופה. מתחם ענק עם יער אינדונזי ופינות ליטוף.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> עידו ודניאל בפינות הליטוף, עדי ברכבל הפתוח, ואריאלה תאהב את המסלולים המוצלים והפתוחים.<br><br>🚇 <strong>הגעה במטרו:</strong> אין מטרו במרחק הליכה — Nádraží Holešovice (🔴 קו C) + אוטובוס 112 ישירות לכניסה.",
         nearby: [
           {
@@ -773,10 +778,10 @@ const vaultData = [
 ];
 
 const toolkitInfo = [
+  { icon: "fa-train-subway", color: "navy", title: "תחבורה ציבורית ומפות", text: "הורידו את אפליקציית <strong>PID Lítačka</strong> לקניית כרטיסים וחיפוש חיבורים.<div class='flex flex-col gap-2 mt-3'><a href='https://pid.cz/wp-content/uploads/mapy/ostatni/Schema-metro-skla_2026-04.png' target='_blank' rel='noopener' class='flex w-full items-center justify-center gap-2 py-3 rounded-xl bg-navy text-cream text-sm font-semibold active:scale-[.98] transition'><i class='fa-solid fa-train-subway'></i> מפת מטרו</a><a href='https://pid.cz/mapy-a-schemata/' target='_blank' rel='noopener' class='flex w-full items-center justify-center gap-2 py-3 rounded-xl bg-terracotta text-cream text-sm font-semibold active:scale-[.98] transition'><i class='fa-solid fa-train-tram'></i> מפת חשמליות</a><div class='grid grid-cols-2 gap-2'><a href='https://www.dpp.cz/en/travelling/timetables' target='_blank' rel='noopener' class='flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-teal/10 text-teal text-xs font-semibold active:scale-[.98] transition'><i class='fa-solid fa-clock text-[10px]'></i> לוחות זמנים</a><a href='https://www.dpp.cz/en' target='_blank' rel='noopener' class='flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-gold/10 text-gold text-xs font-semibold active:scale-[.98] transition'><i class='fa-solid fa-globe text-[10px]'></i> DPP.cz</a></div></div>" },
   { icon: "fa-triangle-exclamation", color: "terracotta", title: "מספרי חירום", text: "משטרה/מד״א/כיבוי — 112 · אמבולנס — 155" },
   { icon: "fa-coins", color: "gold", title: "מטבע", text: "קורונה צ׳כית (CZK) — לא ניתן לשלם באירו ברוב המקומות" },
-  { icon: "fa-wifi", color: "teal", title: "סים / אינטרנט", text: "מומלץ eSIM מקומי או חבילת נדידה לפני הנחיתה" },
-  { icon: "fa-train-subway", color: "navy", title: "תחבורה ציבורית ומפות", text: "הורידו את אפליקציית <strong>PID Lítačka</strong> לקניית כרטיסים וחיפוש חיבורים.<div class='flex flex-col gap-2 mt-3'><a href='https://pid.cz/mapy-a-schemata/' target='_blank' rel='noopener' class='flex w-full items-center justify-center gap-2 py-3 rounded-xl bg-navy text-cream text-sm font-semibold active:scale-[.98] transition'><i class='fa-solid fa-train-subway'></i> מפת מטרו</a><a href='https://pid.cz/mapy-a-schemata/' target='_blank' rel='noopener' class='flex w-full items-center justify-center gap-2 py-3 rounded-xl bg-terracotta text-cream text-sm font-semibold active:scale-[.98] transition'><i class='fa-solid fa-train-tram'></i> מפת חשמליות</a><div class='grid grid-cols-2 gap-2'><a href='https://www.dpp.cz/en/travelling/timetables' target='_blank' rel='noopener' class='flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-teal/10 text-teal text-xs font-semibold active:scale-[.98] transition'><i class='fa-solid fa-clock text-[10px]'></i> לוחות זמנים</a><a href='https://www.dpp.cz/en' target='_blank' rel='noopener' class='flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-gold/10 text-gold text-xs font-semibold active:scale-[.98] transition'><i class='fa-solid fa-globe text-[10px]'></i> DPP.cz</a></div></div>" }
+  { icon: "fa-wifi", color: "teal", title: "סים / אינטרנט", text: "מומלץ eSIM מקומי או חבילת נדידה לפני הנחיתה" }
 ];
 
 const packingItems = [
@@ -1146,8 +1151,8 @@ function renderVault() {
 /*  RENDER: Toolkit tab                                               */
 /* ---------------------------------------------------------------- */
 function renderToolkit() {
-  const infoEl = document.getElementById("toolkitInfo");
-  infoEl.innerHTML = toolkitInfo.map(item => `
+  // Shared card template
+  const cardHTML = (item) => `
     <div class="bg-white rounded-2xl shadow-card p-4 flex items-start gap-3">
       <span class="w-9 h-9 rounded-xl bg-${item.color}/10 text-${item.color} flex items-center justify-center shrink-0">
         <i class="fa-solid ${item.icon}"></i>
@@ -1157,7 +1162,13 @@ function renderToolkit() {
         <p class="text-xs text-navydeep/60 leading-relaxed">${item.text}</p>
       </div>
     </div>
-  `).join("");
+  `;
+  // Public transport (item 0) renders in the top slot, above the currency card.
+  // Remaining info cards render below the currency card.
+  const topEl = document.getElementById("toolkitInfoTop");
+  const restEl = document.getElementById("toolkitInfoRest");
+  if (topEl) topEl.innerHTML = toolkitInfo.slice(0, 1).map(cardHTML).join("");
+  if (restEl) restEl.innerHTML = toolkitInfo.slice(1).map(cardHTML).join("");
 
   document.getElementById("rateNoteValue").textContent = `1 CZK ≈ ${CZK_TO_ILS.toFixed(3)} ש״ח`;
 
@@ -1441,10 +1452,16 @@ function openItemInfo(id) {
     </div>
     <h2 class="font-display text-2xl font-bold mb-3">${item.title}</h2>
     ${item.description ? `<p class="text-sm text-navydeep/70 leading-relaxed mb-6">${item.description}</p>` : ''}
-    <div class="grid ${item.menuUrl ? 'grid-cols-2' : 'grid-cols-1'} gap-2">
+    ${(() => {
+      // Compute button count so we can pick the right grid width. Navigate is always shown.
+      const extras = [item.menuUrl, item.mapUrl].filter(Boolean).length;
+      const cols = extras === 2 ? 'grid-cols-3' : extras === 1 ? 'grid-cols-2' : 'grid-cols-1';
+      return `<div class="grid ${cols} gap-2">
       ${item.menuUrl ? `<button onclick="window.open('${item.menuUrl}', '_blank')" class="flex items-center justify-center gap-2 bg-paper text-navydeep rounded-xl py-2.5 text-sm font-semibold active:scale-95 transition"><i class="fa-solid fa-utensils"></i> תפריט</button>` : ''}
+      ${item.mapUrl ? `<button onclick="window.open('${item.mapUrl}', '_blank')" class="flex items-center justify-center gap-2 bg-paper text-navydeep rounded-xl py-2.5 text-sm font-semibold active:scale-95 transition"><i class="fa-solid fa-map"></i> מפת המקום</button>` : ''}
       <button onclick="navigateTo('${item.mapQuery}')" class="flex items-center justify-center gap-2 bg-navy text-cream rounded-xl py-2.5 text-sm font-semibold active:scale-95 transition"><i class="fa-solid fa-diamond-turn-right"></i> נווט לשם</button>
-    </div>
+    </div>`;
+    })()}
   `;
   openModal("infoModal");
 }
