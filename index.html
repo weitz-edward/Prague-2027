@@ -1048,6 +1048,108 @@ const tripData = [
   }
 ];
 
+/* ---------------------------------------------------------------- */
+/*  ROUTE DATA — step-by-step paths between consecutive activities  */
+/* ---------------------------------------------------------------- */
+const routeData = {
+  /* DAY 1 */
+  "d1-a1→d1-a2": [
+    {mode:"uber", text:"הסעה מאורגנת / Uber לדירה במרכז העיר", icon:"fa-car", duration:"30 ד׳"}
+  ],
+  /* DAY 2 */
+  "d2-a1→d2-a2": [
+    {mode:"walk", text:"הליכה דרך רחוב Na Příkopě", icon:"fa-person-walking", duration:"10 ד׳", detail:"~600 מ׳"}
+  ],
+  "d2-a2→d2-lunch": [
+    {mode:"walk", text:"הליכה קצרה ברחוב Vodičkova", icon:"fa-person-walking", duration:"5 ד׳", detail:"~300 מ׳"}
+  ],
+  "d2-lunch→d2-a3": [
+    {mode:"walk", text:"הליכה לכיוון הנהר — למזח השייט", icon:"fa-person-walking", duration:"15 ד׳", detail:"~900 מ׳"}
+  ],
+  "d2-a3→d2-a4": [
+    {mode:"walk", text:"הליכה מהמזח חזרה לכיכר ואצלב", icon:"fa-person-walking", duration:"12 ד׳", detail:"~700 מ׳"}
+  ],
+  "d2-a4→d2-dinner": [
+    {mode:"same", text:"באותו אזור — כיכר ואצלב", icon:"fa-location-dot", duration:"3 ד׳", detail:"~150 מ׳"}
+  ],
+  /* DAY 3 */
+  "d3-a0→d3-a1": [
+    {mode:"tram", text:"רכבל (פוניקולר) לראש הגבעה", icon:"fa-cable-car", duration:"5 ד׳"}
+  ],
+  "d3-a1→d3-lunch": [
+    {mode:"walk", text:"רכבל בחזרה למטה + הליכה ל-Café Savoy", icon:"fa-cable-car", duration:"10 ד׳", detail:"ירידה ברכבל + 200 מ׳"}
+  ],
+  "d3-lunch→d3-a2": [
+    {mode:"tram", text:"חשמלית מ-Újezd", icon:"fa-train-tram", duration:"20 ד׳", detail:"קווים 9/22 → Václavské nám."},
+    {mode:"walk", text:"הליכה לסוף הכיכר — המוזיאון הלאומי", icon:"fa-person-walking", duration:"5 ד׳", detail:"~400 מ׳"}
+  ],
+  "d3-a2→d3-dinner": [
+    {mode:"metro", text:"מטרו מ-Muzeum (🟢A) ל-Staroměstská", icon:"fa-train-subway", duration:"3 ד׳", detail:"תחנה אחת"},
+    {mode:"walk", text:"הליכה ברחוב Dlouhá", icon:"fa-person-walking", duration:"5 ד׳", detail:"~300 מ׳"}
+  ],
+  /* DAY 4 */
+  "d4-a0→d4-a1": [
+    {mode:"same", text:"יורדים מהאוטובוס בכניסה לגן החיות", icon:"fa-location-dot", duration:"1 ד׳"}
+  ],
+  "d4-a1→d4-dinner": [
+    {mode:"bus", text:"אוטובוס 112 → Nádraží Holešovice", icon:"fa-bus", duration:"10 ד׳"},
+    {mode:"metro", text:"מטרו 🔴C → Florenc, החלפה ל-🟢A → Staroměstská", icon:"fa-train-subway", duration:"12 ד׳", detail:"4 תחנות + החלפה"},
+    {mode:"walk", text:"הליכה ל-Mistral Café ברובע היהודי", icon:"fa-person-walking", duration:"3 ד׳", detail:"~200 מ׳"}
+  ],
+  /* DAY 5 */
+  "d5-a0→d5-a1": [
+    {mode:"same", text:"יורדים מהחשמלית בכניסה לטירה", icon:"fa-location-dot", duration:"2 ד׳"}
+  ],
+  "d5-a1→d5-a2": [
+    {mode:"walk", text:"ירידה במורד הגבעה לגן וולדשטיין", icon:"fa-person-walking", duration:"12 ד׳", detail:"~700 מ׳ במורד"}
+  ],
+  "d5-a2→d5-lunch": [
+    {mode:"walk", text:"הליכה קצרה לכיכר Malostranské nám.", icon:"fa-person-walking", duration:"4 ד׳", detail:"~250 מ׳"}
+  ],
+  "d5-lunch→d5-a3": [
+    {mode:"walk", text:"הליכה לכיוון גשר קארל — מוזיאון קארל זמן", icon:"fa-person-walking", duration:"6 ד׳", detail:"~400 מ׳"}
+  ],
+  "d5-a3→d5-dinner": [
+    {mode:"walk", text:"חוצים את גשר קארל לצד העיר העתיקה", icon:"fa-person-walking", duration:"12 ד׳", detail:"~700 מ׳ על הגשר"},
+    {mode:"walk", text:"הליכה ברחוב Dlouhá ל-La Casa Latina", icon:"fa-person-walking", duration:"8 ד׳", detail:"~500 מ׳"}
+  ],
+  /* DAY 6 */
+  "d6-a0→d6-a1": [
+    {mode:"same", text:"מגיעים ישירות לכניסה", icon:"fa-location-dot", duration:"1 ד׳"}
+  ],
+  "d6-a1→d6-dinner": [
+    {mode:"uber", text:"Uber / Bolt חזרה למרכז העיר", icon:"fa-car", duration:"25 ד׳", detail:"~250–350 CZK"},
+    {mode:"walk", text:"הליכה מנקודת ההורדה לכיכר העיר העתיקה", icon:"fa-person-walking", duration:"3 ד׳", detail:"~200 מ׳"}
+  ],
+  /* DAY 7 */
+  "d7-a1→d7-lunch": [
+    {mode:"metro", text:"מטרו מ-Národní třída (🟡B) ל-Anděl", icon:"fa-train-subway", duration:"4 ד׳", detail:"2 תחנות"},
+    {mode:"walk", text:"הליכה ל-Manifesto Market", icon:"fa-person-walking", duration:"3 ד׳", detail:"~200 מ׳"}
+  ],
+  "d7-lunch→d7-a2": [
+    {mode:"same", text:"באותו אזור — Anděl", icon:"fa-location-dot", duration:"3 ד׳", detail:"~200 מ׳"}
+  ],
+  "d7-a2→d7-a3": [
+    {mode:"metro", text:"מטרו מ-Anděl (🟡B) ל-Zličín (סוף הקו)", icon:"fa-train-subway", duration:"15 ד׳", detail:"8 תחנות"},
+    {mode:"walk", text:"כניסה לקניון Metropole Zličín", icon:"fa-person-walking", duration:"2 ד׳", detail:"~150 מ׳"}
+  ],
+  "d7-a3→d7-a4": [
+    {mode:"same", text:"באותו קניון — Metropole Zličín", icon:"fa-location-dot", duration:"1 ד׳"}
+  ],
+  "d7-a4→d7-dinner": [
+    {mode:"same", text:"באותו קניון — קומת המסעדות", icon:"fa-location-dot", duration:"2 ד׳"}
+  ],
+  /* DAY 8 */
+  "d8-a1→d8-lunch": [
+    {mode:"walk", text:"ירידה מהמצודה ברחוב Vratislavova", icon:"fa-person-walking", duration:"10 ד׳", detail:"~500 מ׳ במורד"}
+  ],
+  "d8-lunch→d8-a2": [
+    {mode:"walk", text:"הליכה לטיילת נאפלבקה לאורך הנהר", icon:"fa-person-walking", duration:"12 ד׳", detail:"~800 מ׳"}
+  ],
+  "d8-a2→d8-dinner": [
+    {mode:"walk", text:"הליכה לאורך הטיילת לכיוון Újezd", icon:"fa-person-walking", duration:"15 ד׳", detail:"~1 ק״מ"}
+  ]
+};
 
 const vaultData = [
   {
@@ -1364,7 +1466,49 @@ function renderDay(dayId) {
   if (!day) return;
 
   const feed = document.getElementById("activityFeed");
-  feed.innerHTML = day.activities.map(a => activityCardHTML(a)).join("");
+  let html = "";
+  day.activities.forEach((a, i) => {
+    html += activityCardHTML(a);
+    if (i < day.activities.length - 1) {
+      const nextA = day.activities[i + 1];
+      const key = a.id + "→" + nextA.id;
+      const steps = routeData[key];
+      if (steps) html += routeStripHTML(steps);
+    }
+  });
+  feed.innerHTML = html;
+}
+
+
+function routeStripHTML(steps) {
+  const modeColors = {
+    walk: "navy", metro: "teal", tram: "teal", bus: "teal",
+    uber: "terracotta", same: "navydeep/40"
+  };
+  const stepsHtml = steps.map(s => {
+    const c = modeColors[s.mode] || "navy";
+    return `
+      <div class="flex items-start gap-2.5">
+        <span class="w-5 h-5 rounded-full bg-${c}/10 text-${c} flex items-center justify-center flex-shrink-0 mt-0.5">
+          <i class="fa-solid ${s.icon} text-[9px]"></i>
+        </span>
+        <span class="text-xs text-navydeep/70 leading-snug">${s.text}${s.detail ? ` <span class="text-navydeep/40">(${s.detail})</span>` : ''}</span>
+        <span class="text-[11px] font-semibold text-${c} mr-auto whitespace-nowrap">${s.duration}</span>
+      </div>`;
+  }).join("");
+  const total = steps.reduce((sum, s) => {
+    const m = s.duration.match(/(\d+)/);
+    return sum + (m ? parseInt(m[1]) : 0);
+  }, 0);
+  return `
+    <div class="route-strip my-2 mx-1 px-3 py-2.5 border-r-[3px] border-teal/30 bg-gradient-to-l from-teal/[0.03] to-transparent rounded-lg">
+      <div class="flex items-center gap-1.5 mb-1.5">
+        <i class="fa-solid fa-route text-[10px] text-teal/50"></i>
+        <span class="text-[10px] font-semibold text-teal/60 tracking-wide">מסלול</span>
+        <span class="text-[10px] text-navydeep/30 mr-auto">סה״כ ~${total} ד׳</span>
+      </div>
+      <div class="flex flex-col gap-1.5">${stepsHtml}</div>
+    </div>`;
 }
 
 function activityCardHTML(a) {
