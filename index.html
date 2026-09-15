@@ -255,9 +255,23 @@
 <script>
 
 /* ---------------------------------------------------------------- */
-/*  DATA-DRIVEN TRIP MODEL                                          */
+/*  DATA-DRIVEN TRIP MODEL  (revised)                               */
+/*  Changes:                                                        */
+/*  - Ido = 3 y/o, Daniel = 5 y/o (corrected)                      */
+/*  - Museum of Fantastic Illusions → Day 2 (fills gap)             */
+/*  - National Museum → Day 3 afternoon (replaces double museum)    */
+/*  - Máj + Museum of Bricks → Day 7 (metro B line flow)           */
+/*  - Day 5: Tram 22 up, downhill flow, ~5 km total                */
+/*  - Day 7: all metro B westward (Národní→Anděl→Zličín)           */
+/*  - Primark split into separate overlapping activity              */
+/*  - Cruise unlocked                                               */
+/*  - rainPlanB added to outdoor activities                         */
+/*  - Hebrew tips embedded in descriptions                          */
 /* ---------------------------------------------------------------- */
 const tripData = [
+  /* ============================================================== */
+  /*  DAY 1 — Thursday 22.4 — Arrival                               */
+  /* ============================================================== */
   {
     id: "day1",
     dayLabel: "יום ה׳",
@@ -270,13 +284,12 @@ const tripData = [
         title: "Václav Havel Airport (PRG)",
         category: "טיסה",
         icon: "fa-plane-arrival",
-        // Generic aviation image (transit, user prefers generic)
         images: [
           "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=900&q=80&auto=format&fit=crop"
         ],
         locked: false,
         mapQuery: "Václav Havel Airport Prague",
-        description: "ברוכים הבאים לפראג! אחרי טיסת הערב, איסוף מזוודות ונסיעה למרכז העיר.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אריאלה, שתשלוף חטיף אחרון מהבית כדי להעביר את הנסיעה למלון בשקט."
+        description: "ברוכים הבאים לפראג! אחרי טיסת הערב, איסוף מזוודות והסעה מאורגנת למרכז העיר.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אריאלה, שתשלוף חטיף אחרון מהבית כדי להעביר את הנסיעה למלון בשקט."
       },
       {
         id: "d1-a2",
@@ -297,11 +310,10 @@ const tripData = [
           {
             title: "Dancing House",
             distance: "6 דקות הליכה",
-            // No user upload; Wikimedia
             images: [
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/dancingHouse1.jfif",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/dancingHouse2.jpg"
-        ],
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/dancingHouse1.jfif",
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/dancingHouse2.jpg"
+            ],
             mapQuery: "Dancing House Prague",
             description: "בניין מודרניסטי ייחודי על שפת הנהר. מואר ומרהיב בלילה.<br><br>🚇 <strong>הגעה במטרו:</strong> Karlovo náměstí (🟡 קו B) — כ-500 מטרים."
           }
@@ -309,6 +321,10 @@ const tripData = [
       }
     ]
   },
+
+  /* ============================================================== */
+  /*  DAY 2 — Friday 23.4 — Old Town, Illusions, Cruise, Garden     */
+  /* ============================================================== */
   {
     id: "day2",
     dayLabel: "יום ו׳",
@@ -321,7 +337,6 @@ const tripData = [
         title: "Old Town Square & Astronomical Clock",
         category: "סיור",
         icon: "fa-clock",
-        // No user upload; Wikimedia
         images: [
           "https://commons.wikimedia.org/wiki/Special:FilePath/Czech-2013-Prague-Astronomical_clock_face.jpg?width=900",
           "https://commons.wikimedia.org/wiki/Special:FilePath/Astronomical_Clock_and_Tyn_Church_Prague_%2851630232994%29.jpg?width=900",
@@ -331,124 +346,28 @@ const tripData = [
         ],
         locked: false,
         mapQuery: "Astronomical Clock Prague",
-        description: "הלב הפועם של פראג. בואו לקראת השעה העגולה כדי לראות את בובות השליחים.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אריאלה תהנה מהאווירה. עידו ודניאל יהיו מרותקים לבובות השעון. עדי תאהב את האגדות על בונה השעון.<br><br>🚇 <strong>הגעה במטרו:</strong> Staroměstská (🟢 קו A) — כ-400 מטרים.",
+        description: "הלב הפועם של פראג. בואו לקראת השעה העגולה כדי לראות את בובות השליחים. הביקור בכיכר לוקח כ-45–60 דקות עם ילדים — אחרי השעון, סיבוב קצר ליד כנסיית טין ובתי המגורים הצבעוניים.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אריאלה תהנה מהאווירה. עידו ודניאל יהיו מרותקים לבובות השעון. עדי תאהב את האגדות על בונה השעון.<br><br>🚇 <strong>הגעה במטרו:</strong> Staroměstská (🟢 קו A) — כ-400 מטרים.",
+        rainPlanB: {
+          title: "בית העירייה של העיר העתיקה",
+          description: "סיור פנימי בבניין העירייה ההיסטורי — מרתפים מימי הביניים, אולמות מפוארים ותצפית ממגדל השעון (מקורה). מתאים גם לילדים.",
+          mapQuery: "Old Town Hall Prague"
+        },
         nearby: [
           {
             title: "Havelský Market",
             distance: "3 דקות הליכה",
             images: [
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/HavelskyMarket1.jfif",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/HavelskyMarket2.webp"
-        ],
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/HavelskyMarket1.jfif",
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/HavelskyMarket2.webp"
+            ],
             mapQuery: "Havelske Market Prague",
-            description: "שוק עתיק עם פירות יער טריים, צעצועי עץ ובובות מכשפה.<br><br>🚇 <strong>הגעה במטרו:</strong> Můstek (🟢🟡 🟢🟡 קווים A+B) — כ-200 מטרים."
+            description: "שוק עתיק עם פירות יער טריים, צעצועי עץ ובובות מכשפה. סיבוב של 15–20 דקות מספיק.<br><br>🚇 <strong>הגעה במטרו:</strong> Můstek (🟢🟡 קווים A+B) — כ-200 מטרים."
           }
         ]
       },
       {
         id: "d2-a2",
-        time: "14:00",
-        title: "Vltava River Cruise",
-        category: "שייט",
-        icon: "fa-ship",
-        images: [
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/VltavaRiverCruise1.jfif"
-        ],
-        locked: true,
-        mapQuery: "Vltava River Cruise Prague",
-        description: "שייט רגוע של 45 דקות. דרך מעולה לראות את גשר קארל מלמטה.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> כולם! הזדמנות לעידו ודניאל לשבת ולהירגע, ולעדי לצלם ברבורים מהסיפון.<br><br>🚇 <strong>הגעה במטרו:</strong> Staroměstská (🟢 קו A) — כ-300 מטרים (תלוי במזח היציאה)."
-      },
-      {
-        id: "d2-a3",
-        time: "16:30",
-        title: "Franciscan Garden",
-        category: "פנאי",
-        icon: "fa-child-reaching",
-        images: [
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/FranciscanGarden1.jfif",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/FranciscanGarden2.jfif",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/FranciscanGarden2.webp",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/FranciscanGarden3.jfif"
-        ],
-        locked: false,
-        mapQuery: "Franciscan Garden Prague",
-        description: "גינה נסתרת שמוקפת בניינים יפהפיים. <br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אריאלה ולך - שבו בשקט עם קפה בזמן שעידו ודניאל מוציאים מרץ במתקנים הבטוחים.<br><br>🚇 <strong>הגעה במטרו:</strong> Můstek (🟢🟡 🟢🟡 קווים A+B) — כ-150 מטרים."
-      }
-    ]
-  },
-  {
-    id: "day3",
-    dayLabel: "יום ש׳",
-    dateDisplay: "24.4",
-    weather: null,
-    activities: [
-      {
-        id: "d3-a0",
-        time: "09:00",
-        title: "Tram to Újezd",
-        category: "נסיעה",
-        icon: "fa-train-tram",
-        // Generic tram image (transit)
-        images: [
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/tram1.webp"
-        ],
-        locked: false,
-        mapQuery: "Ujezd Prague",
-        description: "נסיעה קצרה בחשמלית אל תחנת Újezd, משם לוקחים את הפוניקולר לראש גבעת פטז׳ין."
-      },
-      {
-        id: "d3-a1",
-        time: "09:30",
-        title: "Petřín Hill & Mirror Maze",
-        category: "סיור",
-        icon: "fa-mountain-city",
-        // No user upload; Wikimedia
-        images: [
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/petrilhill1.jfif",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/petrilhill2.jpg",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/petrilhill3.jpg",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/mirrormaze1.jfif",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/mirrormaze2.jfif",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/mirrormaze3.jpg"
-        ],
-        locked: false,
-        mapQuery: "Petrin Tower Prague",
-        description: "גנים יפים, מגדל תצפית דמוי אייפל, ומבוך מראות היסטורי.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> נסיעת הרכבל תלהיב את דניאל ועידו. מבוך המראות יצחיק את עדי ואת כולכם.<br><br>🚇 <strong>הגעה במטרו:</strong> Malostranská (🟢 קו A) — כ-800 מטרים; עדיף להגיע בחשמלית עד Újezd ומשם ברכבל.",
-        nearby: [
-          {
-            title: "Crawling Babies (Kampa)",
-            distance: "בתחתית הגבעה",
-            // No user upload; Wikimedia
-            images: [
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/kampa1.jfif"
-        ],
-            mapQuery: "Crawling Babies David Cerny Kampa",
-            description: "פסלי ברונזה ענקיים ומוזרים של תינוקות זוחלים ללא פנים.<br><br>🚇 <strong>הגעה במטרו:</strong> Malostranská (🟢 קו A) — כ-700 מטרים."
-          }
-        ]
-      },
-      {
-        id: "d3-a2",
-        time: "13:30",
-        title: "Máj House of Fun & Museum of Bricks",
-        category: "פנאי",
-        icon: "fa-gamepad",
-        // Mix of both venues (title covers both)
-        images: [
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/Maj1.jfif",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/Maj2.jfif",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/Maj3.jfif",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/MuseumofBricks1.jpg",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/MuseumofBricks2.jpg",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/MuseumofBricks3.webp"
-        ],
-        locked: false,
-        mapQuery: "Museum of Bricks Prague",
-        description: "מתחם בילוי מטורף ומוזיאון הלגו הכולל עמדות יצירה חופשית.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> גן עדן לדניאל ולעדי. עידו יתלהב מעמדות היצירה.<br><br>🚇 <strong>הגעה במטרו:</strong> Národní třída (🟡 קו B) — כ-200 מטרים."
-      },
-      {
-        id: "d3-a3",
-        time: "16:30",
+        time: "11:30",
         title: "Museum of Fantastic Illusions",
         category: "פנאי",
         icon: "fa-wand-magic-sparkles",
@@ -462,10 +381,127 @@ const tripData = [
         ],
         locked: false,
         mapQuery: "Museum of Fantastic Illusions Prague",
-        description: "הזדמנות לתמונות משוגעות ולאחר מכן סיבוב שופינג בכיכר ואצלב.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> התמונות לאינסטגרם של עדי, והזדמנות לאריאלה לקניות בזמן שאתה מעסיק את הקטנים.<br><br>🚇 <strong>הגעה במטרו:</strong> Můstek (🟢🟡 🟢🟡 קווים A+B) — כ-250 מטרים."
+        description: "מוזיאון אשליות אינטראקטיבי עם הזדמנויות לתמונות משוגעות! הביקור לוקח כ-45–60 דקות. ממוקם ליד כיכר ואצלב, מושלם למילוי הזמן לפני השייט.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> עדי תעשה תמונות מדהימות לאינסטגרם. דניאל (5) ועידו (3) יצחקו מהאשליות האופטיות.<br><br>🚇 <strong>הגעה במטרו:</strong> Můstek (🟢🟡 קווים A+B) — כ-250 מטרים."
+      },
+      {
+        id: "d2-a3",
+        time: "14:00",
+        title: "Vltava River Cruise",
+        category: "שייט",
+        icon: "fa-ship",
+        images: [
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/VltavaRiverCruise1.jfif"
+        ],
+        locked: false,
+        mapQuery: "Vltava River Cruise Prague",
+        description: "שייט רגוע של 45 דקות. דרך מעולה לראות את גשר קארל מלמטה. מומלץ לאכול ארוחת צהריים ליד הנהר לפני השייט.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> כולם! הזדמנות לעידו ודניאל לשבת ולהירגע, ולעדי לצלם ברבורים מהסיפון.<br><br>🚇 <strong>הגעה במטרו:</strong> Staroměstská (🟢 קו A) — כ-300 מטרים (תלוי במזח היציאה).",
+        rainPlanB: {
+          title: "השייט מפליג גם בגשם קל",
+          description: "רוב הספינות מקורות. בגשם כבד, שקלו להחליף למוזיאון הנהר (Kampa Museum) או לארוחה ארוכה במסעדה עם נוף לנהר.",
+          mapQuery: "Kampa Museum Prague"
+        }
+      },
+      {
+        id: "d2-a4",
+        time: "16:30",
+        title: "Franciscan Garden",
+        category: "פנאי",
+        icon: "fa-child-reaching",
+        images: [
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/FranciscanGarden1.jfif",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/FranciscanGarden2.jfif",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/FranciscanGarden2.webp",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/FranciscanGarden3.jfif"
+        ],
+        locked: false,
+        mapQuery: "Franciscan Garden Prague",
+        description: "גינה נסתרת שמוקפת בניינים יפהפיים, עם מתקני משחק בטוחים. הזדמנות מעולה לילדים לפרוק אנרגיה אחרי יום של סיורים ושייט.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אריאלה ולך — שבו בשקט עם קפה בזמן שעידו ודניאל מוציאים מרץ במתקנים.<br><br>🚇 <strong>הגעה במטרו:</strong> Můstek (🟢🟡 קווים A+B) — כ-150 מטרים.",
+        rainPlanB: {
+          title: "קניון Palladium",
+          description: "קניון גדול ומודרני במרחק 5 דקות הליכה. יש בו חנויות, בית קפה ואזור לילדים — חלופה מושלמת ליום גשום.",
+          mapQuery: "Palladium Shopping Center Prague"
+        }
       }
     ]
   },
+
+  /* ============================================================== */
+  /*  DAY 3 — Saturday 24.4 — Petřín Hill + National Museum         */
+  /* ============================================================== */
+  {
+    id: "day3",
+    dayLabel: "יום ש׳",
+    dateDisplay: "24.4",
+    weather: null,
+    activities: [
+      {
+        id: "d3-a0",
+        time: "09:00",
+        title: "Tram to Újezd",
+        category: "נסיעה",
+        icon: "fa-train-tram",
+        images: [
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/tram1.webp"
+        ],
+        locked: false,
+        mapQuery: "Ujezd Prague",
+        description: "נסיעה קצרה בחשמלית אל תחנת Újezd, משם לוקחים את הפוניקולר לראש גבעת פטז׳ין."
+      },
+      {
+        id: "d3-a1",
+        time: "09:30",
+        title: "Petřín Hill & Mirror Maze",
+        category: "סיור",
+        icon: "fa-mountain-city",
+        images: [
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/petrilhill1.jfif",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/petrilhill2.jpg",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/petrilhill3.jpg",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/mirrormaze1.jfif",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/mirrormaze2.jfif",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/mirrormaze3.jpg"
+        ],
+        locked: false,
+        mapQuery: "Petrin Tower Prague",
+        description: "גנים יפים, מגדל תצפית דמוי אייפל, ומבוך מראות היסטורי. תכננו כ-2.5–3 שעות כאן — רכבל למעלה, סיבוב במגדל ובמבוך, רכבל בחזרה למטה.<br><br>💡 <strong>טיפ:</strong> מומלץ להביא עגלה חזקה עם גלגלים גדולים או מנשא גב — עגלות מטריה לא שורדות את השטח כאן. השבילים בראש הגבעה חצציים ולא אחידים.<br><br>⚠️ <strong>שבת בעונת השיא</strong> — צפו לתורים ברכבל ובמבוך. נסו להגיע עד 9:00 כדי להקדים.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> נסיעת הרכבל תלהיב את עידו (3) ודניאל (5). מבוך המראות יצחיק את עדי ואת כולכם.<br><br>🚇 <strong>הגעה במטרו:</strong> Malostranská (🟢 קו A) — כ-800 מטרים; עדיף להגיע בחשמלית עד Újezd ומשם ברכבל.",
+        rainPlanB: {
+          title: "הרכבל + מבוך המראות פועלים גם בגשם",
+          description: "הרכבל מפליג גם בגשם. מבוך המראות מקורה. בגשם כבד — דלגו על מגדל התצפית (חלקלק ונוף אפסי) ועל השבילים החיצוניים, ורדו בחזרה ברכבל.",
+          mapQuery: "Petrin Mirror Maze Prague"
+        },
+        nearby: [
+          {
+            title: "Crawling Babies (Kampa)",
+            distance: "בתחתית הגבעה",
+            images: [
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/kampa1.jfif"
+            ],
+            mapQuery: "Crawling Babies David Cerny Kampa",
+            description: "פסלי ברונזה ענקיים ומוזרים של תינוקות זוחלים ללא פנים. בקרו כאן לפני העלייה או אחרי הירידה — לא כסטייה באמצע הטיול.<br><br>🚇 <strong>הגעה במטרו:</strong> Malostranská (🟢 קו A) — כ-700 מטרים."
+          }
+        ]
+      },
+      {
+        id: "d3-a2",
+        time: "14:00",
+        title: "National Museum",
+        category: "סיור",
+        icon: "fa-building-columns",
+        images: [
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/NationalMuseum1.jfif",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/NationalMuseum2.webp",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/NationalMuseum3.jpg"
+        ],
+        locked: false,
+        mapQuery: "National Museum Prague",
+        description: "הבניין המפואר בראש כיכר ואצלב עם תצוגות של היכל הטבע.<br><br>💡 <strong>טיפ:</strong> לכו ישר לאגף הטבע — דינוזאורים, מינרלים ובעלי חיים. 60–90 דקות שם מספיקות בהחלט. קומות ההיסטוריה והאתנוגרפיה פחות מתאימות לילדים מתחת לגיל 10.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> דניאל (5) ועידו (3) יעמדו פעורי פה מול הדינוזאורים. אריאלה תעריך את אולם הכניסה המפואר.<br><br>🚇 <strong>הגעה במטרו:</strong> Muzeum (🟢🔴 קווים A+C) — התחנה נמצאת ממש מתחת למוזיאון."
+      }
+    ]
+  },
+
+  /* ============================================================== */
+  /*  DAY 4 — Sunday 25.4 — Prague Zoo                              */
+  /* ============================================================== */
   {
     id: "day4",
     dayLabel: "יום א׳",
@@ -478,7 +514,6 @@ const tripData = [
         title: "Bus to Prague Zoo",
         category: "נסיעה",
         icon: "fa-bus",
-        // Generic Prague bus (transit)
         images: [
           "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/bus1.jpg"
         ],
@@ -492,7 +527,6 @@ const tripData = [
         title: "Prague Zoo",
         category: "פנאי",
         icon: "fa-hippo",
-        // No user upload; Wikimedia
         images: [
           "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/praguezoo1.jpg",
           "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/praguezoo2.jfif",
@@ -505,24 +539,33 @@ const tripData = [
         locked: false,
         mapQuery: "Prague Zoo",
         mapUrl: "https://www.zoopraha.cz/images/mapy/Orientacni-plan_Zoo-Praha_2026-06_EN_web.jpg",
-        description: "אחד מגני החיות הטובים באירופה. מתחם ענק עם יער אינדונזי ופינות ליטוף.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> עידו ודניאל בפינות הליטוף, עדי ברכבל הפתוח, ואריאלה תאהב את המסלולים המוצלים והפתוחים.<br><br>🚇 <strong>הגעה במטרו:</strong> אין מטרו במרחק הליכה — Nádraží Holešovice (🔴 קו C) + אוטובוס 112 ישירות לכניסה.",
+        description: "אחד מגני החיות הטובים באירופה. מתחם ענק (58 דונם!) עם יער אינדונזי, פינות ליטוף ורכבל פתוח. תכננו 5–6 שעות. לא תספיקו לראות הכל — בחרו מסלול והיצמדו אליו.<br><br>⚠️ <strong>יום ראשון</strong> — היום הכי עמוס בגן החיות. הגיעו בפתיחה (9:00) כדי להקדים את המשפחות המקומיות. שקלו להחליף ימים עם אטרקציה אחרת אם הגמישות מאפשרת.<br><br>💡 <strong>טיפ:</strong> אפשר לשכור עגלון בכניסה אם עידו (3) נגמר לו הכוח. מסעדות בפנים נהיות עמוסות בצהריים — אכלו מוקדם (11:30) או הביאו חטיפים. לחזרה, שקלו Uber/Bolt — האוטובוס 112 עמוס אחה״צ.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> עידו (3) ודניאל (5) בפינות הליטוף, עדי ברכבל הפתוח, ואריאלה תאהב את המסלולים המוצלים והפתוחים.<br><br>🚇 <strong>הגעה במטרו:</strong> אין מטרו במרחק הליכה — Nádraží Holešovice (🔴 קו C) + אוטובוס 112 ישירות לכניסה.",
+        rainPlanB: {
+          title: "ביתני המקורים של גן החיות",
+          description: "לגן החיות יש ביתנים מקורים מצוינים: היער האינדונזי, ביתן גורילות, ביתן הפילים. הביאו פונצ׳ו גשם (לא מטריות — צריך ידיים חופשיות עם ילדים) ותתמקדו בביתנים.",
+          mapQuery: "Prague Zoo Indonesian Jungle"
+        },
         nearby: [
           {
             title: "Troja Chateau",
             distance: "מול כניסת גן החיות",
             images: [
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/TrojaChateau1.jpg",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/TrojaChateau2.jpeg",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/TrojaChateau3.jfif",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/TrojaChateau4.jpg"
-        ],
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/TrojaChateau1.jpg",
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/TrojaChateau2.jpeg",
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/TrojaChateau3.jfif",
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/TrojaChateau4.jpg"
+            ],
             mapQuery: "Troja Chateau Prague",
-            description: "הכניסה לגנים של הארמון היא חינמית ויש בה שבילים יפים בין מזרקות בארוק.<br><br>🚇 <strong>הגעה במטרו:</strong> אין מטרו במרחק הליכה — Nádraží Holešovice (🔴 קו C) + אוטובוס 112."
+            description: "הכניסה לגנים של הארמון היא חינמית ויש בה שבילים יפים בין מזרקות בארוק. רק אם נשאר כוח אחרי הגן — 20 דקות מספיקות.<br><br>🚇 <strong>הגעה במטרו:</strong> אין מטרו במרחק הליכה — Nádraží Holešovice (🔴 קו C) + אוטובוס 112."
           }
         ]
       }
     ]
   },
+
+  /* ============================================================== */
+  /*  DAY 5 — Monday 26.4 — Castle District (downhill flow)         */
+  /* ============================================================== */
   {
     id: "day5",
     dayLabel: "יום ב׳",
@@ -530,12 +573,24 @@ const tripData = [
     weather: null,
     activities: [
       {
+        id: "d5-a0",
+        time: "09:00",
+        title: "Tram 22 to Prague Castle",
+        category: "נסיעה",
+        icon: "fa-train-tram",
+        images: [
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/tram1.webp"
+        ],
+        locked: false,
+        mapQuery: "Prazsky Hrad tram stop Prague",
+        description: "קחו חשמלית 22 מ-Malostranská (או מתחנה קרובה) עד התחנה Pražský hrad — זה חוסך 15 דקות של עלייה תלולה על אבני רחוב ושומר אנרגיה ליום שלם. מכאן הכל יורד במורד!<br><br>💡 <strong>טיפ:</strong> היום בנוי כמסלול ירידה — מהטירה למטה דרך הגנים, גשר קארל והמוזיאון. סה״כ כ-5 ק״מ, רובם במורד. הרבה יותר נוח לעידו (3) ולרגליים של כולם."
+      },
+      {
         id: "d5-a1",
         time: "09:30",
         title: "Prague Castle & Golden Lane",
         category: "סיור",
         icon: "fa-chess-rook",
-        // No user upload; Wikimedia
         images: [
           "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/praguecastle1.jpg",
           "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/praguecastle2.avif",
@@ -546,11 +601,16 @@ const tripData = [
         ],
         locked: false,
         mapQuery: "Prague Castle",
-        description: "קומפלקס הטירה הגדול בעולם. נטייל בין הארמונות ונרד במורד סמטת הזהב.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אריאלה תהנה מנופי העיר מלמעלה. דניאל ועדי ירתקו לשריונות האבירים.<br><br>🚇 <strong>הגעה במטרו:</strong> Malostranská (🟢 קו A) — כ-700 מטרים בעלייה, או חשמלית 22 עד Pražský hrad."
+        description: "קומפלקס הטירה הגדול בעולם. סיור של 2–2.5 שעות — הארמון, קתדרלת ויטוס, וסמטת הזהב עם בתי האבירים הזעירים.<br><br>⚠️ <strong>הטירה תמיד עמוסה.</strong> הגעה ב-09:00–09:30 בפתיחה היא הזמן הכי טוב. לסמטת הזהב צריך כרטיסי מעגל B לפחות — כדאי להזמין מראש.<br><br>⚠️ <strong>יום שני</strong> — מוזיאונים רבים בפראג סגורים ביום שני. הטירה וסמטת הזהב <strong>פתוחות</strong>, אבל כדאי לבדוק שוב קרוב למועד.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אריאלה תהנה מנופי העיר מלמעלה. דניאל (5) ועדי ירתקו לשריונות האבירים בסמטת הזהב.<br><br>🚇 <strong>הגעה:</strong> חשמלית 22 עד Pražský hrad — ישירות לכניסה, בלי עלייה.",
+        rainPlanB: {
+          title: "חלקים מקורים בטירה",
+          description: "קתדרלת ויטוס, הארמון הישן ובתי סמטת הזהב — כולם מקורים. בגשם, דלגו על גן הטירה ותתמקדו בפנים. יש מספיק לראות ל-2 שעות בפנים.",
+          mapQuery: "St Vitus Cathedral Prague"
+        }
       },
       {
         id: "d5-a2",
-        time: "12:30",
+        time: "12:00",
         title: "Waldstein Garden",
         category: "סיור",
         icon: "fa-tree",
@@ -561,15 +621,19 @@ const tripData = [
         ],
         locked: false,
         mapQuery: "Waldstein Garden Prague",
-        description: "גנים קסומים עם בריכת קוי ענקית וקיר נטיפים אפור.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> עידו ודניאל יתלהבו למצוא טווסים לבנים. עדי תנסה למצוא צורות בתוך קיר הנטיפים.<br><br>🚇 <strong>הגעה במטרו:</strong> Malostranská (🟢 קו A) — כ-200 מטרים."
+        description: "גנים קסומים עם בריכת קוי ענקית וקיר נטיפים אפור. הגן קטן — 30–45 דקות מספיקות. ממוקם במורד הגבעה מהטירה, בדרך לגשר קארל.<br><br>💡 <strong>שימו לב:</strong> הגן פתוח בד״כ מ-1 באפריל עד 31 באוקטובר. כדאי לאשר שהוא פתוח לפני שמגיעים.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> עידו (3) ודניאל (5) יתלהבו למצוא טווסים לבנים. עדי תנסה למצוא צורות בתוך קיר הנטיפים.<br><br>🚇 <strong>הגעה במטרו:</strong> Malostranská (🟢 קו A) — כ-200 מטרים.",
+        rainPlanB: {
+          title: "דלגו על הגן, הרחיבו במוזיאון קארל זמן",
+          description: "אם יורד גשם, דלגו על וולדשטיין ותנו יותר זמן למוזיאון קארל זמן (האטרקציה הבאה). במקום 60 דקות שם — קחו 90.",
+          mapQuery: "Karel Zeman Museum Prague"
+        }
       },
       {
         id: "d5-a3",
-        time: "14:30",
+        time: "14:00",
         title: "Charles Bridge & Karel Zeman Museum",
         category: "סיור",
         icon: "fa-film",
-        // No user upload; Wikimedia
         images: [
           "https://commons.wikimedia.org/wiki/Special:FilePath/CharlesBridgeMalaStranaPragueCzechRepublic.jpg?width=900",
           "https://commons.wikimedia.org/wiki/Special:FilePath/Charles_Bridge_in_Prague.jpg?width=900",
@@ -577,15 +641,20 @@ const tripData = [
         ],
         locked: false,
         mapQuery: "Karel Zeman Museum Prague",
-        description: "מוזיאון אפקטים קולנועיים אינטראקטיבי וחציית גשר קארל המפורסם.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> חובה לעדי שאוהבת לצלם ולהצטלם עם אפקטים. לאריאלה מומלץ לקנות קיורטוש חם.<br><br>🚇 <strong>הגעה במטרו:</strong> Malostranská (🟢 קו A) — כ-400 מטרים.",
+        description: "מוזיאון אפקטים קולנועיים אינטראקטיבי (60–90 דקות) ואחריו חציית גשר קארל המפורסם.<br><br>⚠️ <strong>גשר קארל הכי עמוס בין 10:00–16:00.</strong> ב-14:00 עדיין יהיה צפוף, אבל עם ילדים זה הזמן הריאלי. התמקדו בפסלים ובנוף ואל תנסו לעמוד בקצב הקבוצות.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> חובה לעדי שאוהבת לצלם ולהצטלם עם אפקטים. עידו (3) עלול להתעייף בחצי השני של המוזיאון — אפשר לפצל, הורה אחד עם עידו בחוץ. לאריאלה מומלץ לקנות קיורטוש חם.<br><br>🚇 <strong>הגעה במטרו:</strong> Malostranská (🟢 קו A) — כ-400 מטרים.",
+        rainPlanB: {
+          title: "מוזיאון קארל זמן מקורה + הגשר עדיין עובר",
+          description: "המוזיאון מקורה לחלוטין. הגשר עביר גם בגשם (זה חלק מהחוויה!) אבל בסופת רוח — שקלו מוזיאון קאפקא הסמוך במקום.",
+          mapQuery: "Franz Kafka Museum Prague"
+        },
         nearby: [
           {
             title: "Vinárna Čertovka (Narrowest Street)",
             distance: "2 דקות הליכה",
             images: [
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/Vinarnacertovka1.jfif",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/Vinarnacertovka2.jpg"
-        ],
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/Vinarnacertovka1.jfif",
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/Vinarnacertovka2.jpg"
+            ],
             mapQuery: "Vinarna Certovka Prague",
             description: "סמטה ברוחב 70 ס״מ בלבד עם רמזור הולכי רגל שהילדים אוהבים ללחוץ עליו.<br><br>🚇 <strong>הגעה במטרו:</strong> Malostranská (🟢 קו A) — כ-350 מטרים."
           }
@@ -593,6 +662,10 @@ const tripData = [
       }
     ]
   },
+
+  /* ============================================================== */
+  /*  DAY 6 — Tuesday 27.4 — Aquapalace                             */
+  /* ============================================================== */
   {
     id: "day6",
     dayLabel: "יום ג׳",
@@ -605,13 +678,12 @@ const tripData = [
         title: "Drive to Aquapalace",
         category: "נסיעה",
         icon: "fa-car",
-        // Generic driving photo (transit)
         images: [
           "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=900&q=80&auto=format&fit=crop"
         ],
         locked: false,
         mapQuery: "Aquapalace Praha",
-        description: "ממוקם מעט מחוץ לעיר. מומלץ לקחת Uber/Bolt ישירות למקום, נסיעה של כ-25 דקות ממרכז העיר."
+        description: "ממוקם מעט מחוץ לעיר. מומלץ לקחת Uber/Bolt ישירות למקום, נסיעה של כ-25 דקות ממרכז העיר (~250–350 קראון לכיוון)."
       },
       {
         id: "d6-a1",
@@ -628,23 +700,27 @@ const tripData = [
         ],
         locked: false,
         mapQuery: "Aquapalace Praha",
-        description: "פארק המים המקורה הגדול במרכז אירופה! מגלשות אקסטרים, בריכת גלים וספינת פיראטים.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> כולם. עידו ודניאל בספינת הפיראטים, עדי במגלשות הנהר הפראי, ולאריאלה יש מתחם ספא מטורף לברוח אליו.<br><br>🚇 <strong>הגעה במטרו:</strong> אין מטרו במרחק הליכה — Opatov (🔴 קו C) הכי קרוב אבל עדיין כ-4 ק״מ; ממליץ מונית/Uber.",
+        description: "פארק המים המקורה הגדול במרכז אירופה! מגלשות אקסטרים, בריכת גלים וספינת פיראטים. 4–5 שעות זה האורך האידיאלי — אחרי זה ילדים מתחילים להתייבש (תרתי משמע).<br><br>⚠️ <strong>הגבלת גובה:</strong> ילדים מתחת ל-120 ס״מ (בערך גיל 5–6) לא יכולים להשתמש במגלשות הגדולות. עידו (3) מוגבל לאזור ספינת הפיראטים ובריכת הגלים — אבל זה עדיין מספיק כיף!<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> כולם! עידו (3) ודניאל (5) בספינת הפיראטים, עדי במגלשות הנהר הפראי. לאריאלה — מתחם ספא (עולם הסאונות) למבוגרים בלבד, הזדמנות להתחלף עם הורה אחד שישאר עם הילדים.<br><br>🚇 <strong>הגעה במטרו:</strong> אין מטרו במרחק הליכה — Opatov (🔴 קו C) הכי קרוב אבל עדיין כ-4 ק״מ; ממליץ מונית/Uber.",
         nearby: [
           {
             title: "Hop Arena",
             distance: "באותו מתחם מסחרי",
             images: [
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/HopArena1.jpg",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/HopArena2.png",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/HopArena3.jfif"
-        ],
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/HopArena1.jpg",
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/HopArena2.png",
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/HopArena3.jfif"
+            ],
             mapQuery: "Hop Arena Cestlice",
-            description: "פארק טרמפולינות צמוד, למקרה נדיר שנשארה להם אנרגיה אחרי המים.<br><br>🚇 <strong>הגעה במטרו:</strong> אין מטרו במרחק הליכה — באותו מתחם של Aquapalace."
+            description: "פארק טרמפולינות צמוד, למקרה נדיר שנשארה להם אנרגיה אחרי המים. זהירות — אחרי שעות של שחייה, עוד פעילות גופנית עלולה להוביל לקריסה של בן ה-3.<br><br>🚇 <strong>הגעה במטרו:</strong> אין מטרו במרחק הליכה — באותו מתחם של Aquapalace."
           }
         ]
       }
     ]
   },
+
+  /* ============================================================== */
+  /*  DAY 7 — Wednesday 28.4 — Metro B Day (Bricks→Railway→Majaland)*/
+  /* ============================================================== */
   {
     id: "day7",
     dayLabel: "יום ד׳",
@@ -654,17 +730,20 @@ const tripData = [
       {
         id: "d7-a1",
         time: "10:00",
-        title: "National Museum",
-        category: "סיור",
-        icon: "fa-building-columns",
+        title: "Máj House of Fun & Museum of Bricks",
+        category: "פנאי",
+        icon: "fa-gamepad",
         images: [
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/NationalMuseum1.jfif",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/NationalMuseum2.webp",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/NationalMuseum3.jpg"
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/Maj1.jfif",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/Maj2.jfif",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/Maj3.jfif",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/MuseumofBricks1.jpg",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/MuseumofBricks2.jpg",
+          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/MuseumofBricks3.webp"
         ],
         locked: false,
-        mapQuery: "National Museum Prague",
-        description: "הבניין המפואר בראש כיכר ואצלב עם תצוגות של היכל הטבע.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> דניאל ועידו יעמדו פעורי פה מול הדינוזאורים. אריאלה תעריך את אולם הכניסה המפואר.<br><br>🚇 <strong>הגעה במטרו:</strong> Muzeum (🟢🔴 🟢🔴 קווים A+C) — התחנה נמצאת ממש מתחת למוזיאון."
+        mapQuery: "Museum of Bricks Prague",
+        description: "מתחם בילוי מטורף ומוזיאון הלגו הכולל עמדות יצירה חופשית. עמדות הבנייה יכולות לבלוע שעתיים בקלות.<br><br>💡 <strong>היום בנוי כמסלול ישר על קו מטרו B מערבה:</strong> Národní třída → Anděl → Zličín. אין זיגזוגים, אין חזרה אחורה!<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> גן עדן לדניאל (5) ולעדי. עידו (3) יתלהב מעמדות היצירה החופשית.<br><br>🚇 <strong>הגעה במטרו:</strong> Národní třída (🟡 קו B) — כ-200 מטרים."
       },
       {
         id: "d7-a2",
@@ -681,12 +760,12 @@ const tripData = [
         ],
         locked: false,
         mapQuery: "Kralovstvi Zeleznic Prague",
-        description: "נסיעה קצרה במטרו לסמיחוב לראות עולם מיניאטורי ענק של רכבות.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אטרקציית חובה לעידו ולדניאל. הילדים יכולים ללחוץ על כפתורים ולהפעיל את הרכבות.<br><br>🚇 <strong>הגעה במטרו:</strong> Anděl (🟡 קו B) — כ-250 מטרים."
+        description: "שתי תחנות מטרו מערבה (Anděl) — עולם מיניאטורי ענק של רכבות עם כפתורים אינטראקטיביים. 60–90 דקות.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אטרקציית חובה לעידו (3) ולדניאל (5). הילדים יכולים ללחוץ על כפתורים ולהפעיל את הרכבות, המנופים והאורות.<br><br>🚇 <strong>הגעה במטרו:</strong> Anděl (🟡 קו B) — כ-250 מטרים."
       },
       {
         id: "d7-a3",
         time: "16:00",
-        title: "Majaland Praha & Primark",
+        title: "Majaland Praha",
         category: "פנאי",
         icon: "fa-ferris-wheel",
         images: [
@@ -699,10 +778,25 @@ const tripData = [
         ],
         locked: false,
         mapQuery: "Majaland Praha",
-        description: "נסיעה לסוף קו המטרו B. פארק שעשועים מקורה ענק בתוך מרכז הקניות Metropole Zličín.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> השילוב המושלם. הילדים משתוללים במתקנים, בזמן שאריאלה עושה קניות בנחת בפרימרק הגדול והשקט בקניון.<br><br>🚇 <strong>הגעה במטרו:</strong> Zličín (🟡 קו B, סוף הקו) — כ-150 מטרים, באותו קניון."
+        description: "סוף קו המטרו B. פארק שעשועים מקורה ענק בתוך מרכז הקניות Metropole Zličín. יש מתקנים ייעודיים לגיל 3+ (Maya's Playground) כך שגם עידו יכול להנות.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> כל שלושת הילדים משתוללים במתקנים. הורה אחד יכול לקחת את כולם בזמן שהשני הולך לפרימרק (ראו אטרקציה הבאה).<br><br>🚇 <strong>הגעה במטרו:</strong> Zličín (🟡 קו B, סוף הקו) — כ-150 מטרים, באותו קניון."
+      },
+      {
+        id: "d7-a4",
+        time: "16:00",
+        title: "Primark — קניות",
+        category: "קניות",
+        icon: "fa-bag-shopping",
+        images: [],
+        locked: false,
+        mapQuery: "Primark Metropole Zlicin Prague",
+        description: "🛍️ <strong>במקביל למג׳אלנד!</strong> בזמן שהורה אחד עם הילדים בפארק השעשועים, השני יכול לעשות קניות בנחת בפרימרק הגדול והשקט שבקניון Metropole Zličín.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> אריאלה — פרימרק גדול, יום חול שקט, ובלי ילדים שמושכים הביתה.<br><br>🚇 <strong>הגעה במטרו:</strong> Zličín (🟡 קו B, סוף הקו) — באותו קניון ממש."
       }
     ]
   },
+
+  /* ============================================================== */
+  /*  DAY 8 — Thursday 29.4 — Vyšehrad & Náplavka                  */
+  /* ============================================================== */
   {
     id: "day8",
     dayLabel: "יום ה׳",
@@ -715,7 +809,6 @@ const tripData = [
         title: "Vyšehrad",
         category: "סיור",
         icon: "fa-chess-rook",
-        // No user upload; Wikimedia
         images: [
           "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/vysehrad1.jfif",
           "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/vysehrad2.avif",
@@ -723,16 +816,21 @@ const tripData = [
         ],
         locked: false,
         mapQuery: "Vysehrad Prague",
-        description: "מצודה עתיקה ושקטה על צוק מעל הנהר.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> יש במצודה גן שעשועים מעולה עשוי עץ. נהדר לעדי ולדניאל להתרוצץ, ולאריאלה ליהנות מתצפית מושלמת.<br><br>🚇 <strong>הגעה במטרו:</strong> Vyšehrad (🔴 קו C) — כ-600 מטרים.",
+        description: "מצודה עתיקה ושקטה על צוק מעל הנהר. סיבוב בחומות עם תצפיות מרהיבות (30–45 דקות) וגן שעשועים מעץ מדהים בפנים (שעה+). דלגו על בית הקברות (דבורז׳אק, סמטנה) — מעניין למבוגרים, לא לילדים.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> גן השעשועים מעולה לעדי ולדניאל (5) להתרוצץ, ולאריאלה ליהנות מתצפית מושלמת. עידו (3) יאהב את מתקני העץ.<br><br>🚇 <strong>הגעה במטרו:</strong> Vyšehrad (🔴 קו C) — כ-600 מטרים.",
+        rainPlanB: {
+          title: "קזמטות וישהראד (מנהרות תת-קרקעיות)",
+          description: "המנהרות ההיסטוריות מתחת לחומות המצודה — סיור מרתק של 30–45 דקות בתוך מעברים תת-קרקעיים עם תאורה דרמטית. הילדים יהיו בהלם. מקורה לחלוטין.",
+          mapQuery: "Vysehrad Casemates Prague"
+        },
         nearby: [
           {
             title: "Folimanka Park",
             distance: "מתחת לחומות המצודה",
             images: [
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/FolimankaPark1.webp",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/FolimankaPark2.jpg",
-          "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/FolimankaPark3.jpg"
-        ],
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/FolimankaPark1.webp",
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/FolimankaPark2.jpg",
+              "https://raw.githubusercontent.com/weitz-edward/Prague-2027/main/FolimankaPark3.jpg"
+            ],
             mapQuery: "Folimanka Park Prague",
             description: "גן שעשועים ענק עם מסלולי בימבות תחת חומות המצודה.<br><br>🚇 <strong>הגעה במטרו:</strong> Vyšehrad (🔴 קו C) — כ-500 מטרים."
           }
@@ -751,10 +849,19 @@ const tripData = [
         ],
         locked: false,
         mapQuery: "Naplavka Prague",
-        description: "יורדים לטיילת לאורך הנהר, קרוב לדירה. אווירה מעולה לסיום הטיול.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> עידו ודניאל ישמחו להאכיל את הברבורים שמתקבצים כאן. עדי ואריאלה יאהבו את אווירת הטיילת ודוכני הרחוב.<br><br>🚇 <strong>הגעה במטרו:</strong> Karlovo náměstí (🟡 קו B) — כ-500 מטרים."
+        description: "יורדים לטיילת לאורך הנהר, קרוב לדירה. אווירה מעולה לסיום הטיול. בדקו אם יש שוק איכרים ביום חמישי!<br><br>💡 <strong>טיפ:</strong> התחילו לארוז הערב. טיסת המחר ב-08:00 — צריך לעזוב את הדירה ב-05:00–05:30. הזמינו הסעה לשדה התעופה מראש.<br><br>👨‍👩‍👧‍👦 <strong>הכי מתאים ל:</strong> עידו (3) ודניאל (5) ישמחו להאכיל את הברבורים שמתקבצים כאן. עדי ואריאלה יאהבו את אווירת הטיילת ודוכני הרחוב.<br><br>🚇 <strong>הגעה במטרו:</strong> Karlovo náměstí (🟡 קו B) — כ-500 מטרים.",
+        rainPlanB: {
+          title: "קפה + קניון נובי סמיחוב",
+          description: "אם יורד גשם, הטיילת לא כיפית. במקום — ארוחה משפחתית נעימה במסעדה עם נוף לנהר, או סיבוב בקניון Nový Smíchov (15 דקות הליכה) שיש בו חנויות ובית קפה.",
+          mapQuery: "Novy Smichov Prague"
+        }
       }
     ]
   },
+
+  /* ============================================================== */
+  /*  DAY 9 — Friday 30.4 — Departure                              */
+  /* ============================================================== */
   {
     id: "day9",
     dayLabel: "יום ו׳",
@@ -767,17 +874,17 @@ const tripData = [
         title: "Flight Back Home",
         category: "טיסה",
         icon: "fa-plane-departure",
-        // Generic aviation image (transit)
         images: [
           "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=900&q=80&auto=format&fit=crop"
         ],
         locked: true,
         mapQuery: "Václav Havel Airport Prague",
-        description: "סוגרים מזוודות ועוזבים את הדירה. יציאה לשדה התעופה לקראת טיסת הבוקר חזרה הביתה. נתראה בטיול הבא! 👋"
+        description: "סוגרים מזוודות ועוזבים את הדירה. יציאה לשדה התעופה לקראת טיסת הבוקר חזרה הביתה.<br><br>💡 <strong>טיפ:</strong> הזמינו הסעה מראש (Prague Airport Transfers או דומה, ~700 קראון). עם שלושה ילדים ומזוודות ב-5 בבוקר, לא כדאי לסמוך על זמינות Uber. נתראה בטיול הבא! 👋"
       }
     ]
   }
 ];
+
 
 const vaultData = [
   {
@@ -1086,7 +1193,7 @@ function renderDaySelector() {
 /*  RENDER: Activity feed + nearby                                   */
 /* ---------------------------------------------------------------- */
 const CATEGORY_COLOR = {
-  "טיסה": "navy", "לינה": "terracotta", "סיור": "gold", "שייט": "teal", "פנאי": "terracotta", "נסיעה": "teal"
+  "טיסה": "navy", "לינה": "terracotta", "סיור": "gold", "שייט": "teal", "פנאי": "terracotta", "נסיעה": "teal", "קניות": "gold"
 };
 
 function renderDay(dayId) {
@@ -1131,6 +1238,23 @@ function activityCardHTML(a) {
             <i class="fa-solid fa-circle-info"></i> מידע
           </button>
         </div>
+
+        ${a.rainPlanB ? `
+        <details class="mt-3 bg-teal/5 rounded-xl border border-teal/20 overflow-hidden">
+          <summary class="flex items-center gap-2 px-3 py-2.5 cursor-pointer text-sm font-semibold text-teal select-none">
+            <span>☔</span> תוכנית ב׳ לגשם
+            <i class="fa-solid fa-chevron-down text-[10px] mr-auto transition-transform"></i>
+          </summary>
+          <div class="px-3 pb-3 text-xs text-navydeep/70 leading-relaxed">
+            <p class="font-semibold text-navydeep mb-1">${a.rainPlanB.title}</p>
+            <p class="mb-2">${a.rainPlanB.description}</p>
+            <button onclick="navigateTo('${a.rainPlanB.mapQuery}')"
+              class="inline-flex items-center gap-1.5 bg-teal text-white rounded-lg px-3 py-1.5 text-xs font-semibold active:scale-95 transition">
+              <i class="fa-solid fa-diamond-turn-right text-[10px]"></i> נווט לחלופה
+            </button>
+          </div>
+        </details>
+        ` : ''}
 
         ${a.nearby && a.nearby.length ? nearbySubsectionHTML(a) : ''}
       </div>
@@ -1492,7 +1616,18 @@ function openItemInfo(id) {
         </span>` : ''}
     </div>
     <h2 class="font-display text-2xl font-bold mb-3">${item.title}</h2>
-    ${item.description ? `<p class="text-sm text-navydeep/70 leading-relaxed mb-6">${item.description}</p>` : ''}
+    ${item.description ? `<p class="text-sm text-navydeep/70 leading-relaxed mb-4">${item.description}</p>` : ''}
+    ${item.rainPlanB ? `
+      <div class="bg-teal/5 rounded-xl border border-teal/20 p-3 mb-6">
+        <p class="text-sm font-semibold text-teal flex items-center gap-2 mb-1.5"><span>☔</span> תוכנית ב׳ לגשם</p>
+        <p class="text-sm font-semibold text-navydeep mb-1">${item.rainPlanB.title}</p>
+        <p class="text-xs text-navydeep/70 leading-relaxed mb-2">${item.rainPlanB.description}</p>
+        <button onclick="navigateTo('${item.rainPlanB.mapQuery}')"
+          class="inline-flex items-center gap-1.5 bg-teal text-white rounded-lg px-3 py-1.5 text-xs font-semibold active:scale-95 transition">
+          <i class="fa-solid fa-diamond-turn-right text-[10px]"></i> נווט לחלופה
+        </button>
+      </div>
+    ` : ''}
     ${(() => {
       // Compute button count so we can pick the right grid width. Navigate is always shown.
       const extras = [item.menuUrl, item.mapUrl].filter(Boolean).length;
