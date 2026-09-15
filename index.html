@@ -52,6 +52,45 @@
   .snap-start { scroll-snap-align: start; }
   #bottomNav { padding-bottom: env(safe-area-inset-bottom); }
   #topHeader { padding-top: env(safe-area-inset-top); }
+
+  /* Expanded (default) state of the sticky header */
+  #topHeader .header-inner {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    transition: padding-top .25s ease, padding-bottom .25s ease;
+  }
+  #topHeader .header-tagline {
+    max-height: 1.25rem;
+    opacity: 1;
+    overflow: hidden;
+    transition: max-height .25s ease, opacity .2s ease, margin-bottom .25s ease;
+  }
+  #topHeader .header-title {
+    font-size: 1.5rem; /* text-2xl */
+    transition: font-size .25s ease;
+  }
+  #topHeader #headerWeather {
+    transition: padding .25s ease, transform .25s ease;
+  }
+
+  /* Collapsed state — toggled by JS when the user scrolls down.
+     Target height: ~50-55px including the notch safe-area. */
+  #topHeader.collapsed .header-inner {
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+  }
+  #topHeader.collapsed .header-tagline {
+    max-height: 0;
+    opacity: 0;
+    margin-bottom: 0;
+  }
+  #topHeader.collapsed .header-title {
+    font-size: 1.125rem; /* text-lg */
+  }
+  #topHeader.collapsed #headerWeather {
+    padding: 0.25rem 0.625rem;
+    transform: scale(.92);
+  }
   .tab-panel { animation: fadeIn .25s ease; }
   @keyframes fadeIn { from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
   #infoModal .sheet { transition: transform .3s cubic-bezier(.32,.72,0,1); }
@@ -65,10 +104,10 @@
 <!--  BLOCK: TOP HEADER                                                -->
 <!-- ================================================================ -->
 <header id="topHeader" class="sticky top-0 z-40 bg-navy text-cream shadow-lg">
-  <div class="max-w-md mx-auto px-5 pt-4 pb-4 flex items-center justify-between">
-    <div>
-      <p class="text-[11px] tracking-wide text-goldlight/80 font-medium">הטיול המשפחתי</p>
-      <h1 class="font-display text-2xl font-bold leading-tight">פראג <span class="text-goldlight">2027</span></h1>
+  <div class="header-inner max-w-md mx-auto px-5 flex items-center justify-between">
+    <div class="min-w-0">
+      <p class="header-tagline text-[11px] tracking-wide text-goldlight/80 font-medium">הטיול המשפחתי</p>
+      <h1 class="header-title font-display font-bold leading-tight">פראג <span class="text-goldlight">2027</span></h1>
     </div>
     <div id="headerWeather" class="flex items-center gap-2 bg-white/10 rounded-2xl px-3 py-2 min-w-[84px] justify-center">
       <i class="fa-solid fa-spinner fa-spin text-goldlight"></i>
@@ -1635,6 +1674,43 @@ document.querySelectorAll(".nav-btn").forEach(btn => {
 /* ---------------------------------------------------------------- */
 /*  INIT                                                              */
 /* ---------------------------------------------------------------- */
+// Collapses the sticky top header once the user has scrolled a bit,
+// shrinking padding + title + weather pill so it takes ~50-55px instead
+// of ~80px. Uses requestAnimationFrame throttling so the scroll listener
+// stays cheap even on long lists.
+function setupCollapsingHeader() {
+  const header = document.getElementById("topHeader");
+  if (!header) return;
+  const THRESHOLD = 40;   // px scrolled before we collapse
+  const HYSTERESIS = 10;  // px band around threshold to prevent flicker at the edge
+  let ticking = false;
+  let collapsed = false;
+
+  const update = () => {
+    ticking = false;
+    const y = window.scrollY || document.documentElement.scrollTop;
+    // Asymmetric threshold: harder to expand back than to collapse, so a
+    // tiny jitter near the top doesn't cause the header to jump twice.
+    if (!collapsed && y > THRESHOLD) {
+      header.classList.add("collapsed");
+      collapsed = true;
+    } else if (collapsed && y < THRESHOLD - HYSTERESIS) {
+      header.classList.remove("collapsed");
+      collapsed = false;
+    }
+  };
+
+  window.addEventListener("scroll", () => {
+    if (!ticking) {
+      requestAnimationFrame(update);
+      ticking = true;
+    }
+  }, { passive: true });
+
+  // Initial check in case the page loads already scrolled
+  update();
+}
+
 function init() {
   buildRegistry();
   renderDaySelector();
@@ -1645,6 +1721,7 @@ function init() {
   fetchExchangeRate();
   setupSwipeToClose("#infoModal .sheet", "infoModal");
   setupSwipeBetweenDays();
+  setupCollapsingHeader();
 }
 
 document.addEventListener("DOMContentLoaded", init);
