@@ -4,12 +4,12 @@
    - styling libraries, fonts and photos: saved on first use, then served from the device
    Bump SHELL_VERSION whenever index.html changes in a way that must replace the saved copy at once
    (not strictly needed: an online visit always fetches the newest index.html). */
-const SHELL_VERSION = "2026-11-11.2";
+const SHELL_VERSION = "2026-11-11.3";
 const SHELL_CACHE = "prague-shell-" + SHELL_VERSION;
 const RUNTIME_CACHE = "prague-runtime-v1";
 const IMG_CACHE = "prague-img-v1";
 
-const SHELL_URLS = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png"];
+const SHELL_URLS = ["./", "./index.html", "./manifest.webmanifest", "./app-icon-192.png", "./app-icon-512.png"];
 const CDN_CORS = [
   "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css",
   "https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;600;700;900&family=Heebo:wght@300;400;500;600;700;800&display=swap"
