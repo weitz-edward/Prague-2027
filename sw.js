@@ -4,7 +4,7 @@
    - styling libraries, fonts and photos: saved on first use, then served from the device
    Bump SHELL_VERSION whenever index.html changes in a way that must replace the saved copy at once
    (not strictly needed: an online visit always fetches the newest index.html). */
-const SHELL_VERSION = "2026-11-11.3";
+const SHELL_VERSION = "2026-11-11.4";
 const SHELL_CACHE = "prague-shell-" + SHELL_VERSION;
 const RUNTIME_CACHE = "prague-runtime-v1";
 const IMG_CACHE = "prague-img-v1";
